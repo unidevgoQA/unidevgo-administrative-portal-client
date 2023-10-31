@@ -18,7 +18,7 @@ const Login = () => {
           </div>
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
-              <h4>Sign Into Your Account</h4>
+              <h4>Login Into Your Account</h4>
               <form>
                 <div className="input-wrapper">
                   <input type="text" placeholder="Your Email" />
@@ -30,16 +30,17 @@ const Login = () => {
                 </div>
 
                 <button className="login-register-btn" type="submit">
-                  Login <i class="fa-solid fa-arrow-right"></i>
+                  <span>Login</span> <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </form>
               <hr />
               <div className="other-action">
-                <h4>Or Sign With</h4>
+                <h4>Or Login With</h4>
 
                 <button className="login-register-btn">
                   {" "}
-                  <i class="fa-brands fa-google"></i>  Google 
+                  Google
+                  <i class="fa-brands fa-google"></i>  
                 </button>
                 <hr />
                 <div className="login-register-navigation">
