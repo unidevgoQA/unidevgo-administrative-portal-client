@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import './add-work-status.scss';
+import "./add-work-status.scss";
 
 const addWorkStatus = () => {
   const { handleSubmit, control, register } = useForm();
@@ -29,12 +29,12 @@ const addWorkStatus = () => {
                   <label>Date of Report</label>
                   <input type="date" {...register("date")} />
                 </div>
-               
+
                 <div className="col-md-6">
                   <label for="hour">Hours Worked</label>
                   <input type="number" {...register("hour")} />
                 </div>
-                
+
                 <div className="col-md-6">
                   <label for="hour">Work Status</label>
                   <select {...register("work-status")}>
@@ -48,11 +48,8 @@ const addWorkStatus = () => {
                   <textarea {...register("description")} />
                 </div>
                 <div className="col-md-6">
-                <button className="submit-btn">Add Work Status </button>
+                  <button className="submit-btn">Add Work Status </button>
                 </div>
-
-              
-       
               </div>
             </form>
           </div>

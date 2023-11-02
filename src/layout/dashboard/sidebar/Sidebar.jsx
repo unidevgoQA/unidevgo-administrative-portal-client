@@ -46,6 +46,10 @@ const Sidebar = () => {
             <i class="fa-regular fa-square-plus"></i>
             <Link to={"add-work-status"}>Add Work Status</Link>
           </li>
+          <li>
+            <i class="fa-solid fa-file-pen"></i>
+            <Link to={"update-profile"}>Update Profile</Link>
+          </li>
         </ul>
         <hr />
         <button className="logout-btn">

@@ -10,7 +10,8 @@ import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
-import AddWorkStatus from "./pages/employee-dashboard/add-work-status/addWorkStatus";
+import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
+import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
  
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "add-work-status",
         element: <AddWorkStatus />,
+      },
+      {
+        path: "update-profile",
+        element: <UpdateProfile />,
       },
     ],
   },
