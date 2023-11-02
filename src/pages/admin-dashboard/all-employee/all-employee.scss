@@ -1,0 +1,44 @@
+.table-wrapper-content {
+  margin-right: 20px;
+  .heading {
+    background: #071c0b;
+    color: #fff;
+    padding: 14px 15px 5px;
+    margin-top: 20px;
+    border-radius: 10px;
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+  .table-modify {
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    margin-top: 30px;
+    border-radius: 10px;
+    .employee-img {
+      width: 50px;
+      border-radius: 10px;
+    }
+
+    td {
+      font-size: 14px;
+      font-weight: 600;
+      .update-btn {
+        margin-right: 5px;
+        border: none;
+        background: green;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+      .delete-btn {
+        border: none;
+        background: red;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+    }
+  }
+}

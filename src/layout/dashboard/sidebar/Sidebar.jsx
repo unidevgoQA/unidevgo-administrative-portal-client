@@ -41,6 +41,12 @@ const Sidebar = () => {
             <Link to={"work-status"}>Work Status</Link>
           </li>
         </ul>
+        <ul>
+          <li>
+            <i class="fa-regular fa-square-plus"></i>
+            <Link to={"add-work-status"}>Add Work Status</Link>
+          </li>
+        </ul>
         <hr />
         <button className="logout-btn">
           Logout <i class="fa-solid fa-right-from-bracket"></i>
