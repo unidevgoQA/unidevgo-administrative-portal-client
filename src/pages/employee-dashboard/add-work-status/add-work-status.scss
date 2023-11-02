@@ -1,0 +1,41 @@
+$primary: #071c0b;
+$secondary: #0ad028;
+.add-form {
+  input,
+  select {
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    border-radius: 10px;
+    padding: 10px 20px;
+  }
+  textarea {
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    height: 300px;
+  }
+  label {
+    font-size: 14px;
+    margin: 20px 10px 10px 0px;
+    font-weight: 600;
+  }
+  .submit-btn {
+    background: $primary;
+    color: $secondary;
+    padding: 10px 20px;
+    border: 1px solid $secondary;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 #0ad028;
+    margin: 20px 10px 10px 0px;
+    // width: 150px;
+  }
+}
