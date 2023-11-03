@@ -34,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <AllEmployee />,
+        element: <Profile />,
       },
       {
         path: "all-employee",

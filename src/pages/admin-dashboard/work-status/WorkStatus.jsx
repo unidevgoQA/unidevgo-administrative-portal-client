@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import userImg from "../../../assets/employee.jpg";
 
 const WorkStatus = () => {
@@ -122,12 +121,11 @@ const WorkStatus = () => {
                   <td>{work?.status}</td>
                   <td>{work?.description}</td>
                   <td>
-                    <Link to={`update-work-status/${work.id}`}>
-                      <button className="update-btn">
-                        {" "}
-                        <i className="far fa-edit"></i>
-                      </button>
-                    </Link>
+                    <button className="update-btn text-white">
+                      {work.status == "in progress"
+                        ? "Mark as Complete"
+                        : "Mark as in Progress"}
+                    </button>
 
                     <button
                       // onClick={() => handleDelete(employee.id)}

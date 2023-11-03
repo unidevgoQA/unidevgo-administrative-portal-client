@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import userImg from "../../../assets/employee.jpg";
 
 import "./profile.scss";
@@ -160,23 +159,9 @@ const Profile = () => {
                   <div className="row gy-3">
                     <div className="col-md-6">
                       <div className="attendence employee-card">
-                        <i class="fa-solid fa-clipboard-user"></i>
-                        <h6>Attendence</h6>
-                        <span>400</span>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="late-coming employee-card">
-                      <i class="fa-regular fa-clock"></i>
-                        <h6>Late Coming</h6>
-                        <span>10</span>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="absent employee-card">
-                      <i class="fa-regular fa-circle-xmark"></i>
-                        <h6>Absent</h6>
-                        <span>8</span>
+                      <i class="fa-solid fa-border-all"></i>
+                        <h6>Total Leave</h6>
+                        <span>30</span>
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -186,6 +171,21 @@ const Profile = () => {
                         <span>20</span>
                       </div>
                     </div>
+                    <div className="col-md-6">
+                      <div className="late-coming employee-card">
+                      <i class="fa-solid fa-check"></i>
+                        <h6>Get Leave</h6>
+                        <span>20</span>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="absent employee-card">
+                      <i class="fa-regular fa-circle-xmark"></i>
+                        <h6>Remaining Leave</h6>
+                        <span>10</span>
+                      </div>
+                    </div>
+                   
                   </div>
                 </div>
               </div>
@@ -230,12 +230,11 @@ const Profile = () => {
                     <td>{work?.status}</td>
                     <td>{work?.description}</td>
                     <td>
-                      <Link to={`update-work-status/${work.id}`}>
-                        <button className="update-btn">
-                          {" "}
-                          <i className="far fa-edit"></i>
-                        </button>
-                      </Link>
+                    <button className="update-btn text-white">
+                      {work.status == "in progress"
+                        ? "Mark as Complete"
+                        : "Mark as in Progress"}
+                    </button>
 
                       <button
                         // onClick={() => handleDelete(employee.id)}
