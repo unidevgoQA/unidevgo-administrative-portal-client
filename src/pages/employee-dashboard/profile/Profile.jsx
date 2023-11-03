@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import userImg from "../../../assets/employee.jpg";
+
 import "./profile.scss";
 const Profile = () => {
   const user = {
@@ -12,6 +14,89 @@ const Profile = () => {
     address: "Dhanmondi , Dhaka",
     joiningDate: "01-06-22",
   };
+
+  const workStatus = [
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+    {
+      id: 1,
+      image: userImg,
+      task: "develop ui",
+      date: "22-11-23",
+      hours: "2",
+      status: "in progress",
+      description:
+        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
+    },
+  ];
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -41,16 +126,28 @@ const Profile = () => {
                             <h3>{user.designation}</h3>
                           </div>
                           <div className="col-md-12">
-                            <h3><i class="fa-solid fa-mobile-screen-button"></i> <span>{user.mobile}</span></h3>
+                            <h3>
+                              <i class="fa-solid fa-mobile-screen-button"></i>{" "}
+                              <span>{user.mobile}</span>
+                            </h3>
                           </div>
                           <div className="col-md-12">
-                            <h3><i class="fa-solid fa-envelope-open-text"></i> <span>{user.email}</span></h3>
+                            <h3>
+                              <i class="fa-solid fa-envelope-open-text"></i>{" "}
+                              <span>{user.email}</span>
+                            </h3>
                           </div>
                           <div className="col-md-12">
-                            <h3><i class="fa-solid fa-calendar-days"></i> <span>{user.joiningDate}</span></h3>
+                            <h3>
+                              <i class="fa-solid fa-calendar-days"></i>{" "}
+                              <span>{user.joiningDate}</span>
+                            </h3>
                           </div>
                           <div className="col-md-12">
-                            <h3><i class="fa-solid fa-location-dot"></i> <span>{user.address}</span></h3>
+                            <h3>
+                              <i class="fa-solid fa-location-dot"></i>{" "}
+                              <span>{user.address}</span>
+                            </h3>
                           </div>
                         </div>
                       </div>
@@ -59,9 +156,98 @@ const Profile = () => {
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="current-task-wrapper"></div>
+                <div className="employee-vailability">
+                  <div className="row gy-3">
+                    <div className="col-md-6">
+                      <div className="attendence employee-card">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                        <h6>Attendence</h6>
+                        <span>400</span>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="late-coming employee-card">
+                      <i class="fa-regular fa-clock"></i>
+                        <h6>Late Coming</h6>
+                        <span>10</span>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="absent employee-card">
+                      <i class="fa-regular fa-circle-xmark"></i>
+                        <h6>Absent</h6>
+                        <span>8</span>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="leave-apply employee-card">
+                      <i class="fa-solid fa-person-walking-arrow-right"></i>
+                        <h6>Leave Apply</h6>
+                        <span>20</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="my-task-status">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="heading">
+              <h2>
+                <span>My Work Status</span>{" "}
+                <i class="fa-solid fa-battery-half"></i>{" "}
+              </h2>
+            </div>
+            <table class="table-modify table table-striped">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th className="task">Task</th>
+                  <th>Date</th>
+                  <th>Hours Of Work</th>
+                  <th>Status</th>
+                  <th className="description">Desciption</th>
+                  <th className="action-area">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {workStatus.map((work) => (
+                  <tr>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={work?.image}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{work?.task}</td>
+                    <td>{work?.date}</td>
+                    <td>{work?.hours}</td>
+                    <td>{work?.status}</td>
+                    <td>{work?.description}</td>
+                    <td>
+                      <Link to={`update-work-status/${work.id}`}>
+                        <button className="update-btn">
+                          {" "}
+                          <i className="far fa-edit"></i>
+                        </button>
+                      </Link>
+
+                      <button
+                        // onClick={() => handleDelete(employee.id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
