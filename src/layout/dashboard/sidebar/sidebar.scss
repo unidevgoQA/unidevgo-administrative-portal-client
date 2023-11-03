@@ -12,8 +12,16 @@ $secondary: #0ad028;
   &::-webkit-scrollbar {
     display: none;
   }
-  background-color: #071c0b;
-  background-size: cover;
+  background: rgb(7, 28, 11);
+  background: linear-gradient(
+    180deg,
+    rgba(7, 28, 11, 1) 0%,
+    rgba(32, 134, 55, 1) 100%
+  );
+  hr {
+    height: 1px;
+    color: #fff;
+  }
 
   .heading-wrapper {
     display: flex;
@@ -79,8 +87,16 @@ $secondary: #0ad028;
     display: none;
   }
 
-  background-color: #071c0b;
-
+  background: rgb(7, 28, 11);
+  background: linear-gradient(
+    180deg,
+    rgba(7, 28, 11, 1) 0%,
+    rgba(32, 134, 55, 1) 100%
+  );
+  hr {
+    height: 1px;
+    color: #fff;
+  }
   .heading-wrapper {
     display: flex;
     padding: 20px;

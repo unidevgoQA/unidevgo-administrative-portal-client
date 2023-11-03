@@ -7,8 +7,14 @@
     padding: 20px;
     background-color: #f2f2f2;
     i {
-      background: #0a1c0a;
-      color: #0cd028;
+      background: rgb(7, 28, 11);
+      background: linear-gradient(
+        90deg,
+        rgba(7, 28, 11, 1) 0%,
+        rgba(32, 134, 55, 1) 100%
+      );
+      color: #fff;
+
       font-size: 20px;
       border-radius: 10px;
       padding: 10px 13px;
@@ -48,8 +54,13 @@
         color: #0a1c0a;
         margin-bottom: 15px;
         i {
-          background: #0a1c0a;
-          color: #0cd028;
+          background: rgb(7, 28, 11);
+          background: linear-gradient(
+            90deg,
+            rgba(7, 28, 11, 1) 0%,
+            rgba(32, 134, 55, 1) 100%
+          );
+          color: #fff;
           border-radius: 10px;
           padding: 10px 13px;
           margin-right: 10px;

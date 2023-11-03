@@ -1,7 +1,12 @@
 .content-wrapper {
   margin-right: 20px;
   .heading {
-    background: #071c0b;
+    background: rgb(7, 28, 11);
+    background: linear-gradient(
+      90deg,
+      rgba(7, 28, 11, 1) 0%,
+      rgba(32, 134, 55, 1) 100%
+    );
     color: #fff;
     padding: 14px 15px 5px;
     margin-top: 20px;
