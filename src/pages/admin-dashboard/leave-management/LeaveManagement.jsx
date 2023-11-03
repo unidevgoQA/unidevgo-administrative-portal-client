@@ -114,21 +114,11 @@ const LeaveManagement = () => {
       leaveTo : "22-09-23",
       leaveType : "Sick",
     },
-    { 
-      id:12,
-      image : employeeImg,
-      name : 'Sarah Smith',
-      applyDate : "10-09-23",
-      status : "Approved",
-      leaveFrom : "18-09-23",
-      leaveTo : "22-09-23",
-      leaveType : "Sick",
-    },
+    
     
   ]
   return (
-    <div className="table-wrapper-content">
-      {/* <div className="container"> */}
+    <div className="content-wrapper">
         <div className="row">
           <div className="col-md-12">
             <div className="heading">
@@ -188,7 +178,6 @@ const LeaveManagement = () => {
             </table>
           </div>
         </div>
-      {/* </div> */}
     </div>
   )
 }

@@ -9,8 +9,7 @@ const UpdateProfile = () => {
     console.log(data, image); // You can process the form data here
   };
   return (
-    <div className="table-wrapper-content">
-      {/* <div className="container"> */}
+    <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
           <div className="heading">
@@ -69,7 +68,6 @@ const UpdateProfile = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
     </div>
   );
 };

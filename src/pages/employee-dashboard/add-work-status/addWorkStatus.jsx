@@ -8,8 +8,7 @@ const addWorkStatus = () => {
     console.log(data); // You can process the form data here
   };
   return (
-    <div className="table-wrapper-content">
-      {/* <div className="container"> */}
+    <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
           <div className="heading">
@@ -55,7 +54,6 @@ const addWorkStatus = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
     </div>
   );
 };
