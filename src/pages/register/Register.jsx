@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
+  const {createUser} = useContext(AuthContext);
+  console.log(createUser);
+
+  const [email , setEmail] = useState('');
+  const [password , setPassword] = useState('');
+
+  const handleRegister = (e) => {
+
+    e.preventDefault();
+    console.log(email,password)
+  }
+
   return (
     <div className="login-register">
       <div className="container">
@@ -10,13 +23,13 @@ const Register = () => {
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
               <h4>Register Your Account</h4>
-              <form>
+              <form onSubmit={handleRegister}>
                 <div className="input-wrapper">
-                  <input type="text" placeholder="Your Email" />
+                  <input onChange={(e)=>setEmail(e.target.value)} type="text" placeholder="Your Email" />
                   <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div className="input-wrapper">
-                  <input type="password" placeholder="Your Password" />
+                  <input onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="Your Password" />
                   <i class="fa-solid fa-lock"></i>
                 </div>
 

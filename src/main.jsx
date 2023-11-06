@@ -1,9 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.scss";
 import Dashboard from "./layout/dashboard/dashboard/dashboard";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
@@ -15,22 +12,20 @@ import Profile from "./pages/employee-dashboard/profile/Profile";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
- 
-
-
+import AuthProviders from "./providers/AuthProviders";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login/>,
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register/>,
+    element: <Register />,
   },
   {
     path: "/dashboard",
-    element: <Dashboard/>,
+    element: <Dashboard />,
     children: [
       {
         path: "/dashboard",
@@ -70,6 +65,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProviders>
+      <RouterProvider router={router} />
+    </AuthProviders>
   </React.StrictMode>
 );

@@ -1,9 +1,21 @@
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import app from "../../firebase/firebase.config";
 import "./login.scss";
 
 const Login = () => {
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  const handleGoogleLogin = () => {
+    console.log("hitting")
+    signInWithPopup(auth,googleProvider)
+    .then(result => console.log(result))
+    .catch(err => console.log(err.message))
+  };
+
   return (
     <div className="login-register">
       <div className="container">
@@ -37,7 +49,7 @@ const Login = () => {
               <div className="other-action">
                 <h4>Or Login With</h4>
 
-                <button className="login-register-btn">
+                <button className="login-register-btn" onClick={handleGoogleLogin}>
                   {" "}
                   Google
                   <i class="fa-brands fa-google"></i>  

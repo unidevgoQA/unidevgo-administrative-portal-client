@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import userImg from "../../../assets/employee.jpg";
+import { AuthContext } from '../../../providers/AuthProviders';
 
 import "./profile.scss";
 const Profile = () => {
+
+   const emp = useContext(AuthContext);
+   console.log(emp)
+
   const user = {
     id: 9,
     img: userImg,
