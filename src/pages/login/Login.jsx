@@ -5,7 +5,7 @@ import { AuthContext } from "../../providers/AuthProviders";
 import "./login.scss";
 
 const Login = () => {
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser , setUser , user} = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,7 @@ const Login = () => {
         console.log(result.user);
       })
       .catch((err) => console.log(err));
-    console.log(email, password);
+   
   };
 
   return (
@@ -35,6 +35,7 @@ const Login = () => {
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
               <h4>Login Into Your Account</h4>
+              <h4>Hello : {user?.email}</h4>
               <form onSubmit={handleLogin}>
                 <div className="input-wrapper">
                   <input

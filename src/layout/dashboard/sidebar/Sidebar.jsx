@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProviders";
 import "./sidebar.scss";
 
 const Sidebar = () => {
+  const {logoutUser} = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(true);
-
   const toggleSidebar = () => {
     setIsOpen((current) => !current);
   };
+
+  const handleLogout = () =>{
+    logoutUser()
+    .then(result => console.log(result))
+    .catch(err => console.log(err))
+  } 
+
   return (
     <div className={isOpen === true ? "sidebar" : "sidebar-collapse"}>
       <div className="heading-wrapper">
@@ -56,7 +64,7 @@ const Sidebar = () => {
           </li>
         </ul>
         <hr />
-        <button className="logout-btn">
+        <button onClick={()=>handleLogout()} className="logout-btn">
           Logout <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
