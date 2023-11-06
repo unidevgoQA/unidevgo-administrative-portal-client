@@ -1,19 +1,23 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import app from "../../firebase/firebase.config";
+import { AuthContext } from "../../providers/AuthProviders";
 import "./login.scss";
 
 const Login = () => {
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
+  const { loginUser } = useContext(AuthContext);
 
-  const handleGoogleLogin = () => {
-    console.log("hitting")
-    signInWithPopup(auth,googleProvider)
-    .then(result => console.log(result))
-    .catch(err => console.log(err.message))
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    loginUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((err) => console.log(err));
+    console.log(email, password);
   };
 
   return (
@@ -31,13 +35,21 @@ const Login = () => {
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
               <h4>Login Into Your Account</h4>
-              <form>
+              <form onSubmit={handleLogin}>
                 <div className="input-wrapper">
-                  <input type="text" placeholder="Your Email" />
+                  <input
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="Your Email"
+                  />
                   <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div className="input-wrapper">
-                  <input type="password" placeholder="Your Password" />
+                  <input
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                    placeholder="Your Password"
+                  />
                   <i class="fa-solid fa-lock"></i>
                 </div>
 
@@ -49,10 +61,13 @@ const Login = () => {
               <div className="other-action">
                 <h4>Or Login With</h4>
 
-                <button className="login-register-btn" onClick={handleGoogleLogin}>
+                <button
+                  className="login-register-btn"
+                  // onClick={handleGoogleLogin}
+                >
                   {" "}
                   Google
-                  <i class="fa-brands fa-google"></i>  
+                  <i class="fa-brands fa-google"></i>
                 </button>
                 <hr />
                 <div className="login-register-navigation">
