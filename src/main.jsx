@@ -13,6 +13,7 @@ import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfi
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import AuthProviders from "./providers/AuthProviders";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: <PrivateRoute><Dashboard /></PrivateRoute>,
     children: [
       {
         path: "/dashboard",

@@ -10,7 +10,7 @@ const Register = () => {
   const [password , setPassword] = useState('');
   //Register Handler
   const handleRegister = (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
 
     createUser(email,password)
     .then(result =>{
