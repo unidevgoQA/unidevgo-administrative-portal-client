@@ -4,12 +4,14 @@ import { AuthContext } from "../../../providers/AuthProviders";
 import "./sidebar.scss";
 
 const Sidebar = () => {
+  //context
   const {logoutUser} = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(true);
+  //Sidebar toggler
   const toggleSidebar = () => {
     setIsOpen((current) => !current);
   };
-
+  //Logout
   const handleLogout = () =>{
     logoutUser()
     .then(result => console.log(result))

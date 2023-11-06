@@ -6,10 +6,10 @@ import "./login.scss";
 
 const Login = () => {
   const { loginUser , setUser , user} = useContext(AuthContext);
-
+  //states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  //Login Handler
   const handleLogin = (e) => {
     e.preventDefault();
     loginUser(email, password)

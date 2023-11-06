@@ -5,10 +5,10 @@ import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
   const {createUser} = useContext(AuthContext);
-
+  //State
   const [email , setEmail] = useState('');
   const [password , setPassword] = useState('');
-
+  //Register Handler
   const handleRegister = (e) => {
     e.preventDefault();
 
