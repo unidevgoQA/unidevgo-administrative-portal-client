@@ -1,25 +1,44 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
-  const {createUser} = useContext(AuthContext);
-  //State
-  const [email , setEmail] = useState('');
-  const [password , setPassword] = useState('');
+  const { createUser, loginWithGoogle } = useContext(AuthContext);
+
+  const { handleSubmit, register ,reset } = useForm();
+
+  const navigate = useNavigate();
+  
   //Register Handler
-  const handleRegister = (e) => {
-    e.preventDefault(); 
-
-    createUser(email,password)
-    .then(result =>{
-      console.log(result.user)
+  const onSubmit = ({ email, password }) => {
+    createUser(email, password)
+    .then((result) => {
+      if (result.user) {
+        toast.success("Register Successfully", { id: "register" });
+        reset();
+        navigate("/");
+      }
     })
-    .catch(err => console.log(err))
-    console.log(email,password)
-  }
+    .catch((err) => console.log(err));
+  };
 
+
+
+
+  //Login Handler
+  const handleGoogleLogin = (e) => {
+    e.preventDefault();
+    loginWithGoogle()
+      .then((result) => {
+        if (result.user) {
+          navigate("/dashboard/update-profile");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div className="login-register">
       <div className="container">
@@ -27,13 +46,21 @@ const Register = () => {
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
               <h4>Register Your Account</h4>
-              <form onSubmit={handleRegister}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="input-wrapper">
-                  <input onChange={(e)=>setEmail(e.target.value)} type="text" placeholder="Your Email" />
+                <input
+                    type="text"
+                    placeholder="Your Email"
+                    {...register("email")}
+                  />
                   <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div className="input-wrapper">
-                  <input onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="Your Password" />
+                <input
+                    type="password"
+                    placeholder="Your Password"
+                    {...register("password")}
+                  />
                   <i class="fa-solid fa-lock"></i>
                 </div>
 
@@ -45,10 +72,13 @@ const Register = () => {
               <div className="other-action">
                 <h4>Or Register With</h4>
 
-                <button className="login-register-btn">
+                <button
+                  onClick={handleGoogleLogin}
+                  className="login-register-btn"
+                >
                   {" "}
                   Google
-                  <i class="fa-brands fa-google"></i> 
+                  <i class="fa-brands fa-google"></i>
                 </button>
                 <hr />
                 <div className="login-register-navigation">
@@ -68,7 +98,6 @@ const Register = () => {
               </h2>
             </div>
           </div>
-          
         </div>
       </div>
     </div>

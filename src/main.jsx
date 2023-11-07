@@ -1,6 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
+import { Toaster } from "react-hot-toast";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import store from "./app/store";
 import "./index.scss";
 import Dashboard from "./layout/dashboard/dashboard/dashboard";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
@@ -26,7 +29,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <PrivateRoute><Dashboard /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard",
@@ -66,8 +73,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProviders>
-      <RouterProvider router={router} />
-    </AuthProviders>
+    <Provider store={store}>
+      <AuthProviders>
+        <Toaster position="top-center" reverseOrder={false} />
+        <RouterProvider router={router} />
+      </AuthProviders>
+    </Provider>
   </React.StrictMode>
 );

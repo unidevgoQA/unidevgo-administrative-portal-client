@@ -1,23 +1,40 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../providers/AuthProviders";
 import "./login.scss";
 
 const Login = () => {
-  const { loginUser , setUser , user} = useContext(AuthContext);
-  //states
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  //Login Handler
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const { loginUser, user, loginWithGoogle } = useContext(AuthContext);
+
+  const { handleSubmit, control, register ,reset } = useForm();
+
+  const onSubmit = ({ email, password }) => {
     loginUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        if (result.user) {
+          toast.success("Login Successfully",{id:'login'});
+          navigate("/dashboard/update-profile");
+          reset();
+        }
       })
       .catch((err) => console.log(err));
-   
+  };
+
+  const navigate = useNavigate();
+
+
+  const handleGoogleLogin = (e) => {
+    e.preventDefault();
+    loginWithGoogle()
+      .then((result) => {
+        if (result.user) {
+          navigate("/dashboard/update-profile");
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -36,20 +53,20 @@ const Login = () => {
             <div className="login-regsiter-right-content">
               <h4>Login Into Your Account</h4>
               <h4>Hello : {user?.email}</h4>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="input-wrapper">
                   <input
-                    onChange={(e) => setEmail(e.target.value)}
                     type="text"
                     placeholder="Your Email"
+                    {...register("email")}
                   />
                   <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div className="input-wrapper">
                   <input
-                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="Your Password"
+                    {...register("password")}
                   />
                   <i class="fa-solid fa-lock"></i>
                 </div>
@@ -64,7 +81,7 @@ const Login = () => {
 
                 <button
                   className="login-register-btn"
-                  // onClick={handleGoogleLogin}
+                  onClick={handleGoogleLogin}
                 >
                   {" "}
                   Google
