@@ -4,11 +4,11 @@ import { AuthContext } from '../../../providers/AuthProviders';
 
 import "./profile.scss";
 const Profile = () => {
-
+  const {user } = useContext(AuthContext)
    const emp = useContext(AuthContext);
    console.log(emp)
 
-  const user = {
+  const userDummy = {
     id: 9,
     img: userImg,
     name: "Sarah Smith",
@@ -124,15 +124,15 @@ const Profile = () => {
                       <div className="user-info">
                         <div className="row">
                           <div className="col-md-12">
-                            <h2>{user.name}</h2>
+                            <h2>{userDummy.name}</h2>
                           </div>
                           <div className="col-md-12">
-                            <h3>{user.designation}</h3>
+                            <h3>{userDummy.designation}</h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-mobile-screen-button"></i>{" "}
-                              <span>{user.mobile}</span>
+                              <span>{userDummy.mobile}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">
@@ -144,13 +144,13 @@ const Profile = () => {
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
-                              <span>{user.joiningDate}</span>
+                              <span>{userDummy.joiningDate}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-location-dot"></i>{" "}
-                              <span>{user.address}</span>
+                              <span>{userDummy.address}</span>
                             </h3>
                           </div>
                         </div>

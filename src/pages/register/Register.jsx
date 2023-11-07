@@ -34,7 +34,8 @@ const Register = () => {
     loginWithGoogle()
       .then((result) => {
         if (result.user) {
-          navigate("/dashboard/update-profile");
+          navigate("/dashboard/profile");
+          toast.success("Register Successfully", { id: "google-login" });
         }
       })
       .catch((err) => console.log(err));

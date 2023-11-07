@@ -7,16 +7,16 @@ import { AuthContext } from "../../providers/AuthProviders";
 import "./login.scss";
 
 const Login = () => {
-  const { loginUser, user, loginWithGoogle } = useContext(AuthContext);
+  const { loginUser, loginWithGoogle } = useContext(AuthContext);
 
-  const { handleSubmit, control, register ,reset } = useForm();
+  const { handleSubmit, register ,reset } = useForm();
 
   const onSubmit = ({ email, password }) => {
     loginUser(email, password)
       .then((result) => {
         if (result.user) {
           toast.success("Login Successfully",{id:'login'});
-          navigate("/dashboard/update-profile");
+          navigate("/dashboard/profile");
           reset();
         }
       })
@@ -31,7 +31,8 @@ const Login = () => {
     loginWithGoogle()
       .then((result) => {
         if (result.user) {
-          navigate("/dashboard/update-profile");
+          navigate("/dashboard/profile");
+          toast.success("Register Successfully", { id: "google-login" });
         }
       })
       .catch((err) => console.log(err));
@@ -52,7 +53,6 @@ const Login = () => {
           <div className="col-md-6">
             <div className="login-regsiter-right-content">
               <h4>Login Into Your Account</h4>
-              <h4>Hello : {user?.email}</h4>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="input-wrapper">
                   <input

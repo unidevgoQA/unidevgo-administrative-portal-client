@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useAddProfileMutation } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 
 const UpdateProfile = () => {
-  const { handleSubmit, control, register } = useForm();
 
-  const onSubmit = (data) => {
+  const [addProfile , {isLoading,isSuccess}] = useAddProfileMutation();
+  const {user} = useContext(AuthContext);
+  const { register, handleSubmit ,reset} = useForm();
+
+  const handleAddProfile = (data) => {
     const image = data.image[0];
-    console.log(data, image); // You can process the form data here
+    const formData = new FormData();
+    formData.append("image", image);
+    console.log("Formdata",data)
+    const url = `https://api.imgbb.com/1/upload?key=7fdae9372ff37f9d3362dbe8ccdb0570`;
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imgData) => {
+        if (imgData.success) {
+          const profile = {
+            name: data.name,
+            desgination: data.desgination,
+            gender: data.gender,
+            img: imgData.data.url,
+            joiningDate : data.joiningDate,
+            mobile:data.mobile,
+            address:data.address,
+            email:user.email,
+            role:'employee'
+          };
+          addProfile(profile);
+          reset();
+        }
+      });
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Added Successfully",{id:"add-profile"});
+    }
+    if (isLoading) {
+      toast.loading("Loading",{id:"add-profile"});
+    }
+  }, [isSuccess,isLoading]);
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -18,7 +58,7 @@ const UpdateProfile = () => {
             </h2>
           </div>
           <div className="add-form">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleAddProfile)}>
               <div className="row">
                 <div className="col-md-6">
                   <label>Name</label>
@@ -30,12 +70,12 @@ const UpdateProfile = () => {
                 </div>
                 <div className="col-md-6">
                   <label>Joining Date</label>
-                  <input type="date" {...register("joining-date")} />
+                  <input type="date" {...register("joiningDate")} />
                 </div>
 
                 <div className="col-md-6">
                   <label for="hour">Mobile</label>
-                  <input type="number" {...register("mobile")} />
+                  <input type="text" {...register("mobile")} />
                 </div>
                 <div className="col-md-6">
                   <label>Upload Image</label>
