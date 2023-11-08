@@ -17,6 +17,8 @@ const auth = getAuth(app);
 const AuthProviders = ({ children }) => {
   //User
   const [user, setUser] = useState({});
+  const [registerUser, setRegisterUser] = useState({});
+  console.log(registerUser)
   const [loading, setLoading] = useState(true);
 
   const googleProvider = new GoogleAuthProvider();
@@ -49,8 +51,15 @@ const AuthProviders = ({ children }) => {
     };
   }, []);
 
+  useEffect(()=>{
+    fetch(`http://localhost:5000/profile/${user.email}`)
+    .then(res=>res.json())
+    .then(data => setRegisterUser(data.data))
+  },[user.email])
+
   const authInfo = {
     user,
+    registerUser,
     loading,
     createUser,
     loginUser,

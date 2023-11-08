@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import userImg from "../../../assets/employee.jpg";
-import { AuthContext } from '../../../providers/AuthProviders';
 
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 import "./profile.scss";
 const Profile = () => {
-  const {user } = useContext(AuthContext)
-   const emp = useContext(AuthContext);
-   console.log(emp)
+  const { user } = useContext(AuthContext);
+
+  const { data } = useGetProfileByEmailQuery(user.email);
+  const registerUser = data?.data;
 
   const userDummy = {
     id: 9,
@@ -117,40 +119,40 @@ const Profile = () => {
                   <div className="row">
                     <div className="col-md-5">
                       <div className="user-img">
-                        <img src={userImg} alt="employee" />
+                        <img src={registerUser?.img} alt="employee" />
                       </div>
                     </div>
                     <div className="col-md-7">
                       <div className="user-info">
                         <div className="row">
                           <div className="col-md-12">
-                            <h2>{userDummy.name}</h2>
+                            <h2>{registerUser?.name}</h2>
                           </div>
                           <div className="col-md-12">
-                            <h3>{userDummy.designation}</h3>
+                            <h3>{registerUser?.designation}</h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-mobile-screen-button"></i>{" "}
-                              <span>{userDummy.mobile}</span>
+                              <span>{registerUser?.mobile}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-envelope-open-text"></i>{" "}
-                              <span>{user.email}</span>
+                              <span>{registerUser?.email}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
-                              <span>{userDummy.joiningDate}</span>
+                              <span>Joining Date : {registerUser?.joiningDate}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-location-dot"></i>{" "}
-                              <span>{userDummy.address}</span>
+                              <span>{registerUser?.address}</span>
                             </h3>
                           </div>
                         </div>
@@ -164,33 +166,32 @@ const Profile = () => {
                   <div className="row gy-3">
                     <div className="col-md-6">
                       <div className="attendence employee-card">
-                      <i class="fa-solid fa-border-all"></i>
+                        <i class="fa-solid fa-border-all"></i>
                         <h6>Total Leave</h6>
                         <span>30</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="leave-apply employee-card">
-                      <i class="fa-solid fa-person-walking-arrow-right"></i>
+                        <i class="fa-solid fa-person-walking-arrow-right"></i>
                         <h6>Leave Apply</h6>
                         <span>20</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="late-coming employee-card">
-                      <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check"></i>
                         <h6>Get Leave</h6>
                         <span>20</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="absent employee-card">
-                      <i class="fa-regular fa-circle-xmark"></i>
+                        <i class="fa-regular fa-circle-xmark"></i>
                         <h6>Remaining Leave</h6>
                         <span>10</span>
                       </div>
                     </div>
-                   
                   </div>
                 </div>
               </div>
@@ -235,11 +236,11 @@ const Profile = () => {
                     <td>{work?.status}</td>
                     <td>{work?.description}</td>
                     <td>
-                    <button className="update-btn text-white">
-                      {work.status == "in progress"
-                        ? "Mark as Complete"
-                        : "Mark as in Progress"}
-                    </button>
+                      <button className="update-btn text-white">
+                        {work.status == "in progress"
+                          ? "Mark as Complete"
+                          : "Mark as in Progress"}
+                      </button>
 
                       <button
                         // onClick={() => handleDelete(employee.id)}

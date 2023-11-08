@@ -8,11 +8,11 @@ const profileApi = apiSlice.injectEndpoints({
     //   }),
     //   providesTags: ["projects"],
     // }),
-    // getProjectById: builder.query({
-    //   query: (id) => ({
-    //     url: `/projects/${id}`,
-    //   }),
-    // }),
+    getProfileByEmail: builder.query({
+      query: (email) => ({
+        url: `/profile/${email}`,
+      }),
+    }),
     // deleteProject: builder.mutation({
     //   query: (id) => ({
     //     method: "DELETE",
@@ -39,4 +39,4 @@ const profileApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAddProfileMutation } = profileApi;
+export const { useAddProfileMutation , useGetProfileByEmailQuery } = profileApi;

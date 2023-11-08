@@ -5,17 +5,21 @@ import { useAddProfileMutation } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const UpdateProfile = () => {
-
+  //Imgbb key
+  const imgBBkey = import.meta.env.VITE_IMGBB_API_KEY;
+  //Api
   const [addProfile , {isLoading,isSuccess}] = useAddProfileMutation();
+  //Context
   const {user} = useContext(AuthContext);
+  //Form
   const { register, handleSubmit ,reset} = useForm();
-
+  //Add profile handler
   const handleAddProfile = (data) => {
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
     console.log("Formdata",data)
-    const url = `https://api.imgbb.com/1/upload?key=7fdae9372ff37f9d3362dbe8ccdb0570`;
+    const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
     fetch(url, {
       method: "POST",
       body: formData,
@@ -36,6 +40,7 @@ const UpdateProfile = () => {
           };
           addProfile(profile);
           reset();
+
         }
       });
   };
