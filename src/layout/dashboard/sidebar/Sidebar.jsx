@@ -1,12 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./sidebar.scss";
 
 const Sidebar = () => {
+
+
   //context
-  const {logoutUser} = useContext(AuthContext)
+  const {logoutUser ,user} = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(true);
+
+  const { data } = useGetProfileByEmailQuery(user.email);
+  const registerUser = data?.data;
   //Sidebar toggler
   const toggleSidebar = () => {
     setIsOpen((current) => !current);

@@ -1,108 +1,24 @@
 import React, { useContext } from "react";
-import userImg from "../../../assets/employee.jpg";
 
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import { useGetWorkTasksQuery } from "../../../features/work-status/workStatus";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./profile.scss";
 const Profile = () => {
+  //User
   const { user } = useContext(AuthContext);
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+  //Get all task
+  const { data: workStatusData } = useGetWorkTasksQuery();
+  //Register User
+  const registerUser = userData?.data;
 
-  const { data } = useGetProfileByEmailQuery(user.email);
-  const registerUser = data?.data;
+  //Filter work status based on email
+  const filterWorkStatus = workStatusData?.data.filter(
+    (status) => status?.employeeEmail === registerUser?.email
+  );
 
-  const userDummy = {
-    id: 9,
-    img: userImg,
-    name: "Sarah Smith",
-    designation: "Software QA Engineer",
-    mobile: "+880-1634534522",
-    email: "sara.smith@gmail.com",
-    address: "Dhanmondi , Dhaka",
-    joiningDate: "01-06-22",
-  };
-
-  const workStatus = [
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-  ];
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -146,7 +62,9 @@ const Profile = () => {
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
-                              <span>Joining Date : {registerUser?.joiningDate}</span>
+                              <span>
+                                Joining Date : {registerUser?.joiningDate}
+                              </span>
                             </h3>
                           </div>
                           <div className="col-md-12">
@@ -221,19 +139,19 @@ const Profile = () => {
                 </tr>
               </thead>
               <tbody>
-                {workStatus.map((work) => (
+                {filterWorkStatus?.map((work) => (
                   <tr>
                     <td>
                       <img
                         className="employee-img"
-                        src={work?.image}
+                        src={registerUser?.img}
                         alt="employee"
                       />
                     </td>
                     <td>{work?.task}</td>
                     <td>{work?.date}</td>
-                    <td>{work?.hours}</td>
-                    <td>{work?.status}</td>
+                    <td>{work?.hour}</td>
+                    <td>{work?.workStatus}</td>
                     <td>{work?.description}</td>
                     <td>
                       <button className="update-btn text-white">

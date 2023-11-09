@@ -1,7 +1,13 @@
 import React from "react";
 import userImg from "../../../assets/employee.jpg";
+import { useGetWorkTasksQuery } from "../../../features/work-status/workStatus";
 
 const WorkStatus = () => {
+
+   //Get all task
+   const { data: workStatusData } = useGetWorkTasksQuery();
+
+
   const workStatus = [
     {
       id: 1,
@@ -106,23 +112,23 @@ const WorkStatus = () => {
               </tr>
             </thead>
             <tbody>
-              {workStatus.map((work) => (
+              {workStatusData?.data.map((work) => (
                 <tr>
                   <td>
                     <img
                       className="employee-img"
-                      src={work?.image}
+                      src={work?.employeeImg}
                       alt="employee"
                     />
                   </td>
                   <td>{work?.task}</td>
                   <td>{work?.date}</td>
-                  <td>{work?.hours}</td>
-                  <td>{work?.status}</td>
+                  <td>{work?.hour}</td>
+                  <td>{work?.workStatus}</td>
                   <td>{work?.description}</td>
                   <td>
                     <button className="update-btn text-white">
-                      {work.status == "in progress"
+                      {work.workStatus == "in progress"
                         ? "Mark as Complete"
                         : "Mark as in Progress"}
                     </button>

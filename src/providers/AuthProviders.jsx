@@ -51,11 +51,11 @@ const AuthProviders = ({ children }) => {
     };
   }, []);
 
-  useEffect(()=>{
-    fetch(`http://localhost:5000/profile/${user.email}`)
-    .then(res=>res.json())
-    .then(data => setRegisterUser(data.data))
-  },[user.email])
+  // useEffect(()=>{
+  //   fetch(`http://localhost:5000/profile/${user.email}`)
+  //   .then(res=>res.json())
+  //   .then(data => setRegisterUser(data.data))
+  // },[user.email])
 
   const authInfo = {
     user,

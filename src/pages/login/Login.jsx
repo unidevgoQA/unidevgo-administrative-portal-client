@@ -77,7 +77,7 @@ const Login = () => {
               </form>
               <hr />
               <div className="other-action">
-                <h4>Or Login With</h4>
+                {/* <h4>Or Login With</h4>
 
                 <button
                   className="login-register-btn"
@@ -86,8 +86,8 @@ const Login = () => {
                   {" "}
                   Google
                   <i class="fa-brands fa-google"></i>
-                </button>
-                <hr />
+                </button> */}
+                {/* <hr /> */}
                 <div className="login-register-navigation">
                   <h4>Dont have account ?</h4>
                   <Link to={"/register"}>
