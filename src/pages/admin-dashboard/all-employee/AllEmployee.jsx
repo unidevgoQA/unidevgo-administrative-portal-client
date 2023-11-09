@@ -1,121 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import employeeImg from "../../../assets/employee.jpg";
+import { useGetProfilesQuery } from "../../../features/profile/profileApi";
 import './all-employee.scss';
 
 const AllEmployee = () => {
-  const employees = [
-    {
-      id: 1,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 2,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 3,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 4,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 6,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 7,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 8,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 9,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 10,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 11,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-    {
-      id: 12,
-      img: employeeImg,
-      name: "Sarah Smith",
-      designation: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-      address: "Dhanmondi , Dhaka",
-      joiningDate: "01-06-22",
-    },
-  ];
+
+  const {data} = useGetProfilesQuery()
+
+  const employees = data?.data;
+
+
   return (
     <div className="content-wrapper">
 
@@ -141,7 +35,7 @@ const AllEmployee = () => {
                 </tr>
               </thead>
               <tbody>
-                {employees.map((employee) => (
+                {employees?.map((employee) => (
                   <tr>
                     <td>
                       <img
@@ -158,7 +52,7 @@ const AllEmployee = () => {
                     <td>{employee?.joiningDate}</td>
 
                     <td>
-                      <Link to={`update-employee/${employee.id}`}>
+                      <Link to={`/dashboard/update-profile/${employee._id}`}>
                         <button className="update-btn">
                           {" "}
                           <i className="far fa-edit"></i>

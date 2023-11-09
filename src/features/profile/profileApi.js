@@ -2,12 +2,11 @@ import apiSlice from "../api/apiSlice";
 
 const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // getProjects: builder.query({
-    //   query: () => ({
-    //     url: `/projects`,
-    //   }),
-    //   providesTags: ["projects"],
-    // }),
+    getProfiles: builder.query({
+      query: () => ({
+        url: `/profile`,
+      }),
+    }),
     getProfileByEmail: builder.query({
       query: (email) => ({
         url: `/profile/${email}`,
@@ -39,4 +38,4 @@ const profileApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAddProfileMutation , useGetProfileByEmailQuery } = profileApi;
+export const { useAddProfileMutation , useGetProfileByEmailQuery , useGetProfilesQuery} = profileApi;

@@ -1,95 +1,10 @@
 import React from "react";
-import userImg from "../../../assets/employee.jpg";
-import { useGetWorkTasksQuery } from "../../../features/work-status/workStatus";
+import { useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
 
 const WorkStatus = () => {
+  //Get all task
+  const { data: workStatusData } = useGetWorkTasksQuery();
 
-   //Get all task
-   const { data: workStatusData } = useGetWorkTasksQuery();
-
-
-  const workStatus = [
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-    {
-      id: 1,
-      image: userImg,
-      task: "develop ui",
-      date: "22-11-23",
-      hours: "2",
-      status: "in progress",
-      description:
-        " Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, perferendis amet. Aperiam, esse obcaecati! Placeat adipisci similique modi cum neque.",
-    },
-  ];
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -128,7 +43,7 @@ const WorkStatus = () => {
                   <td>{work?.description}</td>
                   <td>
                     <button className="update-btn text-white">
-                      {work.workStatus == "in progress"
+                      {work?.workStatus == "in progress"
                         ? "Mark as Complete"
                         : "Mark as in Progress"}
                     </button>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
-import { useGetWorkTasksQuery } from "../../../features/work-status/workStatus";
+import { useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./profile.scss";
 const Profile = () => {
@@ -155,7 +155,7 @@ const Profile = () => {
                     <td>{work?.description}</td>
                     <td>
                       <button className="update-btn text-white">
-                        {work.status == "in progress"
+                        {work?.workStatus == "in progress"
                           ? "Mark as Complete"
                           : "Mark as in Progress"}
                       </button>

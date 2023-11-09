@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
-import { useAddWorkTaskMutation } from "../../../features/work-status/workStatus";
+import { useAddWorkTaskMutation } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./add-work-status.scss";
 
