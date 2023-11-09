@@ -11,6 +11,7 @@ import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManag
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
+import LeaveApply from "./pages/employee-dashboard/leave-apply/LeaveApply";
 import Profile from "./pages/employee-dashboard/profile/Profile";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "add-work-status",
         element: <AddWorkStatus />,
+      },
+      {
+        path: "leave-apply",
+        element: <LeaveApply />,
       },
       {
         path: "update-profile",
