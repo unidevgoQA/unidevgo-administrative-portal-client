@@ -5,10 +5,8 @@ import { AuthContext } from "../../../providers/AuthProviders";
 import "./sidebar.scss";
 
 const Sidebar = () => {
-
-
   //context
-  const {logoutUser ,user} = useContext(AuthContext)
+  const { logoutUser, user } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(true);
 
   const { data } = useGetProfileByEmailQuery(user.email);
@@ -18,11 +16,11 @@ const Sidebar = () => {
     setIsOpen((current) => !current);
   };
   //Logout
-  const handleLogout = () =>{
+  const handleLogout = () => {
     logoutUser()
-    .then(result => console.log(result))
-    .catch(err => console.log(err))
-  } 
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className={isOpen === true ? "sidebar" : "sidebar-collapse"}>
@@ -63,20 +61,24 @@ const Sidebar = () => {
             <Link to={"add-work-status"}>Add Work Status</Link>
           </li>
           <li>
-            <i class="fa-regular fa-square-plus"></i>
+            <i class="fa-solid fa-check-double"></i>
             <Link to={"leave-apply"}>Leave Apply</Link>
+          </li>
+          <li>
+          <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <Link to={"leave-status"}>Leave Status</Link>
           </li>
           <li>
             <i class="fa-solid fa-file-pen"></i>
             <Link to={"update-profile"}>Update Profile</Link>
           </li>
           <li>
-          <i class="fa-solid fa-user-tie"></i>
+            <i class="fa-solid fa-user-tie"></i>
             <Link to={"profile"}>Profile</Link>
           </li>
         </ul>
         <hr />
-        <button onClick={()=>handleLogout()} className="logout-btn">
+        <button onClick={() => handleLogout()} className="logout-btn">
           Logout <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>

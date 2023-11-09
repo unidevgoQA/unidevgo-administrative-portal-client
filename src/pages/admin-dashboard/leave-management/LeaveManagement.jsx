@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import employeeImg from "../../../assets/employee.jpg";
+import { useGetAllLeavesQuery } from '../../../features/leave-management/leaveManagementApi';
 const LeaveManagement = () => {
+
+  const {data} = useGetAllLeavesQuery();
+
+  const allLeaveManagements = data?.data;
+  console.log(allLeaveManagements)
+
   const allLeaveManagement = [
     { 
       id:1,
@@ -141,21 +148,21 @@ const LeaveManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                {allLeaveManagement.map((leave) => (
+                {allLeaveManagements?.map((leave) => (
                   <tr>
                     <td>
                       <img
                         className="employee-img"
-                        src={leave?.image}
+                        src={leave?.employeeImg}
                         alt="employee"
                       />
                     </td>
-                    <td>{leave?.name}</td>
-                    <td>{leave?.applyDate}</td>
+                    <td>{leave?.employeeName}</td>
+                    <td>{leave?.leaveApply}</td>
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
                     <td>{leave?.leaveTo}</td>
-                    <td>{leave?.leaveType}</td>
+                    <td>{leave?.type}</td>
 
                     <td>
                       <Link to={`update-leave-status/${leave.id}`}>

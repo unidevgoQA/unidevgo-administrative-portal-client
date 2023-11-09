@@ -10,7 +10,7 @@ const LeaveApply = () => {
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
-    const [addLeaveApply, { isLoading, isSuccess }] = useAddLeaveApplyMutation();
+  const [addLeaveApply, { isLoading, isSuccess }] = useAddLeaveApplyMutation();
   //Get user using email API
   const { data } = useGetProfileByEmailQuery(user.email);
   //Set register user
@@ -30,18 +30,18 @@ const LeaveApply = () => {
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
-  
+
     addLeaveApply(leave);
     // addWorkTask(workTask);
   };
-    useEffect(() => {
-      if (isSuccess) {
-        toast.success("Added Successfully", { id: "add-work-task" });
-      }
-      if (isLoading) {
-        toast.loading("Loading", { id: "add-work-task" });
-      }
-    }, [isSuccess, isLoading]);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Added Successfully", { id: "add-work-task" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "add-work-task" });
+    }
+  }, [isSuccess, isLoading]);
 
   return (
     <div className="content-wrapper">
@@ -49,7 +49,7 @@ const LeaveApply = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Leave Apply</span> <i class="fa-solid fa-file-pen"></i>
+              <span>Leave Apply</span> <i class="fa-solid fa-check-double"></i>
             </h2>
           </div>
           <div className="add-form">

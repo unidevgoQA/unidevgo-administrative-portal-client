@@ -12,6 +12,7 @@ import Projects from "./pages/admin-dashboard/projects/Projects";
 import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
 import LeaveApply from "./pages/employee-dashboard/leave-apply/LeaveApply";
+import LeaveStatus from "./pages/employee-dashboard/leave-status/LeaveStatus";
 import Profile from "./pages/employee-dashboard/profile/Profile";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "leave-apply",
         element: <LeaveApply />,
+      },
+      {
+        path: "leave-status",
+        element: <LeaveStatus />,
       },
       {
         path: "update-profile",

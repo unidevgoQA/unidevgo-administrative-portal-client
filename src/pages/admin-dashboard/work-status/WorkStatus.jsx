@@ -1,10 +1,24 @@
-import React from "react";
-import { useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
+import {
+  useDeleteWorkTaskMutation,
+  useGetWorkTasksQuery,
+} from "../../../features/work-status/workStatusApi";
 
 const WorkStatus = () => {
   //Get all task
   const { data: workStatusData } = useGetWorkTasksQuery();
-
+  const [deleteWorkStatus, { isSuccess }] = useDeleteWorkTaskMutation();
+  //handle Delete
+  const handleDelete = (id) => {
+    const deleteConfirm = window.confirm("Want to delete?");
+    if (deleteConfirm) {
+      deleteWorkStatus(id);
+    }
+  };
+  useEffect(() => {
+    toast.success("Delete successfully", { id: "work-status" });
+  }, [isSuccess]);
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -49,7 +63,7 @@ const WorkStatus = () => {
                     </button>
 
                     <button
-                      // onClick={() => handleDelete(employee.id)}
+                      onClick={() => handleDelete(work?._id)}
                       className="delete-btn"
                     >
                       <i className="fas fa-trash-alt"></i>
