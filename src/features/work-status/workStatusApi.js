@@ -12,7 +12,7 @@ const workStatusApi = apiSlice.injectEndpoints({
         method: "DELETE",
         url: `/work-status/${id}`,
       }),
-      // invalidatesTags : ['projects']
+      // invalidatesTags : ['work-status']
     }),
     addWorkTask: builder.mutation({
       query: (data) => ({
@@ -20,17 +20,23 @@ const workStatusApi = apiSlice.injectEndpoints({
         url: "/work-status",
         body: data,
       }),
-      //   invalidatesTags : ['projects']
+      //   invalidatesTags : ['work-status']
     }),
     updateWorkTask: builder.mutation({
-      query: ({id,data}) => ({
+      query: ({ id, data }) => ({
         method: "PUT",
         url: `/work-status/${id}`,
         body: data,
       }),
-      // invalidatesTags: ["projects"],
+      // invalidatesTags: ["work-status"],
     }),
   }),
 });
 
-export const { useAddWorkTaskMutation , useGetWorkTasksQuery, useGetworkStatusByEmailQuery, useDeleteWorkTaskMutation ,useUpdateWorkTaskMutation} = workStatusApi;
+export const {
+  useAddWorkTaskMutation,
+  useGetWorkTasksQuery,
+  useGetworkStatusByEmailQuery,
+  useDeleteWorkTaskMutation,
+  useUpdateWorkTaskMutation,
+} = workStatusApi;

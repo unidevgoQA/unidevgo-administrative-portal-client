@@ -19,17 +19,21 @@ const leaveManagementApi = apiSlice.injectEndpoints({
         url: "/leave-management",
         body: data,
       }),
-      //   invalidatesTags : ['projects']
+      //   invalidatesTags : ['leave-management']
     }),
-    // updateProject: builder.mutation({
+    // updateLeave: builder.mutation({
     //   query: ({id,data}) => ({
     //     method: "PUT",
-    //     url: `/projects/${id}`,
+    //     url: `/leave-management/${id}`,
     //     body: data,
     //   }),
-    //   invalidatesTags: ["projects"],
+    //   invalidatesTags: ["leave-management"],
     // }),
   }),
 });
 
-export const { useAddLeaveApplyMutation , useGetAllLeavesQuery , useDeleteLeaveMutation} = leaveManagementApi;
+export const {
+  useAddLeaveApplyMutation,
+  useGetAllLeavesQuery,
+  useDeleteLeaveMutation,
+} = leaveManagementApi;

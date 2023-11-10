@@ -25,17 +25,22 @@ const profileApi = apiSlice.injectEndpoints({
         url: "/profile",
         body: data,
       }),
-      //   invalidatesTags : ['projects']
+      //   invalidatesTags : ['profile']
     }),
-    // updateProject: builder.mutation({
+    // updateProfile: builder.mutation({
     //   query: ({id,data}) => ({
     //     method: "PUT",
-    //     url: `/projects/${id}`,
+    //     url: `/profile/${id}`,
     //     body: data,
     //   }),
-    //   invalidatesTags: ["projects"],
+    //   invalidatesTags: ["profile"],
     // }),
   }),
 });
 
-export const { useAddProfileMutation , useGetProfileByEmailQuery , useGetProfilesQuery , useDeleteProfileMutation} = profileApi;
+export const {
+  useAddProfileMutation,
+  useGetProfileByEmailQuery,
+  useGetProfilesQuery,
+  useDeleteProfileMutation,
+} = profileApi;

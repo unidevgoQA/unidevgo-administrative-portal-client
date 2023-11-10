@@ -1,7 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { useDeleteLeaveMutation, useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
+import {
+  useDeleteLeaveMutation,
+  useGetAllLeavesQuery,
+} from "../../../features/leave-management/leaveManagementApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 const LeaveStatus = () => {
   //Leave management data
@@ -14,7 +17,6 @@ const LeaveStatus = () => {
   const filterLeaves = allLeaveManagements?.filter(
     (leave) => leave.employeeEmail === user.email
   );
-
 
   //handle Delete
   const handleDelete = (id) => {

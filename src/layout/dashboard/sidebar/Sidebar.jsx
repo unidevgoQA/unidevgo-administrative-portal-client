@@ -65,7 +65,7 @@ const Sidebar = () => {
             <Link to={"leave-apply"}>Leave Apply</Link>
           </li>
           <li>
-          <i class="fa-solid fa-person-walking-arrow-right"></i>
+            <i class="fa-solid fa-person-walking-arrow-right"></i>
             <Link to={"leave-status"}>Leave Status</Link>
           </li>
           <li>

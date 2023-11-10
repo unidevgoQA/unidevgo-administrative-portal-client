@@ -18,20 +18,30 @@ const WorkStatus = () => {
 
   //handle Update
 
-  const handleStatusChange = (id, task, date, hour , workStatus, description , employeeImg ,employeeEmail ,employeeName) => {
-    const updatedStatus = workStatus === "complete" ? "in progress" : "complete";
+  const handleStatusChange = (
+    id,
+    task,
+    date,
+    hour,
+    workStatus,
+    description,
+    employeeImg,
+    employeeEmail,
+    employeeName
+  ) => {
+    const updatedStatus =
+      workStatus === "complete" ? "in progress" : "complete";
     const updateWorkTask = {
       task,
       date,
       hour,
-      workStatus : updatedStatus,
+      workStatus: updatedStatus,
       description,
       employeeImg,
       employeeEmail,
-      employeeName
+      employeeName,
     };
-    console.log(updateWorkTask);
-    // applyUpdate({ id: id, data: data });
+    // handleUpdateWorkStatus({ id: id, data: updateWorkTask });
   };
 
   //handle Delete
@@ -50,6 +60,14 @@ const WorkStatus = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
+  useEffect(() => {
+    if (workStatusSuccess) {
+      toast.success("Update Successfully", { id: "update-work-task" });
+    }
+    if (worksStatusLoading) {
+      toast.loading("Loading", { id: "update-work-task" });
+    }
+  }, [workStatusSuccess, worksStatusLoading]);
 
   return (
     <div className="content-wrapper">
