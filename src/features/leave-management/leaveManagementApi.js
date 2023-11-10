@@ -1,19 +1,18 @@
 import apiSlice from "../api/apiSlice";
 
-const workStatusApi = apiSlice.injectEndpoints({
+const leaveManagementApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllLeaves: builder.query({
       query: () => ({
         url: `/leave-management`,
       }),
     }),
-    // deleteProject: builder.mutation({
-    //   query: (id) => ({
-    //     method: "DELETE",
-    //     url: `/projects/${id}`,
-    //   }),
-    //   invalidatesTags : ['projects']
-    // }),
+    deleteLeave: builder.mutation({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/leave-management/${id}`,
+      }),
+    }),
     addLeaveApply: builder.mutation({
       query: (data) => ({
         method: "POST",
@@ -33,4 +32,4 @@ const workStatusApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAddLeaveApplyMutation , useGetAllLeavesQuery} = workStatusApi;
+export const { useAddLeaveApplyMutation , useGetAllLeavesQuery , useDeleteLeaveMutation} = leaveManagementApi;

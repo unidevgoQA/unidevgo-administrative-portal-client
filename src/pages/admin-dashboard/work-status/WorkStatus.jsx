@@ -3,22 +3,54 @@ import toast from "react-hot-toast";
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
+  useUpdateWorkTaskMutation,
 } from "../../../features/work-status/workStatusApi";
 
 const WorkStatus = () => {
   //Get all task
   const { data: workStatusData } = useGetWorkTasksQuery();
-  const [deleteWorkStatus, { isSuccess }] = useDeleteWorkTaskMutation();
+  const [
+    handleUpdateWorkStatus,
+    { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
+  ] = useUpdateWorkTaskMutation();
+  const [deleteWorkStatus, { isSuccess, isLoading }] =
+    useDeleteWorkTaskMutation();
+
+  //handle Update
+
+  const handleStatusChange = (id, task, date, hour , workStatus, description , employeeImg ,employeeEmail ,employeeName) => {
+    const updatedStatus = workStatus === "complete" ? "in progress" : "complete";
+    const updateWorkTask = {
+      task,
+      date,
+      hour,
+      workStatus : updatedStatus,
+      description,
+      employeeImg,
+      employeeEmail,
+      employeeName
+    };
+    console.log(updateWorkTask);
+    // applyUpdate({ id: id, data: data });
+  };
+
   //handle Delete
   const handleDelete = (id) => {
+    console.log(id);
     const deleteConfirm = window.confirm("Want to delete?");
     if (deleteConfirm) {
       deleteWorkStatus(id);
     }
   };
   useEffect(() => {
-    toast.success("Delete successfully", { id: "work-status" });
-  }, [isSuccess]);
+    if (isSuccess) {
+      toast.success("Deleted Successfully", { id: "delete-work-task" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "delete-work-task" });
+    }
+  }, [isSuccess, isLoading]);
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -56,7 +88,22 @@ const WorkStatus = () => {
                   <td>{work?.workStatus}</td>
                   <td>{work?.description}</td>
                   <td>
-                    <button className="update-btn text-white">
+                    <button
+                      onClick={() =>
+                        handleStatusChange(
+                          work?._id,
+                          work?.task,
+                          work?.date,
+                          work?.hour,
+                          work?.workStatus,
+                          work?.description,
+                          work?.employeeImg,
+                          work?.employeeName,
+                          work?.employeeEmail
+                        )
+                      }
+                      className="update-btn text-white"
+                    >
                       {work?.workStatus == "in progress"
                         ? "Mark as Complete"
                         : "Mark as in Progress"}

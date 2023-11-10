@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
+import toast from "react-hot-toast";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
-import { useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
+import { useDeleteWorkTaskMutation, useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./profile.scss";
 const Profile = () => {
@@ -9,6 +10,7 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
+  const [deleteWorkStatus, { isSuccess  , isLoading }] = useDeleteWorkTaskMutation();
   //Get all task
   const { data: workStatusData } = useGetWorkTasksQuery();
   //Register User
@@ -18,7 +20,23 @@ const Profile = () => {
   const filterWorkStatus = workStatusData?.data.filter(
     (status) => status?.employeeEmail === registerUser?.email
   );
-
+  
+  //handle Delete
+  const handleDelete = (id) => {
+    const deleteConfirm = window.confirm("Want to delete?");
+    if (deleteConfirm) {
+      deleteWorkStatus(id);
+    }
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Deleted Successfully", { id: "delete-work-task" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "delete-work-task" });
+    }
+  }, [isSuccess, isLoading]);
+  
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -161,7 +179,7 @@ const Profile = () => {
                       </button>
 
                       <button
-                        // onClick={() => handleDelete(employee.id)}
+                        onClick={() => handleDelete(work?._id)}
                         className="delete-btn"
                       >
                         <i className="fas fa-trash-alt"></i>

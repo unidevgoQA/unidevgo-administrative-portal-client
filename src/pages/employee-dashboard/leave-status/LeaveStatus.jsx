@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
+import { useDeleteLeaveMutation, useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 const LeaveStatus = () => {
   //Leave management data
   const { data } = useGetAllLeavesQuery();
+  const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
   const allLeaveManagements = data?.data;
   //User
   const { user } = useContext(AuthContext);
@@ -12,6 +14,23 @@ const LeaveStatus = () => {
   const filterLeaves = allLeaveManagements?.filter(
     (leave) => leave.employeeEmail === user.email
   );
+
+
+  //handle Delete
+  const handleDelete = (id) => {
+    const deleteConfirm = window.confirm("Want to delete?");
+    if (deleteConfirm) {
+      deleteLeave(id);
+    }
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Deleted Successfully", { id: "delete-leave" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "delete-leave" });
+    }
+  }, [isSuccess, isLoading]);
 
   return (
     <div className="content-wrapper">
@@ -62,7 +81,7 @@ const LeaveStatus = () => {
                     </Link>
 
                     <button
-                      // onClick={() => handleDelete(employee.id)}
+                      onClick={() => handleDelete(leave._id)}
                       className="delete-btn"
                     >
                       <i className="fas fa-trash-alt"></i>

@@ -22,15 +22,15 @@ const workStatusApi = apiSlice.injectEndpoints({
       }),
       //   invalidatesTags : ['projects']
     }),
-    // updateProject: builder.mutation({
-    //   query: ({id,data}) => ({
-    //     method: "PUT",
-    //     url: `/projects/${id}`,
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["projects"],
-    // }),
+    updateWorkTask: builder.mutation({
+      query: ({id,data}) => ({
+        method: "PUT",
+        url: `/work-status/${id}`,
+        body: data,
+      }),
+      // invalidatesTags: ["projects"],
+    }),
   }),
 });
 
-export const { useAddWorkTaskMutation , useGetWorkTasksQuery, useGetworkStatusByEmailQuery, useDeleteWorkTaskMutation} = workStatusApi;
+export const { useAddWorkTaskMutation , useGetWorkTasksQuery, useGetworkStatusByEmailQuery, useDeleteWorkTaskMutation ,useUpdateWorkTaskMutation} = workStatusApi;

@@ -55,10 +55,10 @@ const LeaveApply = () => {
           <div className="add-form">
             <form onSubmit={handleSubmit(handleLeaveApply)}>
               <div className="row">
-                <div className="col-md-6">
+                {/* <div className="col-md-6">
                   <label>Leave Apply Date</label>
                   <input type="date" {...register("leaveApply")} />
-                </div>
+                </div> */}
 
                 <div className="col-md-6">
                   <label>Leave From Date</label>
@@ -75,7 +75,7 @@ const LeaveApply = () => {
                   <input type="text" {...register("type")} />
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-12">
                   <button className="submit-btn">Apply</button>
                 </div>
               </div>
