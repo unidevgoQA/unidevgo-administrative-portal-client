@@ -7,7 +7,7 @@ import {
 } from "../../../features/work-status/workStatusApi";
 
 const WorkStatus = () => {
-  //Get all task
+  //APIs
   const { data: workStatusData } = useGetWorkTasksQuery();
   const [
     handleUpdateWorkStatus,
@@ -17,31 +17,13 @@ const WorkStatus = () => {
     useDeleteWorkTaskMutation();
 
   //handle Update
-
-  const handleStatusChange = (
-    id,
-    task,
-    date,
-    hour,
-    workStatus,
-    description,
-    employeeImg,
-    employeeEmail,
-    employeeName
-  ) => {
+  const handleStatusChange = (id, workStatus) => {
     const updatedStatus =
       workStatus === "complete" ? "in progress" : "complete";
     const updateWorkTask = {
-      task,
-      date,
-      hour,
       workStatus: updatedStatus,
-      description,
-      employeeImg,
-      employeeEmail,
-      employeeName,
     };
-    // handleUpdateWorkStatus({ id: id, data: updateWorkTask });
+    handleUpdateWorkStatus({ id: id, data: updateWorkTask });
   };
 
   //handle Delete
@@ -52,6 +34,7 @@ const WorkStatus = () => {
       deleteWorkStatus(id);
     }
   };
+  //Delete Effects
   useEffect(() => {
     if (isSuccess) {
       toast.success("Deleted Successfully", { id: "delete-work-task" });
@@ -60,6 +43,7 @@ const WorkStatus = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
+  //Update Effects
   useEffect(() => {
     if (workStatusSuccess) {
       toast.success("Update Successfully", { id: "update-work-task" });
@@ -108,17 +92,7 @@ const WorkStatus = () => {
                   <td>
                     <button
                       onClick={() =>
-                        handleStatusChange(
-                          work?._id,
-                          work?.task,
-                          work?.date,
-                          work?.hour,
-                          work?.workStatus,
-                          work?.description,
-                          work?.employeeImg,
-                          work?.employeeName,
-                          work?.employeeEmail
-                        )
+                        handleStatusChange(work?._id, work?.workStatus)
                       }
                       className="update-btn text-white"
                     >
