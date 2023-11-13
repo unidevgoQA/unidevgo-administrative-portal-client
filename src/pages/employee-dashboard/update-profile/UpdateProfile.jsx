@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const UpdateProfile = () => {
+  const [updateProfile, setUpdateProfile] = useState({});
+  //Get id
   const { id } = useParams();
+  //Set url 
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const url = `${baseUrl}profile/${id}`;
+  //Data load
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setUpdateProfile(data?.data));
+  }, [id]);
+
+
+  
 
   return (
     <div className="content-wrapper">
@@ -18,20 +32,20 @@ const UpdateProfile = () => {
               <div className="row">
                 <div className="col-md-6">
                   <label>Name</label>
-                  <input type="text" name="name" />
+                  <input defaultValue={updateProfile?.name} type="text" name="name" />
                 </div>
                 <div className="col-md-6">
-                  <label>Desgination</label>
-                  <input type="text" name="designation" />
+                  <label>Designation</label>
+                  <input defaultValue={updateProfile?.desgination} type="text" name="designation" />
                 </div>
                 <div className="col-md-6">
                   <label>Joining Date</label>
-                  <input type="date" name="date" id="" />
+                  <input defaultValue={updateProfile?.joiningDate} type="date" name="date" id="" />
                 </div>
 
                 <div className="col-md-6">
                   <label for="hour">Mobile</label>
-                  <input type="text" name="mobile" />
+                  <input defaultValue={updateProfile?.mobile} type="text" name="mobile" />
                 </div>
                 <div className="col-md-6">
                   <label>Upload Image</label>
@@ -46,14 +60,14 @@ const UpdateProfile = () => {
 
                 <div className="col-md-6">
                   <label for="gender">Gender</label>
-                  <select name="gender">
+                  <select defaultValue={updateProfile?.gender} name="gender">
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
                 </div>
                 <div className="col-md-12">
                   <label>Address</label>
-                  <input type="text" name="address" />
+                  <input defaultValue={updateProfile?.address} type="text" name="address" />
                 </div>
 
                 <div className="col-md-6">

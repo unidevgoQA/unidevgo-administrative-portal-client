@@ -68,10 +68,10 @@ const Sidebar = () => {
             <i class="fa-solid fa-person-walking-arrow-right"></i>
             <Link to={"leave-status"}>Leave Status</Link>
           </li>
-          <li>
+          {/* <li>
             <i class="fa-solid fa-file-pen"></i>
             <Link to={"update-profile"}>Update Profile</Link>
-          </li>
+          </li> */}
           <li>
             <i class="fa-solid fa-user-tie"></i>
             <Link to={"profile"}>Profile</Link>

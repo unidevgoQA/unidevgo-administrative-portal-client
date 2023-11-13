@@ -42,7 +42,7 @@ const AllEmployee = () => {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Desgination</th>
+                <th>Designation</th>
                 <th>Mobile</th>
                 <th>Email</th>
                 <th>Address</th>
@@ -69,7 +69,7 @@ const AllEmployee = () => {
 
                   <td>
                     <Link to={`/dashboard/update-profile/${employee._id}`}>
-                      <button className="update-btn">
+                      <button  className="update-btn">
                         {" "}
                         <i className="far fa-edit"></i>
                       </button>

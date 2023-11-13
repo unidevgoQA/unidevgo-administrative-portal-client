@@ -10,7 +10,7 @@ const profileApi = apiSlice.injectEndpoints({
     }),
     getProfileByEmail: builder.query({
       query: (email) => ({
-        url: `/profile/${email}`,
+        url: `/profile/user/${email}`,
       }),
     }),
     deleteProfile: builder.mutation({

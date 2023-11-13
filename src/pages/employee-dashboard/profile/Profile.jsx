@@ -10,6 +10,8 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  console.log(userData)
   const [deleteWorkStatus, { isSuccess  , isLoading }] = useDeleteWorkTaskMutation();
   //Get all task
   const { data: workStatusData } = useGetWorkTasksQuery();
@@ -63,7 +65,7 @@ const Profile = () => {
                             <h2>{registerUser?.name}</h2>
                           </div>
                           <div className="col-md-12">
-                            <h3>{registerUser?.designation}</h3>
+                            <h3>{registerUser?.desgination}</h3>
                           </div>
                           <div className="col-md-12">
                             <h3>
