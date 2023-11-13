@@ -10,7 +10,7 @@ const profileApi = apiSlice.injectEndpoints({
     }),
     getProfileByEmail: builder.query({
       query: (email) => ({
-        url: `/profile/user/${email}`,
+        url: `/register-user/${email}`,
       }),
     }),
     deleteProfile: builder.mutation({
@@ -28,14 +28,14 @@ const profileApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags : ['profile']
     }),
-    // updateProfile: builder.mutation({
-    //   query: ({id,data}) => ({
-    //     method: "PUT",
-    //     url: `/profile/${id}`,
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["profile"],
-    // }),
+    updateProfile: builder.mutation({
+      query: ({id,data}) => ({
+        method: "PUT",
+        url: `/profile/${id}`,
+        body: data,
+      }),
+      invalidatesTags: ["profile"],
+    }),
   }),
 });
 
@@ -44,4 +44,5 @@ export const {
   useGetProfileByEmailQuery,
   useGetProfilesQuery,
   useDeleteProfileMutation,
+  useUpdateProfileMutation
 } = profileApi;

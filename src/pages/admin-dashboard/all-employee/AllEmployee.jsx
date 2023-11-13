@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { useDeleteProfileMutation, useGetProfilesQuery } from "../../../features/profile/profileApi";
+import {
+  useDeleteProfileMutation,
+  useGetProfilesQuery,
+} from "../../../features/profile/profileApi";
 import "./all-employee.scss";
 
 const AllEmployee = () => {
   //Api
   const { data } = useGetProfilesQuery();
   const [deleteProfile, { isSuccess, isLoading }] = useDeleteProfileMutation();
-   
+
   //set data
   const employees = data?.data;
 
@@ -69,7 +72,7 @@ const AllEmployee = () => {
 
                   <td>
                     <Link to={`/dashboard/update-profile/${employee._id}`}>
-                      <button  className="update-btn">
+                      <button className="update-btn">
                         {" "}
                         <i className="far fa-edit"></i>
                       </button>

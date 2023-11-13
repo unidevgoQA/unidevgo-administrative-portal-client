@@ -39,6 +39,8 @@ const AuthProviders = ({ children }) => {
   const logoutUser = () => {
     return signOut(auth);
   };
+  
+
   //Observer
   useEffect(() => {
     const unsubsribe = onAuthStateChanged(auth, (currentUser) => {
@@ -50,12 +52,6 @@ const AuthProviders = ({ children }) => {
       unsubsribe();
     };
   }, []);
-
-  // useEffect(()=>{
-  //   fetch(`http://localhost:5000/profile/${user.email}`)
-  //   .then(res=>res.json())
-  //   .then(data => setRegisterUser(data.data))
-  // },[user.email])
 
   const authInfo = {
     user,
