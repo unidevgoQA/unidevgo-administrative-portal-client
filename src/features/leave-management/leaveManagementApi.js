@@ -6,12 +6,14 @@ const leaveManagementApi = apiSlice.injectEndpoints({
       query: () => ({
         url: `/leave-management`,
       }),
+      providesTags: ["leaveManagement"],
     }),
     deleteLeave: builder.mutation({
       query: (id) => ({
         method: "DELETE",
         url: `/leave-management/${id}`,
       }),
+      invalidatesTags : ['leaveManagement']
     }),
     addLeaveApply: builder.mutation({
       query: (data) => ({
@@ -19,7 +21,7 @@ const leaveManagementApi = apiSlice.injectEndpoints({
         url: "/leave-management",
         body: data,
       }),
-      //   invalidatesTags : ['leave-management']
+        invalidatesTags : ['leaveManagement']
     }),
     // updateLeave: builder.mutation({
     //   query: ({id,data}) => ({

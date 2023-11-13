@@ -6,6 +6,7 @@ const profileApi = apiSlice.injectEndpoints({
       query: () => ({
         url: `/profile`,
       }),
+      providesTags: ["profile"],
     }),
     getProfileByEmail: builder.query({
       query: (email) => ({
@@ -17,7 +18,7 @@ const profileApi = apiSlice.injectEndpoints({
         method: "DELETE",
         url: `/profile/${id}`,
       }),
-      // invalidatesTags : ['projects']
+      invalidatesTags : ['profile']
     }),
     addProfile: builder.mutation({
       query: (data) => ({
@@ -25,7 +26,7 @@ const profileApi = apiSlice.injectEndpoints({
         url: "/profile",
         body: data,
       }),
-      //   invalidatesTags : ['profile']
+      invalidatesTags : ['profile']
     }),
     // updateProfile: builder.mutation({
     //   query: ({id,data}) => ({
