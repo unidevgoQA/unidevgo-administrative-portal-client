@@ -1,16 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
+  useUpdateLeaveMutation,
 } from "../../../features/leave-management/leaveManagementApi";
 const LeaveManagement = () => {
   //Api
   const { data } = useGetAllLeavesQuery();
   const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
+  const [updateLeave , {isSuccess : leaveUpdateSuccess , isLoading : leaveUpdateLoading}] = useUpdateLeaveMutation();
+  //state
+  const [leaveStatus, setLeaveStatus] = useState("");
   //set data
   const allLeaveManagements = data?.data;
+
+  //handle Update
+  const handleLeaveStatusChange = (id) => {
+    updateLeave({ id: id, data: {leaveStatus} });
+  };
 
   //handle Delete
   const handleDelete = (id) => {
@@ -19,6 +27,8 @@ const LeaveManagement = () => {
       deleteLeave(id);
     }
   };
+
+  // Delete effects
   useEffect(() => {
     if (isSuccess) {
       toast.success("Deleted Successfully", { id: "delete-leave" });
@@ -27,6 +37,16 @@ const LeaveManagement = () => {
       toast.loading("Loading", { id: "delete-leave" });
     }
   }, [isSuccess, isLoading]);
+
+  // Update effects
+  useEffect(() => {
+    if (leaveUpdateSuccess) {
+      toast.success("Updated Successfully", { id: "update-leave" });
+    }
+    if (leaveUpdateLoading) {
+      toast.loading("Loading", { id: "update-leave" });
+    }
+  }, [leaveUpdateSuccess, leaveUpdateLoading]);
 
   return (
     <div className="content-wrapper">
@@ -48,6 +68,7 @@ const LeaveManagement = () => {
                 <th>Leave From</th>
                 <th>Leave To</th>
                 <th>Leave Type</th>
+                <th>Update Status</th>
                 <th className="action-area">Action</th>
               </tr>
             </thead>
@@ -67,15 +88,19 @@ const LeaveManagement = () => {
                   <td>{leave?.leaveFrom}</td>
                   <td>{leave?.leaveTo}</td>
                   <td>{leave?.type}</td>
-
                   <td>
-                    <Link to={`update-leave-status/${leave.id}`}>
-                      <button className="update-btn">
-                        {" "}
-                        <i className="far fa-edit"></i>
-                      </button>
-                    </Link>
-
+                    <select
+                      value={leave?.status}
+                      onChange={(e) => setLeaveStatus(e.target.value)}
+                      onBlur={() => handleLeaveStatusChange(leave?._id)}
+                      name="status"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </td>
+                  <td>
                     <button
                       onClick={() => handleDelete(leave?._id)}
                       className="delete-btn"

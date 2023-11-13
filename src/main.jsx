@@ -70,7 +70,7 @@ const router = createBrowserRouter([
         element: <LeaveStatus />,
       },
       {
-        path: "update-profile",
+        path: "update-profile/:id",
         element: <UpdateProfile />,
       },
       {

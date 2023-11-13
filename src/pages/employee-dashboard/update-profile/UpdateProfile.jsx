@@ -1,56 +1,8 @@
-import React, { useContext, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useAddProfileMutation } from "../../../features/profile/profileApi";
-import { AuthContext } from "../../../providers/AuthProviders";
+import React from "react";
+import { useParams } from "react-router-dom";
 
 const UpdateProfile = () => {
-
-  //Api
-  const [addProfile , {isLoading,isSuccess}] = useAddProfileMutation();
-  //Context
-  const {user} = useContext(AuthContext);
-  //Form
-  const { register, handleSubmit ,reset} = useForm();
-  //Add profile handler
-  const handleAddProfile = (data) => {
-    const image = data.image[0];
-    const formData = new FormData();
-    formData.append("image", image);
-    console.log("Formdata",data)
-    // const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
-    // fetch(url, {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((res) => res.json())
-    //   .then((imgData) => {
-    //     if (imgData.success) {
-    //       const profile = {
-    //         name: data.name,
-    //         desgination: data.desgination,
-    //         gender: data.gender,
-    //         img: imgData.data.url,
-    //         joiningDate : data.joiningDate,
-    //         mobile:data.mobile,
-    //         address:data.address,
-    //         email:user.email,
-    //         role:'employee'
-    //       };
-    //       addProfile(profile);
-    //       reset();
-
-    //     }
-    //   });
-  };
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Added Successfully",{id:"add-profile"});
-    }
-    if (isLoading) {
-      toast.loading("Loading",{id:"add-profile"});
-    }
-  }, [isSuccess,isLoading]);
+  const { id } = useParams();
 
   return (
     <div className="content-wrapper">
@@ -62,29 +14,29 @@ const UpdateProfile = () => {
             </h2>
           </div>
           <div className="add-form">
-            <form onSubmit={handleSubmit(handleAddProfile)}>
+            <form >
               <div className="row">
                 <div className="col-md-6">
                   <label>Name</label>
-                  <input {...register("name")} />
+                  <input type="text" name="name" />
                 </div>
                 <div className="col-md-6">
                   <label>Desgination</label>
-                  <input {...register("desgination")} />
+                  <input type="text" name="designation" />
                 </div>
                 <div className="col-md-6">
                   <label>Joining Date</label>
-                  <input type="date" {...register("joiningDate")} />
+                  <input type="date" name="date" id="" />
                 </div>
 
                 <div className="col-md-6">
                   <label for="hour">Mobile</label>
-                  <input type="text" {...register("mobile")} />
+                  <input type="text" name="mobile" />
                 </div>
                 <div className="col-md-6">
                   <label>Upload Image</label>
                   <input
-                    {...register("image")}
+                    name="img"
                     className="file"
                     type="file"
                     required
@@ -94,14 +46,14 @@ const UpdateProfile = () => {
 
                 <div className="col-md-6">
                   <label for="gender">Gender</label>
-                  <select {...register("gender")}>
+                  <select name="gender">
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
                 </div>
                 <div className="col-md-12">
                   <label>Address</label>
-                  <input {...register("address")} />
+                  <input type="text" name="address" />
                 </div>
 
                 <div className="col-md-6">

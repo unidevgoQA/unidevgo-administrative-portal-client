@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
@@ -75,13 +74,6 @@ const LeaveStatus = () => {
                   <td>{leave?.type}</td>
 
                   <td>
-                    <Link to={`update-leave-status/${leave.id}`}>
-                      <button className="update-btn">
-                        {" "}
-                        <i className="far fa-edit"></i>
-                      </button>
-                    </Link>
-
                     <button
                       onClick={() => handleDelete(leave._id)}
                       className="delete-btn"

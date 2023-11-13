@@ -61,7 +61,7 @@ const AllEmployee = () => {
                     />
                   </td>
                   <td>{employee?.name}</td>
-                  <td>{employee?.designation}</td>
+                  <td>{employee?.desgination}</td>
                   <td>{employee?.mobile}</td>
                   <td>{employee?.email}</td>
                   <td>{employee?.address}</td>

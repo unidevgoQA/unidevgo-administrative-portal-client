@@ -15,12 +15,15 @@ const LeaveApply = () => {
   const { data } = useGetProfileByEmailQuery(user.email);
   //Set register user
   const registerUser = data?.data;
-
+  //Current date
+  let currentDate = new Date().toJSON().slice(0, 10);
   //Add work status handler
   const handleLeaveApply = ({ leaveApply, leaveFrom, leaveTo, type }) => {
+
+
     const leave = {
       //leave data
-      leaveApply,
+      leaveApply : currentDate,
       leaveFrom,
       leaveTo,
       type,
@@ -55,10 +58,6 @@ const LeaveApply = () => {
           <div className="add-form">
             <form onSubmit={handleSubmit(handleLeaveApply)}>
               <div className="row">
-                {/* <div className="col-md-6">
-                  <label>Leave Apply Date</label>
-                  <input type="date" {...register("leaveApply")} />
-                </div> */}
 
                 <div className="col-md-6">
                   <label>Leave From Date</label>
