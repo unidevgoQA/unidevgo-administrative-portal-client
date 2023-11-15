@@ -98,14 +98,16 @@ const Profile = () => {
                             </h3>
                           </div>
                         </div>
-                        <Link
-                          to={`/dashboard/update-profile/${registerUser._id}`}
-                        >
-                          <button className="update-btn">
-                            {" "}
-                            <i className="far fa-edit"></i>
-                          </button>
-                        </Link>
+                        <div className="update-area">
+                          <Link
+                            to={`/dashboard/update-profile/${registerUser?._id}`}
+                          >
+                            <button title="Update Profile" className="update-btn">
+                              {" "}
+                              <i className="far fa-edit"></i>
+                            </button>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -47,6 +47,7 @@ const AllEmployee = () => {
                 <th>Name</th>
                 <th>Designation</th>
                 <th>Mobile</th>
+                <th>Role</th>
                 <th>Email</th>
                 <th>Address</th>
                 <th>Joining Date</th>
@@ -66,6 +67,7 @@ const AllEmployee = () => {
                   <td>{employee?.name}</td>
                   <td>{employee?.desgination}</td>
                   <td>{employee?.mobile}</td>
+                  <td>{employee?.role}</td>
                   <td>{employee?.email}</td>
                   <td>{employee?.address}</td>
                   <td>{employee?.joiningDate}</td>
