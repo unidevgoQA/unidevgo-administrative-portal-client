@@ -1,8 +1,12 @@
 import React, { useContext, useEffect } from "react";
 
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
-import { useDeleteWorkTaskMutation, useGetWorkTasksQuery } from "../../../features/work-status/workStatusApi";
+import {
+  useDeleteWorkTaskMutation,
+  useGetWorkTasksQuery,
+} from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./profile.scss";
 const Profile = () => {
@@ -11,8 +15,8 @@ const Profile = () => {
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
-  console.log(userData)
-  const [deleteWorkStatus, { isSuccess  , isLoading }] = useDeleteWorkTaskMutation();
+  const [deleteWorkStatus, { isSuccess, isLoading }] =
+    useDeleteWorkTaskMutation();
   //Get all task
   const { data: workStatusData } = useGetWorkTasksQuery();
   //Register User
@@ -22,7 +26,7 @@ const Profile = () => {
   const filterWorkStatus = workStatusData?.data.filter(
     (status) => status?.employeeEmail === registerUser?.email
   );
-  
+
   //handle Delete
   const handleDelete = (id) => {
     const deleteConfirm = window.confirm("Want to delete?");
@@ -38,7 +42,7 @@ const Profile = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
-  
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -94,6 +98,14 @@ const Profile = () => {
                             </h3>
                           </div>
                         </div>
+                        <Link
+                          to={`/dashboard/update-profile/${registerUser._id}`}
+                        >
+                          <button className="update-btn">
+                            {" "}
+                            <i className="far fa-edit"></i>
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useUpdateProfileMutation } from "../../../features/profile/profileApi";
 
 const UpdateProfile = () => {
@@ -12,6 +12,8 @@ const UpdateProfile = () => {
 
   //Get id
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   //Set url
   const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -27,77 +29,127 @@ const UpdateProfile = () => {
   //update profile
   const handleNameChange = (e) => {
     const updatedName = e.target.value;
-    // Create a shallow copy of the object using the spread operator
-    const updatedProfile = { ...updateProfile ,  };
+    const updatedProfile = {
+      name: updatedName,
+      desgination: updateProfile.desgination,
+      gender: updateProfile.gender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updateProfile.mobile,
+      role: updateProfile.role,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
 
-    // Update the specific field
-    updateProfile.name = updatedName;
-
-    // Set the updated object in the state
     setUpdateProfile(updatedProfile);
   };
-  // const handleDesignationChange = (e) => {
-  //   const updatedDesignation = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     desgination: updatedDesignation,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
-  // const handleGenderChange = (e) => {
-  //   const updatedGender = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     gender: updatedGender,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
-  // const handleJoiningDateChange = (e) => {
-  //   const updatedJoiningDate = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     joiningDate: updatedJoiningDate,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
-  // const handleMobileChange = (e) => {
-  //   const updatedMobile = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     mobile: updatedMobile,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
 
-  // const handleAddressChange = (e) => {
-  //   const updatedAddress = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     address: updatedAddress,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
+  const handleDesignationChange = (e) => {
+    const updatedDesignation = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updatedDesignation,
+      gender: updateProfile.gender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updateProfile.mobile,
+      role: updateProfile.role,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
 
-  // const handleRoleChange = (e) => {
-  //   const updatedRole = e.target.value;
-  //   const updatedProfile = {
-  //     ...updateProfile,
-  //     role: updatedRole,
-  //   };
-  //   setUpdateProfile(updatedProfile);
-  // };
-
-  //Update
-  const handleProfileUpdate = (e) => {
-    e.preventDefault();
-    console.log(updateProfile);
-    // appleProfileUpdate({ id: id, data: { updateProfile } });
+    setUpdateProfile(updatedProfile);
+  };
+  const handleGenderChange = (e) => {
+    const updatedGender = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updateProfile.desgination,
+      gender: updatedGender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updateProfile.mobile,
+      role: updateProfile.role,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
+    setUpdateProfile(updatedProfile);
+  };
+  const handleJoiningDateChange = (e) => {
+    const updatedJoiningDate = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updateProfile.desgination,
+      gender: updateProfile.gender,
+      joiningDate: updatedJoiningDate,
+      mobile: updateProfile.mobile,
+      role: updateProfile.role,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
+    setUpdateProfile(updatedProfile);
+  };
+  const handleMobileChange = (e) => {
+    const updatedMobile = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updateProfile.desgination,
+      gender: updateProfile.gender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updatedMobile,
+      role: updateProfile.role,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
+    setUpdateProfile(updatedProfile);
   };
 
-  // Update effects
+  const handleAddressChange = (e) => {
+    const updatedAddress = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updateProfile.desgination,
+      gender: updateProfile.gender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updateProfile.mobile,
+      role: updateProfile.role,
+      address: updatedAddress,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
+    setUpdateProfile(updatedProfile);
+  };
+
+  const handleRoleChange = (e) => {
+    const updatedRole = e.target.value;
+    const updatedProfile = {
+      name: updateProfile.name,
+      desgination: updateProfile.desgination,
+      gender: updateProfile.gender,
+      joiningDate: updateProfile.joiningDate,
+      mobile: updateProfile.mobile,
+      role: updatedRole,
+      address: updateProfile.address,
+      img: updateProfile.img,
+      email: updateProfile.email,
+    };
+    setUpdateProfile(updatedProfile);
+  };
+
+  //Update Handler
+  const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    appleProfileUpdate({ id: id, data: { updateProfile } });
+   
+  };
+
+  //Update effects
   useEffect(() => {
     if (isSuccess) {
       toast.success("Updated Successfully", { id: "update-profile" });
+      navigate('/dashboard/all-employee')
     }
     if (isLoading) {
       toast.loading("Loading", { id: "update-profile" });
@@ -128,7 +180,7 @@ const UpdateProfile = () => {
                 <div className="col-md-6">
                   <label>Designation</label>
                   <input
-                    // onChange={handleDesignationChange}
+                    onChange={handleDesignationChange}
                     value={updateProfile?.desgination}
                     type="text"
                     name="designation"
@@ -137,7 +189,7 @@ const UpdateProfile = () => {
                 <div className="col-md-6">
                   <label>Address</label>
                   <input
-                    // onChange={handleAddressChange}
+                    onChange={handleAddressChange}
                     value={updateProfile?.address}
                     type="text"
                     name="address"
@@ -147,7 +199,7 @@ const UpdateProfile = () => {
                 <div className="col-md-6">
                   <label for="hour">Mobile</label>
                   <input
-                    // onChange={handleMobileChange}
+                    onChange={handleMobileChange}
                     value={updateProfile?.mobile}
                     type="text"
                     name="mobile"
@@ -156,7 +208,7 @@ const UpdateProfile = () => {
                 <div className="col-md-4">
                   <label>Joining Date</label>
                   <input
-                    // onChange={handleJoiningDateChange}
+                    onChange={handleJoiningDateChange}
                     value={updateProfile?.joiningDate}
                     type="date"
                     name="date"
@@ -167,7 +219,7 @@ const UpdateProfile = () => {
                 <div className="col-md-4">
                   <label for="gender">Gender</label>
                   <select
-                    // onChange={handleGenderChange}
+                    onChange={handleGenderChange}
                     value={updateProfile?.gender}
                     name="gender"
                   >
@@ -178,7 +230,7 @@ const UpdateProfile = () => {
                 <div className="col-md-4">
                   <label for="role">Role</label>
                   <select
-                    // onChange={handleRoleChange}
+                    onChange={handleRoleChange}
                     value={updateProfile?.role}
                     name="role"
                   >
