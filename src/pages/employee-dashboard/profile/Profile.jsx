@@ -7,6 +7,7 @@ import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi"
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
+  useUpdateWorkTaskMutation,
 } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 const Profile = () => {
@@ -22,42 +23,50 @@ const Profile = () => {
   //Register User
   const registerUser = userData?.data;
 
+  //Update API
+  const [
+    handleUpdateWorkStatus,
+    { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
+  ] = useUpdateWorkTaskMutation();
+  //Leave management data
+  const { data } = useGetAllLeavesQuery();
+  const allLeaveManagements = data?.data;
+  //Filter leaves based on email
+  const filterLeaves = allLeaveManagements?.filter(
+    (leave) => leave.employeeEmail === user.email
+  );
 
-    //Leave management data
-    const { data } = useGetAllLeavesQuery();
-    const allLeaveManagements = data?.data;
-    //Filter leaves based on email
-    const filterLeaves = allLeaveManagements?.filter(
-      (leave) => leave.employeeEmail === user.email
-    );
+  console.log(filterLeaves);
 
-    console.log(filterLeaves)
-
-
-    const filerGetLeave = filterLeaves?.filter(
-      (leave) => leave.status === 'accepted'
-    );
-
+  const filerGetLeave = filterLeaves?.filter(
+    (leave) => leave.status === "accepted"
+  );
 
   // {
   //   const { data: allProfile } = useGetProfilesQuery();
 
   //   const allProfileData = allProfile?.data;
-  
+
   //   const loggedUser = allProfileData?.filter(
   //     (profile) => profile.email === user.email
   //   );
-  
+
   //   const registerUser = loggedUser[0];
   // }
-
 
   //Filter work status based on email
   const filterWorkStatus = workStatusData?.data.filter(
     (status) => status?.employeeEmail === registerUser?.email
   );
-
-  
+  //handle Update
+  const handleStatusChange = (id, workStatus) => {
+    const updatedStatus =
+      workStatus === "complete" ? "in progress" : "complete";
+    const updateWorkTask = {
+      workStatus: updatedStatus,
+    };
+    handleUpdateWorkStatus({ id: id, data: updateWorkTask });
+  };
 
   //handle Delete
   const handleDelete = (id) => {
@@ -66,6 +75,7 @@ const Profile = () => {
       deleteWorkStatus(id);
     }
   };
+  //Delete Effects
   useEffect(() => {
     if (isSuccess) {
       toast.success("Deleted Successfully", { id: "delete-work-task" });
@@ -74,6 +84,15 @@ const Profile = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
+  //Update Effects
+  useEffect(() => {
+    if (workStatusSuccess) {
+      toast.success("Update Successfully", { id: "update-work-task" });
+    }
+    if (worksStatusLoading) {
+      toast.loading("Loading", { id: "update-work-task" });
+    }
+  }, [workStatusSuccess, worksStatusLoading]);
 
   return (
     <div className="content-wrapper">
@@ -86,7 +105,7 @@ const Profile = () => {
           </div>
           <div className="profile-current-task-wrapper">
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-lg-6 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row">
                     <div className="col-md-5">
@@ -134,7 +153,10 @@ const Profile = () => {
                           <Link
                             to={`/dashboard/update-profile/${registerUser?._id}`}
                           >
-                            <button title="Update Profile" className="update-btn">
+                            <button
+                              title="Update Profile"
+                              className="update-btn"
+                            >
                               {" "}
                               <i className="far fa-edit"></i>
                             </button>
@@ -145,7 +167,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-lg-6 col-md-12">
                 <div className="employee-vailability">
                   <div className="row gy-3">
                     <div className="col-md-6">
@@ -173,7 +195,7 @@ const Profile = () => {
                       <div className="absent employee-card">
                         <i class="fa-regular fa-circle-xmark"></i>
                         <h6>Remaining Leave</h6>
-                        <span>{30-filerGetLeave?.length}</span>
+                        <span>{30 - filerGetLeave?.length}</span>
                       </div>
                     </div>
                   </div>
@@ -220,7 +242,12 @@ const Profile = () => {
                     <td>{work?.workStatus}</td>
                     <td>{work?.description}</td>
                     <td>
-                      <button className="update-btn text-white">
+                      <button
+                        onClick={() =>
+                          handleStatusChange(work?._id, work?.workStatus)
+                        }
+                        className="update-btn text-white"
+                      >
                         {work?.workStatus == "in progress"
                           ? "Mark as Complete"
                           : "Mark as in Progress"}

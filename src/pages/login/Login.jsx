@@ -1,14 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../providers/AuthProviders";
 
-
 const Login = () => {
-  const { loginUser, loginWithGoogle } = useContext(AuthContext);
+  const { loginUser } = useContext(AuthContext);
 
+  const [showError, setShowError] = useState("");
+  const [disableErrorArea, setDisableErrorArea] = useState(false);
+
+  const navigate = useNavigate();
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email, password }) => {
@@ -20,21 +23,7 @@ const Login = () => {
           reset();
         }
       })
-      .catch((err) => console.log(err));
-  };
-
-  const navigate = useNavigate();
-
-  const handleGoogleLogin = (e) => {
-    e.preventDefault();
-    loginWithGoogle()
-      .then((result) => {
-        if (result.user) {
-          navigate("/dashboard/profile");
-          toast.success("Register Successfully", { id: "google-login" });
-        }
-      })
-      .catch((err) => console.log(err));
+      .catch((err) => setShowError(err.message));
   };
 
   return (
@@ -69,6 +58,14 @@ const Login = () => {
                   />
                   <i class="fa-solid fa-lock"></i>
                 </div>
+                {showError && (
+                  <div className={disableErrorArea === true ? "hide-error-message":"error-message"}>
+                    <>
+                      <span>{showError}</span>
+                      <i onClick={()=>setDisableErrorArea(true)} class="fa-solid fa-xmark"></i>
+                    </>
+                  </div>
+                )}
 
                 <button className="login-register-btn" type="submit">
                   <span>Login</span> <i class="fa-solid fa-arrow-right"></i>

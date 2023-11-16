@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,10 +9,12 @@ import { AuthContext } from "../../providers/AuthProviders";
 const Register = () => {
   const { createUser } = useContext(AuthContext);
   //Api
-  const [addProfile, { isLoading, isSuccess }] = useAddProfileMutation();
+  const [addProfile] = useAddProfileMutation();
   //
   const { handleSubmit, register, reset } = useForm();
-
+  //Error state
+  const [showError, setShowError] = useState("");
+  const [disableErrorArea, setDisableErrorArea] = useState(false);
   //Imgbb key
   const imgBBkey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -55,7 +57,7 @@ const Register = () => {
             });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setShowError(err.message));
   };
 
   return (
@@ -129,6 +131,15 @@ const Register = () => {
                     <input required {...register("address")} />
                   </div>
                 </div>
+
+                {showError && (
+                  <div className={disableErrorArea === true ? "hide-error-message":"error-message"}>
+                    <>
+                      <span>{showError}</span>
+                      <i onClick={()=>setDisableErrorArea(true)} class="fa-solid fa-xmark"></i>
+                    </>
+                  </div>
+                )}
 
                 <button className="login-register-btn" type="submit">
                   Register <i class="fa-solid fa-arrow-right"></i>
