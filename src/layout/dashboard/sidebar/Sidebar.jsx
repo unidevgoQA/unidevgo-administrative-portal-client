@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-import "./sidebar.scss";
 
 const Sidebar = () => {
   //context
-  const { logoutUser, user } = useContext(AuthContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const { logoutUser, user, isOpen, setIsOpen } = useContext(AuthContext);
 
   const { data } = useGetProfileByEmailQuery(user.email);
 

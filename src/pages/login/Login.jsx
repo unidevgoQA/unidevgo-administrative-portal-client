@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../providers/AuthProviders";
-import "./login.scss";
+
 
 const Login = () => {
   const { loginUser, loginWithGoogle } = useContext(AuthContext);

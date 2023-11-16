@@ -19,7 +19,7 @@ const AuthProviders = ({ children }) => {
   const [user, setUser] = useState({});
   const [registerUser, setRegisterUser] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const [isOpen, setIsOpen] = useState(true);
   const googleProvider = new GoogleAuthProvider();
   //User with google
 
@@ -56,6 +56,8 @@ const AuthProviders = ({ children }) => {
     registerUser,
     loading,
     createUser,
+    isOpen,
+    setIsOpen,
     loginUser,
     logoutUser,
     loginWithGoogle,

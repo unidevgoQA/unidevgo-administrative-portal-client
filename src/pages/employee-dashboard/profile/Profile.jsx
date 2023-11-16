@@ -2,13 +2,13 @@ import React, { useContext, useEffect } from "react";
 
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
 } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-import "./profile.scss";
 const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
@@ -21,6 +21,23 @@ const Profile = () => {
   const { data: workStatusData } = useGetWorkTasksQuery();
   //Register User
   const registerUser = userData?.data;
+
+
+    //Leave management data
+    const { data } = useGetAllLeavesQuery();
+    const allLeaveManagements = data?.data;
+    //Filter leaves based on email
+    const filterLeaves = allLeaveManagements?.filter(
+      (leave) => leave.employeeEmail === user.email
+    );
+
+    console.log(filterLeaves)
+
+
+    const filerGetLeave = filterLeaves?.filter(
+      (leave) => leave.status === 'accepted'
+    );
+
 
   // {
   //   const { data: allProfile } = useGetProfilesQuery();
@@ -39,6 +56,8 @@ const Profile = () => {
   const filterWorkStatus = workStatusData?.data.filter(
     (status) => status?.employeeEmail === registerUser?.email
   );
+
+  
 
   //handle Delete
   const handleDelete = (id) => {
@@ -140,21 +159,21 @@ const Profile = () => {
                       <div className="leave-apply employee-card">
                         <i class="fa-solid fa-person-walking-arrow-right"></i>
                         <h6>Leave Apply</h6>
-                        <span>20</span>
+                        <span>{filterLeaves?.length}</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="late-coming employee-card">
                         <i class="fa-solid fa-check"></i>
                         <h6>Get Leave</h6>
-                        <span>20</span>
+                        <span>{filerGetLeave?.length}</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="absent employee-card">
                         <i class="fa-regular fa-circle-xmark"></i>
                         <h6>Remaining Leave</h6>
-                        <span>10</span>
+                        <span>{30-filerGetLeave?.length}</span>
                       </div>
                     </div>
                   </div>
