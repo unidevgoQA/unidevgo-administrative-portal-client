@@ -22,6 +22,19 @@ const Profile = () => {
   //Register User
   const registerUser = userData?.data;
 
+  // {
+  //   const { data: allProfile } = useGetProfilesQuery();
+
+  //   const allProfileData = allProfile?.data;
+  
+  //   const loggedUser = allProfileData?.filter(
+  //     (profile) => profile.email === user.email
+  //   );
+  
+  //   const registerUser = loggedUser[0];
+  // }
+
+
   //Filter work status based on email
   const filterWorkStatus = workStatusData?.data.filter(
     (status) => status?.employeeEmail === registerUser?.email

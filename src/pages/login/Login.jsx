@@ -9,13 +9,13 @@ import "./login.scss";
 const Login = () => {
   const { loginUser, loginWithGoogle } = useContext(AuthContext);
 
-  const { handleSubmit, register ,reset } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email, password }) => {
     loginUser(email, password)
       .then((result) => {
         if (result.user) {
-          toast.success("Login Successfully",{id:'login'});
+          toast.success("Login Successfully", { id: "login" });
           navigate("/dashboard/profile");
           reset();
         }
@@ -24,7 +24,6 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-
 
   const handleGoogleLogin = (e) => {
     e.preventDefault();
@@ -42,7 +41,7 @@ const Login = () => {
     <div className="login-register">
       <div className="container">
         <div className="row g-0 login-regsiter-content-wrapper">
-          <div className="col-md-6">
+          <div className="col-lg-6 col-md-12">
             <div className="login-regsiter-left-content">
               <img src={logo} alt="logo" />
               <h2>
@@ -50,7 +49,7 @@ const Login = () => {
               </h2>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-lg-6 col-md-12">
             <div className="login-regsiter-right-content">
               <h4>Login Into Your Account</h4>
               <form onSubmit={handleSubmit(onSubmit)}>

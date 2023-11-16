@@ -6,10 +6,10 @@ const dashboard = () => {
   return (
     <div className='dashboard overflow-x-hidden'>
         <div className="row g-0">
-            <div className="col-md-2">
+            <div className="col-lg-2 col-md-2 col-sm-3">
                 <Sidebar/>
             </div>
-            <div className="col-md-10">   
+            <div className="col-lg-10 col-md-10 col-sm-9">   
                 <Outlet/>
             </div>
         </div>

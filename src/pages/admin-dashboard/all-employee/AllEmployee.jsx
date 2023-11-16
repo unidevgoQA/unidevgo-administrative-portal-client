@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
   useDeleteProfileMutation,
   useGetProfilesQuery,
 } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 import "./all-employee.scss";
 
 const AllEmployee = () => {
+  const { deleteProfileFromFirebase } = useContext(AuthContext);
   //Api
   const { data } = useGetProfilesQuery();
   const [deleteProfile, { isSuccess, isLoading }] = useDeleteProfileMutation();

@@ -8,7 +8,6 @@ import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
-
   //Api
   const [addProfile, { isLoading, isSuccess }] = useAddProfileMutation();
   //
@@ -49,45 +48,21 @@ const Register = () => {
                 };
                 addProfile(profile);
                 toast.success("Register Successfully",{id:"add-profile"});
+                reset();
                 navigate("/");
-                // reset();
-                // console.log(imgData.success)
-                // console.log(profile)
+                
               }
             });
-          // toast.success("Register Successfully", { id: "register" });
-          // reset();
         }
       })
       .catch((err) => console.log(err));
   };
 
-  //Login Handler
-  // const handleGoogleLogin = (e) => {
-  //   e.preventDefault();
-  //   loginWithGoogle()
-  //     .then((result) => {
-  //       if (result.user) {
-  //         navigate("/dashboard/profile");
-  //         toast.success("Register Successfully", { id: "google-login" });
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.success("Added Successfully",{id:"add-profile"});
-  //   }
-  //   if (isLoading) {
-  //     toast.loading("Loading",{id:"add-profile"});
-  //   }
-  // }, [isSuccess,isLoading]);
   return (
     <div className="login-register">
       <div className="container">
         <div className="row g-0 login-regsiter-content-wrapper">
-          <div className="col-md-6">
+          <div className="col-lg-6 col-md-12">
             <div className="login-regsiter-right-content">
               <h4>Register Your Account</h4>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -123,7 +98,7 @@ const Register = () => {
                     <input required type="date" {...register("joiningDate")} />
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-lg-6 col-md-12">
                     <label for="hour">Mobile</label>
                     <input required type="text" {...register("mobile")} />
                   </div>

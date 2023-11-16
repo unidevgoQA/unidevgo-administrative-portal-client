@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useGetProfilesQuery } from "../../../features/profile/profileApi";
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
@@ -9,12 +10,25 @@ import {
 const WorkStatus = () => {
   //APIs
   const { data: workStatusData } = useGetWorkTasksQuery();
+  //All profile data
+  const { data: allProfile } = useGetProfilesQuery();
+  //Set Profile data
+  const allProfileData = allProfile?.data;
+  //Update API
   const [
     handleUpdateWorkStatus,
     { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
   ] = useUpdateWorkTaskMutation();
+  //Delete API
   const [deleteWorkStatus, { isSuccess, isLoading }] =
     useDeleteWorkTaskMutation();
+
+  //State for profile choose
+  const [profileEmail, setProfileEmail] = useState("");
+  //Filter data by profile
+  const filterWorkStatus = workStatusData?.data.filter(
+    (workStatus) => workStatus.employeeEmail === profileEmail
+  );
 
   //handle Update
   const handleStatusChange = (id, workStatus) => {
@@ -62,6 +76,20 @@ const WorkStatus = () => {
               <span>Work Status</span> <i class="fa-solid fa-battery-half"></i>{" "}
             </h2>
           </div>
+
+          <div className="profile-select">
+            <h4>Select Employee</h4>
+            <select
+              onChange={(e) => setProfileEmail(e.target.value)}
+              // onBlur={() => handleLeaveStatusChange(leave?._id)}
+              name="status"
+            >
+              {allProfileData?.map((profile) => (
+                <option value={profile?.email}>{profile?.name}</option>
+              ))}
+            </select>
+          </div>
+
           <table class="table-modify table table-striped">
             <thead>
               <tr>
@@ -74,43 +102,83 @@ const WorkStatus = () => {
                 <th className="action-area">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {workStatusData?.data.map((work) => (
-                <tr>
-                  <td>
-                    <img
-                      className="employee-img"
-                      src={work?.employeeImg}
-                      alt="employee"
-                    />
-                  </td>
-                  <td>{work?.task}</td>
-                  <td>{work?.date}</td>
-                  <td>{work?.hour}</td>
-                  <td>{work?.workStatus}</td>
-                  <td>{work?.description}</td>
-                  <td>
-                    <button
-                      onClick={() =>
-                        handleStatusChange(work?._id, work?.workStatus)
-                      }
-                      className="update-btn text-white"
-                    >
-                      {work?.workStatus == "in progress"
-                        ? "Mark as Complete"
-                        : "Mark as in Progress"}
-                    </button>
+            {profileEmail === "" ? (
+              <tbody>
+                {workStatusData?.data.map((work) => (
+                  <tr>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={work?.employeeImg}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{work?.task}</td>
+                    <td>{work?.date}</td>
+                    <td>{work?.hour}</td>
+                    <td>{work?.workStatus}</td>
+                    <td>{work?.description}</td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(work?._id, work?.workStatus)
+                        }
+                        className="update-btn text-white"
+                      >
+                        {work?.workStatus == "in progress"
+                          ? "Mark as Complete"
+                          : "Mark as in Progress"}
+                      </button>
 
-                    <button
-                      onClick={() => handleDelete(work?._id)}
-                      className="delete-btn"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                      <button
+                        onClick={() => handleDelete(work?._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <tbody>
+                {filterWorkStatus?.map((work) => (
+                  <tr>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={work?.employeeImg}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{work?.task}</td>
+                    <td>{work?.date}</td>
+                    <td>{work?.hour}</td>
+                    <td>{work?.workStatus}</td>
+                    <td>{work?.description}</td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(work?._id, work?.workStatus)
+                        }
+                        className="update-btn text-white"
+                      >
+                        {work?.workStatus == "in progress"
+                          ? "Mark as Complete"
+                          : "Mark as in Progress"}
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(work?._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
           </table>
         </div>
       </div>

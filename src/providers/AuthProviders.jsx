@@ -18,7 +18,6 @@ const AuthProviders = ({ children }) => {
   //User
   const [user, setUser] = useState({});
   const [registerUser, setRegisterUser] = useState({});
-  console.log(registerUser)
   const [loading, setLoading] = useState(true);
 
   const googleProvider = new GoogleAuthProvider();
@@ -39,7 +38,6 @@ const AuthProviders = ({ children }) => {
   const logoutUser = () => {
     return signOut(auth);
   };
-  
 
   //Observer
   useEffect(() => {
