@@ -59,10 +59,19 @@ const Login = () => {
                   <i class="fa-solid fa-lock"></i>
                 </div>
                 {showError && (
-                  <div className={disableErrorArea === true ? "hide-error-message":"error-message"}>
+                  <div
+                    className={
+                      disableErrorArea === true
+                        ? "hide-error-message"
+                        : "error-message"
+                    }
+                  >
                     <>
                       <span>{showError}</span>
-                      <i onClick={()=>setDisableErrorArea(true)} class="fa-solid fa-xmark"></i>
+                      <i
+                        onClick={() => setDisableErrorArea(true)}
+                        class="fa-solid fa-xmark"
+                      ></i>
                     </>
                   </div>
                 )}

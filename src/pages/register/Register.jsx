@@ -28,7 +28,7 @@ const Register = () => {
     createUser(data.email, data.password)
       .then((result) => {
         if (result.user) {
-          console.log("email firebase" , result.user.email)
+          console.log("email firebase", result.user.email);
           const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
           fetch(url, {
             method: "POST",
@@ -49,10 +49,9 @@ const Register = () => {
                   role: "employee",
                 };
                 addProfile(profile);
-                toast.success("Register Successfully",{id:"add-profile"});
+                toast.success("Register Successfully", { id: "add-profile" });
                 reset();
                 navigate("/");
-                
               }
             });
         }
@@ -133,10 +132,19 @@ const Register = () => {
                 </div>
 
                 {showError && (
-                  <div className={disableErrorArea === true ? "hide-error-message":"error-message"}>
+                  <div
+                    className={
+                      disableErrorArea === true
+                        ? "hide-error-message"
+                        : "error-message"
+                    }
+                  >
                     <>
                       <span>{showError}</span>
-                      <i onClick={()=>setDisableErrorArea(true)} class="fa-solid fa-xmark"></i>
+                      <i
+                        onClick={() => setDisableErrorArea(true)}
+                        class="fa-solid fa-xmark"
+                      ></i>
                     </>
                   </div>
                 )}

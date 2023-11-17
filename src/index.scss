@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
 $primary: #071c0b;
 $secondary: #0ad028;
 
@@ -314,6 +315,7 @@ body {
   margin-right: 20px;
   .heading {
     background: rgb(7, 28, 11);
+    margin-bottom: 30px;
     background: linear-gradient(
       90deg,
       rgba(7, 28, 11, 1) 0%,
@@ -331,7 +333,6 @@ body {
   .table-modify {
     background: #fff;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-    margin-top: 30px;
     border-radius: 10px;
     .employee-img {
       width: 50px;
@@ -339,7 +340,7 @@ body {
     }
     .task,
     .description {
-      width: 400px;
+      width: 300px;
     }
     th {
       font-size: 14px;
@@ -531,6 +532,26 @@ body {
   }
 }
 //Dashboard
+
+//Calender
+.rdrCalendarWrapper {
+  color: #000000;
+  font-size: 12px;
+  display: none;
+}
+.rdrInputRanges {
+  display: none;
+}
+.rdrDefinedRangesWrapper {
+  font-size: 12px;
+  width: 115px;
+  background: #1e7e34;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  border-radius: 10px;
+}
+.rdrStaticRangeSelected {
+  color: #073a13;
+}
 
 //Responsive
 @media screen and (max-width: 1024px) {

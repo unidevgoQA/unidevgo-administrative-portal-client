@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
-import { useGetProfilesQuery } from "../../../features/profile/profileApi";
+import { useParams } from "react-router-dom";
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
@@ -10,10 +11,8 @@ import {
 const WorkStatus = () => {
   //APIs
   const { data: workStatusData } = useGetWorkTasksQuery();
-  //All profile data
-  const { data: allProfile } = useGetProfilesQuery();
-  //Set Profile data
-  const allProfileData = allProfile?.data;
+
+  const allStatusData = workStatusData?.data;
   //Update API
   const [
     handleUpdateWorkStatus,
@@ -23,12 +22,65 @@ const WorkStatus = () => {
   const [deleteWorkStatus, { isSuccess, isLoading }] =
     useDeleteWorkTaskMutation();
 
-  //State for profile choose
-  const [profileEmail, setProfileEmail] = useState("");
-  //Filter data by profile
-  const filterWorkStatus = workStatusData?.data.filter(
-    (workStatus) => workStatus.employeeEmail === profileEmail
+  //States
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [profile, setProfile] = useState({});
+  const [filteredStatusData, setFilteredStatusData] = useState([]);
+  const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
+    []
   );
+  const { id } = useParams();
+
+  //Set url
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const url = `${baseUrl}profile/${id}`;
+
+  //Data load
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setProfile(data?.data);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    const filterWorkStatus = allStatusData?.filter(
+      (workStatus) => workStatus.employeeEmail === profile.email
+    );
+    setFilteredStatusDataByEmail(filterWorkStatus);
+    setFilteredStatusData(filterWorkStatus);
+  }, [allStatusData, profile]);
+
+  // Date select
+  const handleSelect = (date) => {
+    let filtered = filteredStatusDataByEmail.filter((workStatus) => {
+      let statusDate = new Date(workStatus["date"]);
+      return (
+        statusDate >= date.selection.startDate &&
+        statusDate <= date.selection.endDate
+      );
+    });
+    setStartDate(date.selection.startDate);
+    setEndDate(date.selection.endDate);
+    setFilteredStatusData(filtered);
+  };
+
+  //Select date range
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
+  //handle Delete
+  const handleDelete = (id) => {
+    const deleteConfirm = window.confirm("Want to delete?");
+    if (deleteConfirm) {
+      deleteWorkStatus(id);
+    }
+  };
 
   //handle Update
   const handleStatusChange = (id, workStatus) => {
@@ -40,14 +92,6 @@ const WorkStatus = () => {
     handleUpdateWorkStatus({ id: id, data: updateWorkTask });
   };
 
-  //handle Delete
-  const handleDelete = (id) => {
-    console.log(id);
-    const deleteConfirm = window.confirm("Want to delete?");
-    if (deleteConfirm) {
-      deleteWorkStatus(id);
-    }
-  };
   //Delete Effects
   useEffect(() => {
     if (isSuccess) {
@@ -57,6 +101,7 @@ const WorkStatus = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
+
   //Update Effects
   useEffect(() => {
     if (workStatusSuccess) {
@@ -77,109 +122,71 @@ const WorkStatus = () => {
             </h2>
           </div>
 
-          <div className="profile-select">
-            <h4>Select Employee</h4>
-            <select
-              onChange={(e) => setProfileEmail(e.target.value)}
-              // onBlur={() => handleLeaveStatusChange(leave?._id)}
-              name="status"
-            >
-              {allProfileData?.map((profile) => (
-                <option value={profile?.email}>{profile?.name}</option>
-              ))}
-            </select>
+          <div className="row mb-5">
+            <div className="col-lg-1 col-md-1 col-sm-12">
+              <div className="date-range">
+                <DateRangePicker
+                  direction="horizontal"
+                  showDateDisplay={false}
+                  showMonthAndYearPickers={false}
+                  ranges={[selectionRange]}
+                  onChange={handleSelect}
+                />
+              </div>
+            </div>
+            <div className="col-lg-11 col-md-11 col-sm-12">
+              <table class="table-modify table table-striped">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th className="task">Task</th>
+                    <th>Date</th>
+                    <th>Hours Of Work</th>
+                    <th>Status</th>
+                    <th className="description">Desciption</th>
+                    <th className="action-area">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStatusData?.map((work) => (
+                    <tr>
+                      <td>
+                        <img
+                          className="employee-img"
+                          src={work?.employeeImg}
+                          alt="employee"
+                        />
+                      </td>
+                      <td>{work?.task}</td>
+                      <td>{work?.date}</td>
+                      <td>{work?.hour}</td>
+                      <td>{work?.workStatus}</td>
+                      <td>{work?.description}</td>
+                      <td>
+                        <button
+                          onClick={() =>
+                            handleStatusChange(work?._id, work?.workStatus)
+                          }
+                          className="update-btn text-white"
+                        >
+                          {work?.workStatus == "in progress"
+                            ? "Mark as Complete"
+                            : "Mark as in Progress"}
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(work?._id)}
+                          className="delete-btn"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-
-          <table class="table-modify table table-striped">
-            <thead>
-              <tr>
-                <th>Employee</th>
-                <th className="task">Task</th>
-                <th>Date</th>
-                <th>Hours Of Work</th>
-                <th>Status</th>
-                <th className="description">Desciption</th>
-                <th className="action-area">Action</th>
-              </tr>
-            </thead>
-            {profileEmail === "" ? (
-              <tbody>
-                {workStatusData?.data.map((work) => (
-                  <tr>
-                    <td>
-                      <img
-                        className="employee-img"
-                        src={work?.employeeImg}
-                        alt="employee"
-                      />
-                    </td>
-                    <td>{work?.task}</td>
-                    <td>{work?.date}</td>
-                    <td>{work?.hour}</td>
-                    <td>{work?.workStatus}</td>
-                    <td>{work?.description}</td>
-                    <td>
-                      <button
-                        onClick={() =>
-                          handleStatusChange(work?._id, work?.workStatus)
-                        }
-                        className="update-btn text-white"
-                      >
-                        {work?.workStatus == "in progress"
-                          ? "Mark as Complete"
-                          : "Mark as in Progress"}
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(work?._id)}
-                        className="delete-btn"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            ) : (
-              <tbody>
-                {filterWorkStatus?.map((work) => (
-                  <tr>
-                    <td>
-                      <img
-                        className="employee-img"
-                        src={work?.employeeImg}
-                        alt="employee"
-                      />
-                    </td>
-                    <td>{work?.task}</td>
-                    <td>{work?.date}</td>
-                    <td>{work?.hour}</td>
-                    <td>{work?.workStatus}</td>
-                    <td>{work?.description}</td>
-                    <td>
-                      <button
-                        onClick={() =>
-                          handleStatusChange(work?._id, work?.workStatus)
-                        }
-                        className="update-btn text-white"
-                      >
-                        {work?.workStatus == "in progress"
-                          ? "Mark as Complete"
-                          : "Mark as in Progress"}
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(work?._id)}
-                        className="delete-btn"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            )}
-          </table>
         </div>
       </div>
     </div>

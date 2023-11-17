@@ -6,7 +6,6 @@ import {
   useGetProfilesQuery,
 } from "../../../features/profile/profileApi";
 
-
 const AllEmployee = () => {
   //Api
   const { data } = useGetProfilesQuery();
@@ -51,6 +50,7 @@ const AllEmployee = () => {
                 <th>Email</th>
                 <th>Address</th>
                 <th>Joining Date</th>
+                <th>Check Work Status</th>
                 <th className="action-area">Action</th>
               </tr>
             </thead>
@@ -71,7 +71,11 @@ const AllEmployee = () => {
                   <td>{employee?.email}</td>
                   <td>{employee?.address}</td>
                   <td>{employee?.joiningDate}</td>
-
+                  <td>
+                    <Link to={`/dashboard/work-status/${employee._id}`}>
+                      <button className="update-btn">Check Status</button>
+                    </Link>
+                  </td>
                   <td>
                     <Link to={`/dashboard/update-profile/${employee._id}`}>
                       <button className="update-btn">

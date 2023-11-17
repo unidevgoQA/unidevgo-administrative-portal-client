@@ -1,4 +1,6 @@
 import * as React from "react";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import * as ReactDOM from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
@@ -19,7 +21,6 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import AuthProviders from "./providers/AuthProviders";
 import PrivateRoute from "./routes/PrivateRoute";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
         element: <LeaveManagement />,
       },
       {
-        path: "work-status",
+        path: "work-status/:id",
         element: <WorkStatus />,
       },
       {
