@@ -300,6 +300,7 @@ body {
     box-shadow: -3px 3px 0 #0ad028;
     margin-bottom: 10px;
     margin-left: 32px;
+    font-weight: 600;
   }
 }
 
@@ -531,8 +532,36 @@ body {
     }
   }
 }
-//Dashboard
+//Total hours
+.working-hours {
+  text-align: end;
+}
+.working-hours h6,
+.export-data h6 {
+  color: #071c0b;
+  font-size: 16px;
+  font-weight: 600;
+}
 
+.working-hours h6 span {
+  color: #1f8436;
+  font-size: 24px;
+  background: center;
+  font-weight: 800;
+}
+
+//Export
+.export-btn {
+  background: $primary;
+  color: $secondary;
+  padding: 5px 10px;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  box-shadow: -3px 3px 0 #0ad028;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
 //Calender
 .rdrCalendarWrapper {
   color: #000000;
@@ -552,7 +581,7 @@ body {
 .rdrStaticRangeSelected {
   color: #073a13;
 }
-
+//Dashboard
 //Responsive
 @media screen and (max-width: 1024px) {
   .login-register

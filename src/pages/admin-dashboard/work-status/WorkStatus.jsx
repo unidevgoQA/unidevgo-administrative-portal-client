@@ -27,6 +27,7 @@ const WorkStatus = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [profile, setProfile] = useState({});
   const [filteredStatusData, setFilteredStatusData] = useState([]);
+
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
@@ -35,6 +36,16 @@ const WorkStatus = () => {
   //Set url
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const url = `${baseUrl}profile/${id}`;
+
+  const workHoursNumbers = filteredStatusData?.map((work) => {
+    const totalHours = parseInt(work.hour);
+    return totalHours;
+  });
+
+  const totalWorkHours = workHoursNumbers?.reduce(
+    (acc, current) => acc + current,
+    0
+  );
 
   //Data load
   useEffect(() => {
@@ -72,6 +83,37 @@ const WorkStatus = () => {
     startDate: startDate,
     endDate: endDate,
     key: "selection",
+  };
+
+  const data = [
+    {
+      name: "Sarah Smith",
+      desgination: "Software QA Engineer",
+      mobile: "+880-1634534522",
+      email: "sara.smith@gmail.com",
+    },
+    {
+      name: "Sarah Smith",
+      desgination: "Software QA Engineer",
+      mobile: "+880-1634534522",
+      email: "sara.smith@gmail.com",
+    },
+    {
+      name: "Sarah Smith",
+      desgination: "Software QA Engineer",
+      mobile: "+880-1634534522",
+      email: "sara.smith@gmail.com",
+    },
+    {
+      name: "Sarah Smith",
+      desgination: "Software QA Engineer",
+      mobile: "+880-1634534522",
+      email: "sara.smith@gmail.com",
+    },
+  ];
+  //Export Work Status
+  const exportWorkStatus = () => {
+
   };
 
   //handle Delete
@@ -135,57 +177,88 @@ const WorkStatus = () => {
               </div>
             </div>
             <div className="col-lg-11 col-md-11 col-sm-12">
-              <table class="table-modify table table-striped">
-                <thead>
-                  <tr>
-                    <th>Employee</th>
-                    <th className="task">Task</th>
-                    <th>Date</th>
-                    <th>Hours Of Work</th>
-                    <th>Status</th>
-                    <th className="description">Desciption</th>
-                    <th className="action-area">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredStatusData?.map((work) => (
-                    <tr>
-                      <td>
-                        <img
-                          className="employee-img"
-                          src={work?.employeeImg}
-                          alt="employee"
-                        />
-                      </td>
-                      <td>{work?.task}</td>
-                      <td>{work?.date}</td>
-                      <td>{work?.hour}</td>
-                      <td>{work?.workStatus}</td>
-                      <td>{work?.description}</td>
-                      <td>
-                        <button
-                          onClick={() =>
-                            handleStatusChange(work?._id, work?.workStatus)
-                          }
-                          className="update-btn text-white"
-                        >
-                          {work?.workStatus == "in progress"
-                            ? "Mark as Complete"
-                            : "Mark as in Progress"}
-                        </button>
+            {filteredStatusData?.length > 0 ? (
+              <>
+              
+                  <table class="table-modify table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th className="task">Task</th>
+                        <th>Date</th>
+                        <th>Hours Of Work</th>
+                        <th>Status</th>
+                        <th className="description">Desciption</th>
+                        <th className="action-area">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredStatusData?.map((work) => (
+                        <tr>
+                          <td>
+                            <img
+                              className="employee-img"
+                              src={work?.employeeImg}
+                              alt="employee"
+                            />
+                          </td>
+                          <td>{work?.task}</td>
+                          <td>{work?.date}</td>
+                          <td>{work?.hour}</td>
+                          <td>{work?.workStatus}</td>
+                          <td>{work?.description}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                handleStatusChange(work?._id, work?.workStatus)
+                              }
+                              className="update-btn text-white"
+                            >
+                              {work?.workStatus == "in progress"
+                                ? "Mark as Complete"
+                                : "Mark as in Progress"}
+                            </button>
 
+                            <button
+                              onClick={() => handleDelete(work?._id)}
+                              className="delete-btn"
+                            >
+                              <i className="fas fa-trash-alt"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="row">
+                    <div className="col-md-6 col-sm-12">
+                      <div className="export-data">
+                        <h6>Export data to a CSV file ?</h6>
                         <button
-                          onClick={() => handleDelete(work?._id)}
-                          className="delete-btn"
+                          className="export-btn"
+                          onClick={exportWorkStatus}
                         >
-                          <i className="fas fa-trash-alt"></i>
+                          {" "}
+                          Export Work Staus
                         </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12">
+                      <div className="working-hours">
+                        <h6>
+                          Total Work Hours : <span>{totalWorkHours}</span> Hour
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
+              
+              </>
+            ) : (
+              <>
+                <h6>No Data Found</h6>
+              </>
+            )}
+          </div>
           </div>
         </div>
       </div>
