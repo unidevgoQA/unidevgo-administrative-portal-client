@@ -68,7 +68,7 @@ const AllEmployee = () => {
                   <td>{employee?.desgination}</td>
                   <td>{employee?.mobile}</td>
                   <td>{employee?.role}</td>
-                  <td>{employee?.email}</td>
+                  <td style={{textTransform:'lowercase'}}>{employee?.email}</td>
                   <td>{employee?.address}</td>
                   <td>{employee?.joiningDate}</td>
                   <td>

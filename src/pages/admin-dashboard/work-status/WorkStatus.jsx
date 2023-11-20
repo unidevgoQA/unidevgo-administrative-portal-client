@@ -1,3 +1,4 @@
+import exportFromJSON from "export-from-json";
 import React, { useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
@@ -85,35 +86,28 @@ const WorkStatus = () => {
     key: "selection",
   };
 
-  const data = [
-    {
-      name: "Sarah Smith",
-      desgination: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-    },
-    {
-      name: "Sarah Smith",
-      desgination: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-    },
-    {
-      name: "Sarah Smith",
-      desgination: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-    },
-    {
-      name: "Sarah Smith",
-      desgination: "Software QA Engineer",
-      mobile: "+880-1634534522",
-      email: "sara.smith@gmail.com",
-    },
-  ];
   //Export Work Status
   const exportWorkStatus = () => {
+    const fileName = "Work Status";
+    const exportType = exportFromJSON.types.csv;
 
+    const combinedData = [
+      ...filteredStatusData,
+      { TotalHours: totalWorkHours },
+    ];
+    exportFromJSON({
+      data: combinedData,
+      fields: {
+        employeeName: "NAME",
+        task: "TASK",
+        date: "DATE",
+        hour: "HOURS",
+        workStatus: "STATUS",
+        TotalHours: "TOTAL WORK HOURS",
+      },
+      fileName,
+      exportType,
+    });
   };
 
   //handle Delete
@@ -168,6 +162,7 @@ const WorkStatus = () => {
             <div className="col-lg-1 col-md-1 col-sm-12">
               <div className="date-range">
                 <DateRangePicker
+                  rangeColors={["#1F8536"]}
                   direction="horizontal"
                   showDateDisplay={false}
                   showMonthAndYearPickers={false}
@@ -177,9 +172,8 @@ const WorkStatus = () => {
               </div>
             </div>
             <div className="col-lg-11 col-md-11 col-sm-12">
-            {filteredStatusData?.length > 0 ? (
-              <>
-              
+              {filteredStatusData?.length > 0 ? (
+                <>
                   <table class="table-modify table table-striped">
                     <thead>
                       <tr>
@@ -188,7 +182,7 @@ const WorkStatus = () => {
                         <th>Date</th>
                         <th>Hours Of Work</th>
                         <th>Status</th>
-                        <th className="description">Desciption</th>
+                        <th className="description">Description</th>
                         <th className="action-area">Action</th>
                       </tr>
                     </thead>
@@ -245,20 +239,22 @@ const WorkStatus = () => {
                     </div>
                     <div className="col-md-6 col-sm-12">
                       <div className="working-hours">
-                        <h6>
-                          Total Work Hours : <span>{totalWorkHours}</span> Hour
-                        </h6>
+                        {totalWorkHours > 0 && (
+                          <h6>
+                            Total Work Hours : <span>{totalWorkHours}</span>{" "}
+                            Hour
+                          </h6>
+                        )}
                       </div>
                     </div>
                   </div>
-              
-              </>
-            ) : (
-              <>
-                <h6>No Data Found</h6>
-              </>
-            )}
-          </div>
+                </>
+              ) : (
+                <>
+                  <h6>No Data Found</h6>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

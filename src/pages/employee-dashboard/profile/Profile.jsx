@@ -1,5 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import exportFromJSON from "export-from-json";
+import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
@@ -23,6 +25,78 @@ const Profile = () => {
   //Register User
   const registerUser = userData?.data;
 
+  //States
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [filteredStatusData, setFilteredStatusData] = useState([]);
+  const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
+    []
+  );
+
+
+  useEffect(() => {
+    const filterWorkStatus = workStatusData?.data.filter(
+      (status) => status?.employeeEmail === registerUser?.email
+    );
+    setFilteredStatusDataByEmail(filterWorkStatus);
+    setFilteredStatusData(filterWorkStatus);
+  }, [workStatusData, registerUser]);
+
+  //Work Hours
+  const workHoursNumbers = filteredStatusData?.map((work) => {
+    const totalHours = parseInt(work.hour);
+    return totalHours;
+  });
+  const totalWorkHours = workHoursNumbers?.reduce(
+    (acc, current) => acc + current,
+    0
+  );
+
+  // Date select
+  const handleSelect = (date) => {
+    let filtered = filteredStatusDataByEmail.filter((workStatus) => {
+      let statusDate = new Date(workStatus["date"]);
+      return (
+        statusDate >= date.selection.startDate &&
+        statusDate <= date.selection.endDate
+      );
+    });
+    setStartDate(date.selection.startDate);
+    setEndDate(date.selection.endDate);
+    setFilteredStatusData(filtered);
+  };
+
+  //Select date range
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
+  //Export Work Status
+  const exportWorkStatus = () => {
+    const fileName = "Work Status";
+    const exportType = exportFromJSON.types.csv;
+
+    const combinedData = [
+      ...filteredStatusData,
+      { TotalHours: totalWorkHours },
+    ];
+    exportFromJSON({
+      data: combinedData,
+      fields: {
+        employeeName: "NAME",
+        task: "TASK",
+        date: "DATE",
+        hour: "HOURS",
+        workStatus: "STATUS",
+        TotalHours: "TOTAL WORK HOURS",
+      },
+      fileName,
+      exportType,
+    });
+  };
+
   //Update API
   const [
     handleUpdateWorkStatus,
@@ -36,28 +110,10 @@ const Profile = () => {
     (leave) => leave.employeeEmail === user.email
   );
 
-  console.log(filterLeaves);
-
   const filerGetLeave = filterLeaves?.filter(
     (leave) => leave.status === "accepted"
   );
 
-  // {
-  //   const { data: allProfile } = useGetProfilesQuery();
-
-  //   const allProfileData = allProfile?.data;
-
-  //   const loggedUser = allProfileData?.filter(
-  //     (profile) => profile.email === user.email
-  //   );
-
-  //   const registerUser = loggedUser[0];
-  // }
-
-  //Filter work status based on email
-  const filterWorkStatus = workStatusData?.data.filter(
-    (status) => status?.employeeEmail === registerUser?.email
-  );
   //handle Update
   const handleStatusChange = (id, workStatus) => {
     const updatedStatus =
@@ -205,70 +261,108 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="my-task-status">
-        {filterWorkStatus?.length > 0 && (
-          <div className="row">
-            <div className="col-md-12">
-              <div className="heading">
-                <h2>
-                  <span>My Work Status</span>{" "}
-                  <i class="fa-solid fa-battery-half"></i>{" "}
-                </h2>
+      <>
+        {registerUser?.role === "employee" && (
+          <div className="row mb-5">
+            <div className="col-lg-1 col-md-1 col-sm-12">
+              <div className="date-range">
+                <DateRangePicker
+                  direction="horizontal"
+                  rangeColors={["#1F8536"]}
+                  showDateDisplay={false}
+                  showMonthAndYearPickers={false}
+                  ranges={[selectionRange]}
+                  onChange={handleSelect}
+                />
               </div>
-              <table class="table-modify table table-striped">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th className="task">Task</th>
-                    <th>Date</th>
-                    <th>Hours Of Work</th>
-                    <th>Status</th>
-                    <th className="description">Desciption</th>
-                    <th className="action-area">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filterWorkStatus?.map((work) => (
-                    <tr>
-                      <td>
-                        <img
-                          className="employee-img"
-                          src={registerUser?.img}
-                          alt="employee"
-                        />
-                      </td>
-                      <td>{work?.task}</td>
-                      <td>{work?.date}</td>
-                      <td>{work?.hour}</td>
-                      <td>{work?.workStatus}</td>
-                      <td>{work?.description}</td>
-                      <td>
-                        <button
-                          onClick={() =>
-                            handleStatusChange(work?._id, work?.workStatus)
-                          }
-                          className="update-btn text-white"
-                        >
-                          {work?.workStatus == "in progress"
-                            ? "Mark as Complete"
-                            : "Mark as in Progress"}
-                        </button>
+            </div>
+            <div className="col-lg-11 col-md-11 col-sm-12">
+              {filteredStatusData?.length > 0 ? (
+                <>
+                  <table class="table-modify table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th className="task">Task</th>
+                        <th>Date</th>
+                        <th>Hours Of Work</th>
+                        <th>Status</th>
+                        <th className="description">Description</th>
+                        <th className="action-area">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredStatusData?.map((work) => (
+                        <tr>
+                          <td>
+                            <img
+                              className="employee-img"
+                              src={work?.employeeImg}
+                              alt="employee"
+                            />
+                          </td>
+                          <td>{work?.task}</td>
+                          <td>{work?.date}</td>
+                          <td>{work?.hour}</td>
+                          <td>{work?.workStatus}</td>
+                          <td>{work?.description}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                handleStatusChange(work?._id, work?.workStatus)
+                              }
+                              className="update-btn text-white"
+                            >
+                              {work?.workStatus == "in progress"
+                                ? "Mark as Complete"
+                                : "Mark as in Progress"}
+                            </button>
 
+                            <button
+                              onClick={() => handleDelete(work?._id)}
+                              className="delete-btn"
+                            >
+                              <i className="fas fa-trash-alt"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="row">
+                    <div className="col-md-6 col-sm-12">
+                      <div className="export-data">
+                        <h6>Export data to a CSV file ?</h6>
                         <button
-                          onClick={() => handleDelete(work?._id)}
-                          className="delete-btn"
+                          className="export-btn"
+                          onClick={exportWorkStatus}
                         >
-                          <i className="fas fa-trash-alt"></i>
+                          {" "}
+                          Export Work Staus
                         </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12">
+                      <div className="working-hours">
+                        {totalWorkHours > 0 && (
+                          <h6>
+                            Total Work Hours : <span>{totalWorkHours}</span>{" "}
+                            Hour
+                          </h6>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h6>No Data Found</h6>
+                </>
+              )}
             </div>
           </div>
         )}
-      </div>
+      </>
     </div>
   );
 };

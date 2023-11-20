@@ -25,38 +25,42 @@ const Register = () => {
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
-    createUser(data.email, data.password)
-      .then((result) => {
-        if (result.user) {
-          console.log("email firebase", result.user.email);
-          const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
-          fetch(url, {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((imgData) => {
-              if (imgData.success) {
-                const profile = {
-                  name: data.name,
-                  desgination: data.desgination,
-                  gender: data.gender,
-                  img: imgData.data.url,
-                  joiningDate: data.joiningDate,
-                  mobile: data.mobile,
-                  address: data.address,
-                  email: data.email,
-                  role: "employee",
-                };
-                addProfile(profile);
-                toast.success("Register Successfully", { id: "add-profile" });
-                reset();
-                navigate("/");
-              }
-            });
-        }
-      })
-      .catch((err) => setShowError(err.message));
+    if (data.email.endsWith("@unidevgo.com")) {
+      createUser(data.email, data.password)
+        .then((result) => {
+          if (result.user) {
+            console.log("email firebase", result.user.email);
+            const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
+            fetch(url, {
+              method: "POST",
+              body: formData,
+            })
+              .then((res) => res.json())
+              .then((imgData) => {
+                if (imgData.success) {
+                  const profile = {
+                    name: data.name,
+                    desgination: data.desgination,
+                    gender: data.gender,
+                    img: imgData.data.url,
+                    joiningDate: data.joiningDate,
+                    mobile: data.mobile,
+                    address: data.address,
+                    email: data.email,
+                    role: "employee",
+                  };
+                  addProfile(profile);
+                  toast.success("Register Successfully", { id: "add-profile" });
+                  reset();
+                  navigate("/");
+                }
+              });
+          }
+        })
+        .catch((err) => setShowError(err.message));
+    } else {
+      toast.error('Invalid email domain. Registration failed. Must be use unidevgo email')
+    }
   };
 
   return (
