@@ -89,7 +89,7 @@ const LeaveManagement = () => {
                   <td>{leave?.leaveFrom}</td>
                   <td>{leave?.leaveTo}</td>
                   <td>{leave?.type}</td>
-                  <td>
+                  <td className="update-status">
                     <select
                       value={leave?.status}
                       onChange={(e) => setLeaveStatus(e.target.value)}

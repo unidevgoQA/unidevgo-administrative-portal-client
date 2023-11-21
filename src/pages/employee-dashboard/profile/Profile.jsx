@@ -224,38 +224,40 @@ const Profile = () => {
                 </div>
               </div>
               <div className="col-lg-6 col-md-12">
-                <div className="employee-vailability">
-                  <div className="row gy-3">
-                    <div className="col-md-6">
-                      <div className="attendence employee-card">
-                        <i class="fa-solid fa-border-all"></i>
-                        <h6>Total Leave</h6>
-                        <span>30</span>
+                {registerUser?.role === "employee" && (
+                  <div className="employee-vailability">
+                    <div className="row gy-3">
+                      <div className="col-md-6">
+                        <div className="attendence employee-card">
+                          <i class="fa-solid fa-border-all"></i>
+                          <h6>Total Leave</h6>
+                          <span>30</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="leave-apply employee-card">
-                        <i class="fa-solid fa-person-walking-arrow-right"></i>
-                        <h6>Leave Apply</h6>
-                        <span>{filterLeaves?.length}</span>
+                      <div className="col-md-6">
+                        <div className="leave-apply employee-card">
+                          <i class="fa-solid fa-person-walking-arrow-right"></i>
+                          <h6>Leave Apply</h6>
+                          <span>{filterLeaves?.length}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="late-coming employee-card">
-                        <i class="fa-solid fa-check"></i>
-                        <h6>Get Leave</h6>
-                        <span>{filerGetLeave?.length}</span>
+                      <div className="col-md-6">
+                        <div className="late-coming employee-card">
+                          <i class="fa-solid fa-check"></i>
+                          <h6>Get Leave</h6>
+                          <span>{filerGetLeave?.length}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="absent employee-card">
-                        <i class="fa-regular fa-circle-xmark"></i>
-                        <h6>Remaining Leave</h6>
-                        <span>{30 - filerGetLeave?.length}</span>
+                      <div className="col-md-6">
+                        <div className="absent employee-card">
+                          <i class="fa-regular fa-circle-xmark"></i>
+                          <h6>Remaining Leave</h6>
+                          <span>{30 - filerGetLeave?.length}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -265,18 +267,18 @@ const Profile = () => {
         {registerUser?.role === "employee" && (
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-             <div className="table-responsive">
-             <div className="date-range">
-                <DateRangePicker
-                  direction="horizontal"
-                  rangeColors={["#1F8536"]}
-                  showDateDisplay={false}
-                  showMonthAndYearPickers={false}
-                  ranges={[selectionRange]}
-                  onChange={handleSelect}
-                />
+              <div className="table-responsive">
+                <div className="date-range">
+                  <DateRangePicker
+                    direction="horizontal"
+                    rangeColors={["#1F8536"]}
+                    showDateDisplay={false}
+                    showMonthAndYearPickers={false}
+                    ranges={[selectionRange]}
+                    onChange={handleSelect}
+                  />
+                </div>
               </div>
-             </div>
             </div>
             <div className="col-lg-12 col-md-12col-sm-12">
               {filteredStatusData?.length > 0 ? (

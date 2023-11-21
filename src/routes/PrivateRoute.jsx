@@ -1,20 +1,23 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../providers/AuthProviders';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProviders";
 
-const PrivateRoute = ({children}) => {
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) {
+    return (
+      <div className="text-center ">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
-    const {user , loading} = useContext(AuthContext);
-    if(loading){
-       return <h5 className='text-center'>Loading</h5>
-    }
+  if (user) {
+    return children;
+  }
+  return <Navigate to={"/"} replace={true}></Navigate>;
+};
 
-    if(user){
-        return children;
-    }
-  return (
-    <Navigate to={'/'} replace={true}></Navigate>
-  )
-}
-
-export default PrivateRoute
+export default PrivateRoute;
