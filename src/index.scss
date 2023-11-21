@@ -313,7 +313,7 @@ body {
 
 //Wrapper - Table
 .content-wrapper {
-  margin-right: 20px;
+  margin: 0px 15px;
   .heading {
     background: rgb(7, 28, 11);
     margin-bottom: 30px;
@@ -581,6 +581,42 @@ body {
 .rdrStaticRangeSelected {
   color: #073a13;
 }
+//Topbar
+.topbar {
+  display: none;
+  background: linear-gradient(90deg, rgb(7, 28, 11) 0%, rgb(32, 134, 55) 100%);
+}
+.topbar ul li {
+  color: #fff;
+  list-style: none;
+  padding: 5px 00px;
+}
+
+.topbar ul li i {
+  width: 20px;
+}
+
+.topbar ul {
+  margin-left: -30px;
+  margin-top: 20px;
+}
+
+.topbar ul li a {
+  text-decoration: none;
+  margin-left: 6px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+}
+.topbar .navbar-toggler {
+  background: #fff;
+  padding: 2px;
+  margin: 0;
+}
+
+.topbar .navbar-toggler i {
+  font-size: 24px;
+}
 //Dashboard
 //Responsive
 @media screen and (max-width: 1024px) {
@@ -618,5 +654,14 @@ body {
 @media screen and (max-width: 768px) {
   .dashboard {
     overflow-x: auto;
+  }
+}
+@media screen and (max-width: 575px) {
+  .sidebar {
+    display: none;
+  }
+  .topbar {
+    display: block;
+    padding: 15px;
   }
 }

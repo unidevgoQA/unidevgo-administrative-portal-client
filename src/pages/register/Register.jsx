@@ -59,7 +59,9 @@ const Register = () => {
         })
         .catch((err) => setShowError(err.message));
     } else {
-      toast.error('Invalid email domain. Registration failed. Must be use unidevgo email')
+      toast.error(
+        "Invalid email domain. Registration failed. Must be use unidevgo email"
+      );
     }
   };
 
