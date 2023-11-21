@@ -58,6 +58,7 @@ const LeaveManagement = () => {
               <i class="fa-solid fa-list-check"></i>
             </h2>
           </div>
+          <div className="table-responsive">
           <table class="table-modify table table-striped">
             <thead>
               <tr>
@@ -74,7 +75,7 @@ const LeaveManagement = () => {
             </thead>
             <tbody>
               {allLeaveManagements?.map((leave) => (
-                <tr>
+                <tr key={leave?._id}>
                   <td>
                     <img
                       className="employee-img"
@@ -112,6 +113,7 @@ const LeaveManagement = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

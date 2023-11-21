@@ -40,6 +40,7 @@ const Topbar = () => {
           className="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
+            <hr />
           <div className="side-links">
             {registerUser?.role === "admin" ? (
               <ul>
@@ -51,10 +52,6 @@ const Topbar = () => {
                   <i class="fa-solid fa-people-group"></i>
                   <Link to={"all-employee"}>All Employee</Link>
                 </li>
-                {/* <li>
-              <i class="fa-solid fa-battery-half"></i>
-              <Link to={"work-status"}>Work Status</Link>
-            </li> */}
               </ul>
             ) : (
               <ul>

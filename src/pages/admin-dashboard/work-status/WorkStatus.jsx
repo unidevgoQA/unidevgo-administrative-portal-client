@@ -159,71 +159,78 @@ const WorkStatus = () => {
           </div>
 
           <div className="row mb-5">
-            <div className="col-lg-1 col-md-1 col-sm-12">
-              <div className="date-range">
-                <DateRangePicker
-                  rangeColors={["#1F8536"]}
-                  direction="horizontal"
-                  showDateDisplay={false}
-                  showMonthAndYearPickers={false}
-                  ranges={[selectionRange]}
-                  onChange={handleSelect}
-                />
+            <div className="col-lg-12 col-md-12 col-sm-12">
+              <div className="table-responsive">
+                <div className="date-range">
+                  <DateRangePicker
+                    rangeColors={["#1C1C1"]}
+                    direction="horizontal"
+                    showDateDisplay={false}
+                    showMonthAndYearPickers={false}
+                    ranges={[selectionRange]}
+                    onChange={handleSelect}
+                  />
+                </div>
               </div>
             </div>
-            <div className="col-lg-11 col-md-11 col-sm-12">
+            <div className="col-lg-12 col-md-12 col-sm-12">
               {filteredStatusData?.length > 0 ? (
                 <>
-                  <table class="table-modify table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Employee</th>
-                        <th className="task">Task</th>
-                        <th>Date</th>
-                        <th>Hours Of Work</th>
-                        <th>Status</th>
-                        <th className="description">Description</th>
-                        <th className="action-area">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredStatusData?.map((work) => (
+                  <div className="table-responsive">
+                    <table class="table-modify table table-striped">
+                      <thead>
                         <tr>
-                          <td>
-                            <img
-                              className="employee-img"
-                              src={work?.employeeImg}
-                              alt="employee"
-                            />
-                          </td>
-                          <td>{work?.task}</td>
-                          <td>{work?.date}</td>
-                          <td>{work?.hour}</td>
-                          <td>{work?.workStatus}</td>
-                          <td>{work?.description}</td>
-                          <td>
-                            <button
-                              onClick={() =>
-                                handleStatusChange(work?._id, work?.workStatus)
-                              }
-                              className="update-btn text-white"
-                            >
-                              {work?.workStatus == "in progress"
-                                ? "Mark as Complete"
-                                : "Mark as in Progress"}
-                            </button>
-
-                            <button
-                              onClick={() => handleDelete(work?._id)}
-                              className="delete-btn"
-                            >
-                              <i className="fas fa-trash-alt"></i>
-                            </button>
-                          </td>
+                          <th>Employee</th>
+                          <th className="task">Task</th>
+                          <th>Date</th>
+                          <th>Hours Of Work</th>
+                          <th>Status</th>
+                          <th className="description">Description</th>
+                          <th className="action-area">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {filteredStatusData?.map((work) => (
+                          <tr key={work?._id}>
+                            <td>
+                              <img
+                                className="employee-img"
+                                src={work?.employeeImg}
+                                alt="employee"
+                              />
+                            </td>
+                            <td>{work?.task}</td>
+                            <td>{work?.date}</td>
+                            <td>{work?.hour}</td>
+                            <td>{work?.workStatus}</td>
+                            <td>{work?.description}</td>
+                            <td>
+                              <button
+                                onClick={() =>
+                                  handleStatusChange(
+                                    work?._id,
+                                    work?.workStatus
+                                  )
+                                }
+                                className="update-btn text-white"
+                              >
+                                {work?.workStatus == "in progress"
+                                  ? "Mark as Complete"
+                                  : "Mark as in Progress"}
+                              </button>
+
+                              <button
+                                onClick={() => handleDelete(work?._id)}
+                                className="delete-btn"
+                              >
+                                <i className="fas fa-trash-alt"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   <div className="row">
                     <div className="col-md-6 col-sm-12">
                       <div className="export-data">

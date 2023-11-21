@@ -332,9 +332,13 @@ body {
     }
   }
   .table-modify {
-    background: #fff;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    background: #e3fae9;
+    /* box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px; */
     border-radius: 10px;
+
+    .table-responsive {
+      overflow-y: hidden;
+    }
     .employee-img {
       width: 50px;
       border-radius: 10px;
@@ -342,6 +346,14 @@ body {
     .task,
     .description {
       width: 300px;
+    }
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+      border-width: 0;
     }
     th {
       font-size: 14px;
@@ -571,15 +583,42 @@ body {
 .rdrInputRanges {
   display: none;
 }
+.rdrStaticRanges {
+  display: flex;
+  flex-direction: row;
+}
+.rdrStaticRange {
+  border: 0;
+  cursor: pointer;
+  display: block;
+  outline: 0;
+  padding: 0;
+  background: #fff;
+  border-radius: 10px;
+  margin: 10px 5px 10px 0px;
+}
+.rdrStaticRang:hover {
+  background: #fff;
+}
 .rdrDefinedRangesWrapper {
   font-size: 12px;
-  width: 115px;
-  background: #1e7e34;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 .rdrStaticRangeSelected {
   color: #073a13;
+}
+.rdrStaticRangeLabel {
+  font-size: 11px;
+  font-weight: 600;
+}
+.rdrDefinedRangesWrapper {
+  border: none;
+}
+span.rdrStaticRangeLabel {
+  background: #e3fae9;
+  border-radius: 10px;
+  color: #071c0b;
 }
 //Topbar
 .topbar {
@@ -610,12 +649,22 @@ body {
 }
 .topbar .navbar-toggler {
   background: #fff;
-  padding: 2px;
+  padding: 5px 0px 0px 0px;
   margin: 0;
 }
 
 .topbar .navbar-toggler i {
   font-size: 24px;
+}
+.topbar .logout-btn {
+  background: $primary;
+  color: $secondary;
+  padding: 5px 10px;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  box-shadow: -3px 3px 0 #0ad028;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 //Dashboard
 //Responsive
@@ -663,5 +712,15 @@ body {
   .topbar {
     display: block;
     padding: 15px;
+  }
+  .working-hours {
+    margin-top: 20px;
+    text-align: left;
+  }
+  .content-wrapper .table-modify {
+    margin: 20px 0px;
+  }
+  .profile-current-task-wrapper .profile-content-wrapper .user-info {
+    padding: 20px;
   }
 }

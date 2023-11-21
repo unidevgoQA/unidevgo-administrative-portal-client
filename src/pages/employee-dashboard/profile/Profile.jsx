@@ -13,7 +13,6 @@ import {
 } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
-
 const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
@@ -34,7 +33,6 @@ const Profile = () => {
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
-
 
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
@@ -266,8 +264,9 @@ const Profile = () => {
       <>
         {registerUser?.role === "employee" && (
           <div className="row mb-5">
-            <div className="col-lg-1 col-md-1 col-sm-12">
-              <div className="date-range">
+            <div className="col-lg-12 col-md-12 col-sm-12">
+             <div className="table-responsive">
+             <div className="date-range">
                 <DateRangePicker
                   direction="horizontal"
                   rangeColors={["#1F8536"]}
@@ -277,10 +276,11 @@ const Profile = () => {
                   onChange={handleSelect}
                 />
               </div>
+             </div>
             </div>
-            <div className="col-lg-11 col-md-11 col-sm-12">
+            <div className="col-lg-12 col-md-12col-sm-12">
               {filteredStatusData?.length > 0 ? (
-                <>
+                <div className="table-responsive">
                   <table class="table-modify table table-striped">
                     <thead>
                       <tr>
@@ -295,7 +295,7 @@ const Profile = () => {
                     </thead>
                     <tbody>
                       {filteredStatusData?.map((work) => (
-                        <tr>
+                        <tr key={work?._id}>
                           <td>
                             <img
                               className="employee-img"
@@ -331,36 +331,32 @@ const Profile = () => {
                       ))}
                     </tbody>
                   </table>
-                  <div className="row">
-                    <div className="col-md-6 col-sm-12">
-                      <div className="export-data">
-                        <h6>Export data to a CSV file ?</h6>
-                        <button
-                          className="export-btn"
-                          onClick={exportWorkStatus}
-                        >
-                          {" "}
-                          Export Work Staus
-                        </button>
-                      </div>
-                    </div>
-                    <div className="col-md-6 col-sm-12">
-                      <div className="working-hours">
-                        {totalWorkHours > 0 && (
-                          <h6>
-                            Total Work Hours : <span>{totalWorkHours}</span>{" "}
-                            Hour
-                          </h6>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </>
+                </div>
               ) : (
                 <>
                   <h6>No Data Found</h6>
                 </>
               )}
+              <div className="row">
+                <div className="col-md-6 col-sm-12">
+                  <div className="export-data">
+                    <h6>Export data to a CSV file ?</h6>
+                    <button className="export-btn" onClick={exportWorkStatus}>
+                      {" "}
+                      Export Work Staus
+                    </button>
+                  </div>
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <div className="working-hours">
+                    {totalWorkHours > 0 && (
+                      <h6>
+                        Total Work Hours : <span>{totalWorkHours}</span> Hour
+                      </h6>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

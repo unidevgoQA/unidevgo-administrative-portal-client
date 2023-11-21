@@ -39,62 +39,66 @@ const AllEmployee = () => {
               <span>All Employee</span> <i class="fa-solid fa-people-group"></i>{" "}
             </h2>
           </div>
-          <table class="table-modify table table-striped">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Designation</th>
-                <th>Mobile</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Joining Date</th>
-                <th>Check Work Status</th>
-                <th className="action-area">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees?.map((employee) => (
+          <div className="table-responsive">
+            <table class="table-modify table table-striped">
+              <thead>
                 <tr>
-                  <td>
-                    <img
-                      className="employee-img"
-                      src={employee?.img}
-                      alt="employee"
-                    />
-                  </td>
-                  <td>{employee?.name}</td>
-                  <td>{employee?.desgination}</td>
-                  <td>{employee?.mobile}</td>
-                  <td>{employee?.role}</td>
-                  <td style={{textTransform:'lowercase'}}>{employee?.email}</td>
-                  <td>{employee?.address}</td>
-                  <td>{employee?.joiningDate}</td>
-                  <td>
-                    <Link to={`/dashboard/work-status/${employee._id}`}>
-                      <button className="update-btn">Check Status</button>
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/dashboard/update-profile/${employee._id}`}>
-                      <button className="update-btn">
-                        {" "}
-                        <i className="far fa-edit"></i>
-                      </button>
-                    </Link>
-
-                    <button
-                      onClick={() => handleDelete(employee._id)}
-                      className="delete-btn"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Designation</th>
+                  <th>Mobile</th>
+                  <th>Role</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th>Joining Date</th>
+                  <th>Check Work Status</th>
+                  <th className="action-area">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {employees?.map((employee) => (
+                  <tr key={employee?._id}>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={employee?.img}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{employee?.name}</td>
+                    <td>{employee?.desgination}</td>
+                    <td>{employee?.mobile}</td>
+                    <td>{employee?.role}</td>
+                    <td style={{ textTransform: "lowercase" }}>
+                      {employee?.email}
+                    </td>
+                    <td>{employee?.address}</td>
+                    <td>{employee?.joiningDate}</td>
+                    <td>
+                      <Link to={`/dashboard/work-status/${employee._id}`}>
+                        <button className="update-btn">Check Status</button>
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/dashboard/update-profile/${employee._id}`}>
+                        <button className="update-btn">
+                          {" "}
+                          <i className="far fa-edit"></i>
+                        </button>
+                      </Link>
+
+                      <button
+                        onClick={() => handleDelete(employee._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

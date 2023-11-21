@@ -43,48 +43,50 @@ const LeaveStatus = () => {
               <i class="fa-solid fa-person-walking-arrow-right"></i>
             </h2>
           </div>
-          <table class="table-modify table table-striped">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Apply Date</th>
-                <th>Status</th>
-                <th>Leave From</th>
-                <th>Leave To</th>
-                <th>Leave Type</th>
-                <th className="action-area">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filterLeaves?.map((leave) => (
+          <div className="table-responsive">
+            <table class="table-modify table table-striped">
+              <thead>
                 <tr>
-                  <td>
-                    <img
-                      className="employee-img"
-                      src={leave?.employeeImg}
-                      alt="employee"
-                    />
-                  </td>
-                  <td>{leave?.employeeName}</td>
-                  <td>{leave?.leaveApply}</td>
-                  <td>{leave?.status}</td>
-                  <td>{leave?.leaveFrom}</td>
-                  <td>{leave?.leaveTo}</td>
-                  <td>{leave?.type}</td>
-
-                  <td>
-                    <button
-                      onClick={() => handleDelete(leave._id)}
-                      className="delete-btn"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Apply Date</th>
+                  <th>Status</th>
+                  <th>Leave From</th>
+                  <th>Leave To</th>
+                  <th>Leave Type</th>
+                  <th className="action-area">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filterLeaves?.map((leave) => (
+                  <tr key={leave?._id}>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={leave?.employeeImg}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{leave?.employeeName}</td>
+                    <td>{leave?.leaveApply}</td>
+                    <td>{leave?.status}</td>
+                    <td>{leave?.leaveFrom}</td>
+                    <td>{leave?.leaveTo}</td>
+                    <td>{leave?.type}</td>
+
+                    <td>
+                      <button
+                        onClick={() => handleDelete(leave._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
