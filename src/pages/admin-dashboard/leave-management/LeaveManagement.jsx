@@ -9,7 +9,10 @@ const LeaveManagement = () => {
   //Api
   const { data } = useGetAllLeavesQuery();
   const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
-  const [updateLeave , {isSuccess : leaveUpdateSuccess , isLoading : leaveUpdateLoading}] = useUpdateLeaveMutation();
+  const [
+    updateLeave,
+    { isSuccess: leaveUpdateSuccess, isLoading: leaveUpdateLoading },
+  ] = useUpdateLeaveMutation();
   //state
   const [leaveStatus, setLeaveStatus] = useState("");
   //set data
@@ -17,7 +20,12 @@ const LeaveManagement = () => {
 
   //handle Update
   const handleLeaveStatusChange = (id) => {
-    updateLeave({ id: id, data: {leaveStatus} });
+    if(leaveStatus === ''){
+      toast.error("Please select the status")
+    }else{
+      updateLeave({ id: id, data: { leaveStatus } });
+    }
+    
   };
 
   //handle Delete
@@ -59,60 +67,64 @@ const LeaveManagement = () => {
             </h2>
           </div>
           <div className="table-responsive">
-          <table class="table-modify table table-striped">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Apply Date</th>
-                <th>Status</th>
-                <th>Leave From</th>
-                <th>Leave To</th>
-                <th>Leave Type</th>
-                <th>Update Status</th>
-                <th className="action-area">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allLeaveManagements?.map((leave) => (
-                <tr key={leave?._id}>
-                  <td>
-                    <img
-                      className="employee-img"
-                      src={leave?.employeeImg}
-                      alt="employee"
-                    />
-                  </td>
-                  <td>{leave?.employeeName}</td>
-                  <td>{leave?.leaveApply}</td>
-                  <td>{leave?.status}</td>
-                  <td>{leave?.leaveFrom}</td>
-                  <td>{leave?.leaveTo}</td>
-                  <td>{leave?.type}</td>
-                  <td className="update-status">
-                    <select
-                      value={leave?.status}
-                      onChange={(e) => setLeaveStatus(e.target.value)}
-                      onBlur={() => handleLeaveStatusChange(leave?._id)}
-                      name="status"
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="rejected">Rejected</option>
-                    </select>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(leave?._id)}
-                      className="delete-btn"
-                    >
-                      <i className="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
+            <table class="table-modify table table-striped">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Apply Date</th>
+                  <th>Status</th>
+                  <th>Leave From</th>
+                  <th>Leave To</th>
+                  <th>Leave Type</th>
+                  <th>Update Status</th>
+                  <th className="action-area">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {allLeaveManagements?.map((leave) => (
+                  <tr key={leave?._id}>
+                    <td>
+                      <img
+                        className="employee-img"
+                        src={leave?.employeeImg}
+                        alt="employee"
+                      />
+                    </td>
+                    <td>{leave?.employeeName}</td>
+                    <td>{leave?.leaveApply}</td>
+                    <td>{leave?.status}</td>
+                    <td>{leave?.leaveFrom}</td>
+                    <td>{leave?.leaveTo}</td>
+                    <td>{leave?.type}</td>
+                    <td className="update-status">
+                      <select
+                        value={leave?.status}
+                        onChange={(e) => setLeaveStatus(e.target.value)}
+                        name="status"
+                        required
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                      <button title="Update Status" onClick={() => handleLeaveStatusChange(leave?._id)} className="update-btn status">
+                        {" "}
+                        <i className="far fa-edit"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleDelete(leave?._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -358,6 +358,7 @@ body {
     }
     th {
       font-size: 14px;
+      white-space: nowrap;
     }
     td {
       font-size: 12px;
@@ -371,6 +372,7 @@ body {
         padding: 5px 10px;
         border-radius: 5px;
       }
+
       .delete-btn {
         border: none;
         background: red;
@@ -632,6 +634,7 @@ span.rdrStaticRangeLabel {
   background: #ffc971;
   border-radius: 10px;
   color: #071c0b;
+  white-space: nowrap;
 }
 //Topbar
 .topbar {
@@ -679,6 +682,19 @@ span.rdrStaticRangeLabel {
   margin-bottom: 10px;
   font-weight: 600;
 }
+
+//Loader
+.loading-area {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update-btn.status {
+  margin-left: 5px;
+}
 //Dashboard
 //Responsive
 @media screen and (max-width: 1024px) {
@@ -701,9 +717,15 @@ span.rdrStaticRangeLabel {
   }
 }
 @media screen and (max-width: 768px) {
+  .dashboard {
+    overflow-x: auto;
+  }
   .login-register {
     padding: 10px 0px;
     height: 100%;
+  }
+  .login-wrapper-main {
+    height: 100vh;
   }
   .employee-vailability {
     margin-top: 20px;
@@ -713,11 +735,7 @@ span.rdrStaticRangeLabel {
     margin-bottom: 3px;
   }
 }
-@media screen and (max-width: 768px) {
-  .dashboard {
-    overflow-x: auto;
-  }
-}
+
 @media screen and (max-width: 575px) {
   .sidebar {
     display: none;

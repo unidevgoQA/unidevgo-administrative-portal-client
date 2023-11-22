@@ -6,7 +6,7 @@ import { useAddWorkTaskMutation } from "../../../features/work-status/workStatus
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const addWorkStatus = () => {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register , reset } = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -38,6 +38,7 @@ const addWorkStatus = () => {
     };
 
     addWorkTask(workTask);
+    reset();
   };
   useEffect(() => {
     if (isSuccess) {

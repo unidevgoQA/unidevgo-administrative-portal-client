@@ -6,7 +6,7 @@ import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi"
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const LeaveApply = () => {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register , reset} = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -33,9 +33,8 @@ const LeaveApply = () => {
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
-
     addLeaveApply(leave);
-    // addWorkTask(workTask);
+    reset()
   };
   useEffect(() => {
     if (isSuccess) {

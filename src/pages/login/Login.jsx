@@ -27,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-register">
+    <div className="login-register login-wrapper-main">
       <div className="container">
         <div className="row g-0 login-regsiter-content-wrapper">
           <div className="col-lg-6 col-md-12">

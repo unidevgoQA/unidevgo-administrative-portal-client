@@ -341,13 +341,15 @@ const Profile = () => {
               )}
               <div className="row">
                 <div className="col-md-6 col-sm-12">
-                  <div className="export-data">
-                    <h6>Export data to a CSV file ?</h6>
-                    <button className="export-btn" onClick={exportWorkStatus}>
-                      {" "}
-                      Export Work Staus
-                    </button>
-                  </div>
+                  {filteredStatusData?.length > 0 && (
+                    <div className="export-data">
+                      <h6>Export data to a CSV file ?</h6>
+                      <button className="export-btn" onClick={exportWorkStatus}>
+                        {" "}
+                        Export Work Staus
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className="col-md-6 col-sm-12">
                   <div className="working-hours">
