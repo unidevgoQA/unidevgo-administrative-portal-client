@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const Register = () => {
   const { handleSubmit, register, reset } = useForm();
   //Error state
   const [showError, setShowError] = useState("");
-  const [disableErrorArea, setDisableErrorArea] = useState(false);
+  // const [disableErrorArea, setDisableErrorArea] = useState(false);
   //Imgbb key
   const imgBBkey = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -64,6 +64,13 @@ const Register = () => {
       );
     }
   };
+
+  //
+  useEffect(() => {
+    if (showError) {
+      toast.error(showError);
+    }
+  }, [showError]);
 
   return (
     <div className="login-register">
@@ -136,7 +143,8 @@ const Register = () => {
                     <input required {...register("address")} />
                   </div>
                 </div>
-
+                
+                {/* 
                 {showError && (
                   <div
                     className={
@@ -153,7 +161,7 @@ const Register = () => {
                       ></i>
                     </>
                   </div>
-                )}
+                )} */}
 
                 <button className="login-register-btn" type="submit">
                   Register <i class="fa-solid fa-arrow-right"></i>

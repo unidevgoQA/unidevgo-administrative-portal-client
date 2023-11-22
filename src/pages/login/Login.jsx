@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,8 +23,16 @@ const Login = () => {
           reset();
         }
       })
-      .catch((err) => setShowError(err.message));
+      .catch((err) => {
+        setShowError(err.message);
+      });
   };
+
+  useEffect(()=>{
+    if(showError){
+      toast.error(showError);
+    }
+  },[showError])
 
   return (
     <div className="login-register login-wrapper-main">
@@ -58,7 +66,7 @@ const Login = () => {
                   />
                   <i class="fa-solid fa-lock"></i>
                 </div>
-                {showError && (
+                {/* {showError && (
                   <div
                     className={
                       disableErrorArea === true
@@ -74,7 +82,7 @@ const Login = () => {
                       ></i>
                     </>
                   </div>
-                )}
+                )} */}
 
                 <button className="login-register-btn" type="submit">
                   <span>Login</span> <i class="fa-solid fa-arrow-right"></i>
@@ -82,17 +90,6 @@ const Login = () => {
               </form>
               <hr />
               <div className="other-action">
-                {/* <h4>Or Login With</h4>
-
-                <button
-                  className="login-register-btn"
-                  onClick={handleGoogleLogin}
-                >
-                  {" "}
-                  Google
-                  <i class="fa-brands fa-google"></i>
-                </button> */}
-                {/* <hr /> */}
                 <div className="login-register-navigation">
                   <h4>Dont have account ?</h4>
                   <Link to={"/register"}>
