@@ -1,9 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { useUpdateProfileMutation } from "../../../features/profile/profileApi";
+import {
+  useGetProfileByEmailQuery,
+  useUpdateProfileMutation,
+} from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 
 const UpdateProfile = () => {
+  //User
+  const { user } = useContext(AuthContext);
+
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  //Register User
+  const registerUser = userData?.data;
+
   const [appleProfileUpdate, { isLoading, isSuccess }] =
     useUpdateProfileMutation();
 
@@ -148,14 +161,11 @@ const UpdateProfile = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Updated Successfully", { id: "update-profile" });
-      if (updateProfile?.role === "admin") {
-        navigate("/dashboard/all-employee");
-      }
     }
     if (isLoading) {
       toast.loading("Loading", { id: "update-profile" });
     }
-  }, [isSuccess, isLoading]);
+  }, [isSuccess , isLoading]);
 
   return (
     <div className="content-wrapper">
@@ -172,6 +182,7 @@ const UpdateProfile = () => {
                 <div className="col-md-6">
                   <label>Name</label>
                   <input
+                    required
                     onChange={handleNameChange}
                     value={updateProfile?.name}
                     type="text"
@@ -206,7 +217,13 @@ const UpdateProfile = () => {
                     name="mobile"
                   />
                 </div>
-                <div className="col-md-4">
+                <div
+                  className={
+                    registerUser?.role === "super admin"
+                      ? "col-md-4"
+                      : "col-md-6"
+                  }
+                >
                   <label>Joining Date</label>
                   <input
                     onChange={handleJoiningDateChange}
@@ -217,7 +234,13 @@ const UpdateProfile = () => {
                   />
                 </div>
 
-                <div className="col-md-4">
+                <div
+                  className={
+                    registerUser?.role === "super admin"
+                      ? "col-md-4"
+                      : "col-md-6"
+                  }
+                >
                   <label for="gender">Gender</label>
                   <select
                     onChange={handleGenderChange}
@@ -228,18 +251,20 @@ const UpdateProfile = () => {
                     <option value="female">Female</option>
                   </select>
                 </div>
-                <div className="col-md-4">
-                  <label for="role">Role</label>
-                  <select
-                    onChange={handleRoleChange}
-                    value={updateProfile?.role}
-                    name="role"
-                  >
-                    <option value="super admin">Super Admin</option>
-                    <option value="admin">Admin</option>
-                    <option value="employee">Employee</option>
-                  </select>
-                </div>
+                {registerUser?.role === "super admin" && (
+                  <div className="col-md-4">
+                    <label for="role">Role</label>
+                    <select
+                      onChange={handleRoleChange}
+                      value={updateProfile?.role}
+                      name="role"
+                    >
+                      <option value="super admin">Super Admin</option>
+                      <option value="admin">Admin</option>
+                      <option value="employee">Employee</option>
+                    </select>
+                  </div>
+                )}
 
                 <div className="col-md-12">
                   <button className="submit-btn">Update Profile</button>

@@ -48,7 +48,6 @@ const LeaveStatus = () => {
               <thead>
                 <tr>
                   <th>Image</th>
-                  <th>Name</th>
                   <th>Apply Date</th>
                   <th>Status</th>
                   <th>Leave From</th>
@@ -68,7 +67,6 @@ const LeaveStatus = () => {
                         alt="employee"
                       />
                     </td>
-                    <td>{leave?.employeeName}</td>
                     <td>{leave?.leaveApply}</td>
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
