@@ -52,7 +52,10 @@ const Profile = () => {
     (acc, current) => acc + current,
     0
   );
-
+  //Show all data handler
+  const showAllData = () => {
+    setFilteredStatusData(filteredStatusDataByEmail);
+  };
   // Date select
   const handleSelect = (date) => {
     let filtered = filteredStatusDataByEmail.filter((workStatus) => {
@@ -103,17 +106,27 @@ const Profile = () => {
     handleUpdateWorkStatus,
     { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
   ] = useUpdateWorkTaskMutation();
+
   //Leave management data
   const { data } = useGetAllLeavesQuery();
   const allLeaveManagements = data?.data;
+
   //Filter leaves based on email
   const filterLeaves = allLeaveManagements?.filter(
     (leave) => leave.employeeEmail === user.email
   );
-
+  //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
     (leave) => leave.status === "accepted"
   );
+
+  //calculate total get leave days
+  const totalGetLeaveDays = filerGetLeave?.reduce(
+    (sum, leave) => sum + leave.totalDays,
+    0
+  );
+
+  console.log(totalGetLeaveDays);
 
   //handle Update
   const handleStatusChange = (id, workStatus) => {
@@ -232,28 +245,28 @@ const Profile = () => {
                         <div className="attendence employee-card">
                           <i class="fa-solid fa-border-all"></i>
                           <h6>Total Leave</h6>
-                          <span>30</span>
+                          <span>17 Days</span>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="leave-apply employee-card">
                           <i class="fa-solid fa-person-walking-arrow-right"></i>
                           <h6>Leave Apply</h6>
-                          <span>{filterLeaves?.length}</span>
+                          <span>{filterLeaves?.length} Leave Apply</span>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="late-coming employee-card">
                           <i class="fa-solid fa-check"></i>
                           <h6>Get Leave</h6>
-                          <span>{filerGetLeave?.length}</span>
+                          <span>{totalGetLeaveDays} Days</span>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="absent employee-card">
                           <i class="fa-regular fa-circle-xmark"></i>
                           <h6>Remaining Leave</h6>
-                          <span>{30 - filerGetLeave?.length}</span>
+                          <span>{17 - totalGetLeaveDays} Days</span>
                         </div>
                       </div>
                     </div>
@@ -270,9 +283,15 @@ const Profile = () => {
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="table-responsive">
                 <div className="date-range">
+                  {/* <button
+                    className="show-all-task-btn"
+                    onClick={() => showAllData()}
+                  >
+                    All
+                  </button> */}
                   <DateRangePicker
                     direction="horizontal"
-                    rangeColors={["#1F8536"]}
+                    rangeColors={["blue"]}
                     showDateDisplay={false}
                     showMonthAndYearPickers={false}
                     ranges={[selectionRange]}

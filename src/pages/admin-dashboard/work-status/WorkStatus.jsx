@@ -32,6 +32,7 @@ const WorkStatus = () => {
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
+
   const { id } = useParams();
 
   //Set url
@@ -79,6 +80,10 @@ const WorkStatus = () => {
     setFilteredStatusData(filtered);
   };
 
+  //Show all data handler
+  const showAllData = () => {
+    setFilteredStatusData(filteredStatusDataByEmail);
+  };
   //Select date range
   const selectionRange = {
     startDate: startDate,
@@ -162,8 +167,9 @@ const WorkStatus = () => {
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="table-responsive">
                 <div className="date-range">
+                {/* <button className="show-all-task-btn" onClick={() => showAllData()}>All</button> */}
                   <DateRangePicker
-                    rangeColors={["#1C1C1"]}
+                    rangeColors={["blue"]}
                     direction="horizontal"
                     showDateDisplay={false}
                     showMonthAndYearPickers={false}

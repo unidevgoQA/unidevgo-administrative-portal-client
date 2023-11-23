@@ -36,7 +36,7 @@ const Sidebar = () => {
       </div>
       <hr />
       <div className="side-links">
-        {registerUser?.role === "admin" ? (
+        {registerUser?.role === "admin" || registerUser?.role === "super admin" ? (
           <ul>
             <li>
               <i class="fa-solid fa-list-check"></i>

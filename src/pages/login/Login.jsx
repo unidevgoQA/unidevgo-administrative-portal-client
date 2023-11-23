@@ -11,7 +11,6 @@ const Login = () => {
   const [showError, setShowError] = useState("");
   //State
   const [showPassword, setShowPassword] = useState(false);
-  const [disableErrorArea, setDisableErrorArea] = useState(false);
 
   const navigate = useNavigate();
   const { handleSubmit, register, reset } = useForm();

@@ -53,6 +53,7 @@ const LeaveStatus = () => {
                   <th>Status</th>
                   <th>Leave From</th>
                   <th>Leave To</th>
+                  <th>Total Days</th>
                   <th>Leave Type</th>
                   <th className="action-area">Action</th>
                 </tr>
@@ -72,6 +73,7 @@ const LeaveStatus = () => {
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
                     <td>{leave?.leaveTo}</td>
+                    <td>{leave?.totalDays}</td>
                     <td>{leave?.type}</td>
 
                     <td>

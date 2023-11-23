@@ -1,12 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
   useDeleteProfileMutation,
+  useGetProfileByEmailQuery,
   useGetProfilesQuery,
 } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 
 const AllEmployee = () => {
+  //User
+  const { user } = useContext(AuthContext);
+
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  //Register User
+  const registerUser = userData?.data;
+
   //Api
   const { data } = useGetProfilesQuery();
   const [deleteProfile, { isSuccess, isLoading }] = useDeleteProfileMutation();
@@ -52,7 +63,9 @@ const AllEmployee = () => {
                   <th>Address</th>
                   <th>Joining Date</th>
                   <th>Check Work Status</th>
-                  <th className="action-area">Action</th>
+                  {registerUser?.role === "super admin" && (
+                    <th className="action-area">Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -79,21 +92,23 @@ const AllEmployee = () => {
                         <button className="update-btn">Check Status</button>
                       </Link>
                     </td>
-                    <td>
-                      <Link to={`/dashboard/update-profile/${employee._id}`}>
-                        <button className="update-btn">
-                          {" "}
-                          <i className="far fa-edit"></i>
-                        </button>
-                      </Link>
+                    {registerUser.role === "super admin" && (
+                      <td>
+                        <Link to={`/dashboard/update-profile/${employee._id}`}>
+                          <button className="update-btn">
+                            {" "}
+                            <i className="far fa-edit"></i>
+                          </button>
+                        </Link>
 
-                      <button
-                        onClick={() => handleDelete(employee._id)}
-                        className="delete-btn"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </td>
+                        <button
+                          onClick={() => handleDelete(employee._id)}
+                          className="delete-btn"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

@@ -6,7 +6,7 @@ import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi"
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const LeaveApply = () => {
-  const { handleSubmit, register , reset} = useForm();
+  const { handleSubmit, register, reset } = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -17,14 +17,24 @@ const LeaveApply = () => {
   const registerUser = data?.data;
   //Current date
   let currentDate = new Date().toJSON().slice(0, 10);
+
   //Add work status handler
-  const handleLeaveApply = ({ leaveApply, leaveFrom, leaveTo, type }) => {
+  const handleLeaveApply = ({ leaveFrom, leaveTo, type }) => {
+    //Calculate Days
+    const startDate = new Date(leaveFrom);
+    const endDate = new Date(leaveTo);
+
+    const timeDifference = endDate.getTime() - startDate.getTime();
+    const days = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+
     const leave = {
       //leave data
-      leaveApply : currentDate,
+      leaveApply: currentDate,
       leaveFrom,
       leaveTo,
       type,
+      totalDays : days + 1,
       status: "pending",
       //user info
       employeeEmail: registerUser?.email,
@@ -34,6 +44,7 @@ const LeaveApply = () => {
     addLeaveApply(leave);
     reset()
   };
+
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-work-task" });
@@ -55,7 +66,6 @@ const LeaveApply = () => {
           <div className="add-form">
             <form onSubmit={handleSubmit(handleLeaveApply)}>
               <div className="row">
-
                 <div className="col-md-6">
                   <label>Leave From Date</label>
                   <input required type="date" {...register("leaveFrom")} />

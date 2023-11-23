@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
   useUpdateLeaveMutation,
 } from "../../../features/leave-management/leaveManagementApi";
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 const LeaveManagement = () => {
+  //User
+  const { user } = useContext(AuthContext);
+
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  //Register User
+  const registerUser = userData?.data;
+
   //Api
   const { data } = useGetAllLeavesQuery();
   const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
@@ -20,12 +31,11 @@ const LeaveManagement = () => {
 
   //handle Update
   const handleLeaveStatusChange = (id) => {
-    if(leaveStatus === ''){
-      toast.error("Please select the status")
-    }else{
+    if (leaveStatus === "") {
+      toast.error("Please select the status");
+    } else {
       updateLeave({ id: id, data: { leaveStatus } });
     }
-    
   };
 
   //handle Delete
@@ -77,8 +87,12 @@ const LeaveManagement = () => {
                   <th>Leave From</th>
                   <th>Leave To</th>
                   <th>Leave Type</th>
+                  <th>Total Days</th>
                   <th>Update Status</th>
-                  <th className="action-area">Action</th>
+                  {
+                     registerUser?.role === "super admin" &&  <th className="action-area">Action</th>
+                  }
+                 
                 </tr>
               </thead>
               <tbody>
@@ -96,7 +110,9 @@ const LeaveManagement = () => {
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
                     <td>{leave?.leaveTo}</td>
+                   
                     <td>{leave?.type}</td>
+                    <td>{leave?.totalDays}</td>
                     <td className="update-status">
                       <select
                         value={leave?.status}
@@ -108,19 +124,25 @@ const LeaveManagement = () => {
                         <option value="accepted">Accepted</option>
                         <option value="rejected">Rejected</option>
                       </select>
-                      <button title="Update Status" onClick={() => handleLeaveStatusChange(leave?._id)} className="update-btn status">
+                      <button
+                        title="Update Status"
+                        onClick={() => handleLeaveStatusChange(leave?._id)}
+                        className="update-btn status"
+                      >
                         {" "}
                         <i className="far fa-edit"></i>
                       </button>
                     </td>
-                    <td>
-                      <button
-                        onClick={() => handleDelete(leave?._id)}
-                        className="delete-btn"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </td>
+                    {registerUser?.role === "super admin" && (
+                      <td>
+                        <button
+                          onClick={() => handleDelete(leave?._id)}
+                          className="delete-btn"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
