@@ -104,11 +104,15 @@ const Register = () => {
                   <input
                     name="password"
                     required
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Your Password"
                     {...register("password")}
                   />
-                  <i  onClick={() => setShowPassword(!showPassword)} style={{cursor : 'pointer'}} class="fa-solid fa-eye"></i>
+                  <i
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ cursor: "pointer" }}
+                    class="fa-solid fa-eye"
+                  ></i>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
@@ -125,7 +129,18 @@ const Register = () => {
                   </div>
                   <div className="col-md-6">
                     <label>Desgination</label>
-                    <input required {...register("desgination")} />
+                    <input
+                      required
+                      {...register("desgination", {
+                        required: true,
+                        maxLength: 50,
+                      })}
+                    />
+                    {errors.desgination &&
+                      errors.desgination.type === "maxLength" &&
+                      toast.error("Max length 50 exceeded", {
+                        id: "register-designation-field",
+                      })}
                   </div>
                   <div className="col-md-6">
                     <label>Joining Date</label>
