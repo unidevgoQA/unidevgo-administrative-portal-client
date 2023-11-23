@@ -9,6 +9,8 @@ const Login = () => {
   const { loginUser } = useContext(AuthContext);
 
   const [showError, setShowError] = useState("");
+  //State
+  const [showPassword, setShowPassword] = useState(false);
   const [disableErrorArea, setDisableErrorArea] = useState(false);
 
   const navigate = useNavigate();
@@ -28,11 +30,11 @@ const Login = () => {
       });
   };
 
-  useEffect(()=>{
-    if(showError){
+  useEffect(() => {
+    if (showError) {
       toast.error(showError);
     }
-  },[showError])
+  }, [showError]);
 
   return (
     <div className="login-register login-wrapper-main">
@@ -60,11 +62,17 @@ const Login = () => {
                 </div>
                 <div className="input-wrapper">
                   <input
-                    type="password"
+                    name="password"
+                    required
+                    type={showPassword ? "text" : "password"}
                     placeholder="Your Password"
                     {...register("password")}
                   />
-                  <i class="fa-solid fa-eye"></i>
+                  <i
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ cursor: "pointer" }}
+                    class="fa-solid fa-eye"
+                  ></i>
                 </div>
                 {/* {showError && (
                   <div

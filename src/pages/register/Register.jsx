@@ -7,6 +7,9 @@ import { useAddProfileMutation } from "../../features/profile/profileApi";
 import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
+  //State
+  const [showPassword, setShowPassword] = useState(false);
+  //Context
   const { createUser } = useContext(AuthContext);
   //Api
   const [addProfile] = useAddProfileMutation();
@@ -31,7 +34,7 @@ const Register = () => {
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
-    console.log(data)
+    console.log(data);
     // if (data.email.endsWith("@unidevgo.com")) {
     //   createUser(data.email, data.password)
     //     .then((result) => {
@@ -89,6 +92,7 @@ const Register = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="input-wrapper">
                   <input
+                    name="email"
                     required
                     type="email"
                     placeholder="Your Email"
@@ -98,12 +102,13 @@ const Register = () => {
                 </div>
                 <div className="input-wrapper">
                   <input
+                    name="password"
                     required
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Your Password"
                     {...register("password")}
                   />
-                 <i class="fa-solid fa-eye"></i>
+                  <i  onClick={() => setShowPassword(!showPassword)} style={{cursor : 'pointer'}} class="fa-solid fa-eye"></i>
                 </div>
                 <div className="row">
                   <div className="col-md-6">

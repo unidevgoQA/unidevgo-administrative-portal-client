@@ -19,8 +19,6 @@ const LeaveApply = () => {
   let currentDate = new Date().toJSON().slice(0, 10);
   //Add work status handler
   const handleLeaveApply = ({ leaveApply, leaveFrom, leaveTo, type }) => {
-
-
     const leave = {
       //leave data
       leaveApply : currentDate,
@@ -60,17 +58,17 @@ const LeaveApply = () => {
 
                 <div className="col-md-6">
                   <label>Leave From Date</label>
-                  <input type="date" {...register("leaveFrom")} />
+                  <input required type="date" {...register("leaveFrom")} />
                 </div>
 
                 <div className="col-md-6">
                   <label>Leave To Date</label>
-                  <input type="date" {...register("leaveTo")} />
+                  <input required type="date" {...register("leaveTo")} />
                 </div>
 
                 <div className="col-md-6">
                   <label>Leave Type</label>
-                  <input type="text" {...register("type")} />
+                  <input required type="text" {...register("type")} />
                 </div>
 
                 <div className="col-md-12">

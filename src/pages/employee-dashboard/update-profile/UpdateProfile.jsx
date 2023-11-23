@@ -150,7 +150,7 @@ const UpdateProfile = () => {
       toast.success("Updated Successfully", { id: "update-profile" });
       if (updateProfile?.role === "admin") {
         navigate("/dashboard/all-employee");
-      } 
+      }
     }
     if (isLoading) {
       toast.loading("Loading", { id: "update-profile" });

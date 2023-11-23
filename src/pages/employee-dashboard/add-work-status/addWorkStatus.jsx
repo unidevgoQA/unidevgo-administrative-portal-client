@@ -64,21 +64,21 @@ const addWorkStatus = () => {
               <div className="row">
                 <div className="col-md-6">
                   <label>Task / Project</label>
-                  <input {...register("task")} />
+                  <input required {...register("task")} />
                 </div>
                 <div className="col-md-6">
                   <label>Date of Report</label>
-                  <input type="date" {...register("date")} />
+                  <input required type="date" {...register("date")} />
                 </div>
 
                 <div className="col-md-6">
                   <label for="hour">Hours Worked</label>
-                  <input type="number" {...register("hour")} />
+                  <input name="hoursWorked" required type="number" min={"0"} max={"24"} {...register("hour")} />
                 </div>
 
                 <div className="col-md-6">
                   <label for="hour">Work Status</label>
-                  <select {...register("workStatus")}>
+                  <select required {...register("workStatus")}>
                     <option value="complete">Complete</option>
                     <option value="in progress">In Progress</option>
                   </select>
@@ -86,7 +86,7 @@ const addWorkStatus = () => {
 
                 <div className="col-md-12">
                   <label for="description">Work Description</label>
-                  <textarea {...register("description")} />
+                  <textarea required {...register("description")} />
                 </div>
                 <div className="col-md-6">
                   <button className="submit-btn">Add Work Status </button>
