@@ -64,7 +64,7 @@ const Login = () => {
                     placeholder="Your Password"
                     {...register("password")}
                   />
-                  <i class="fa-solid fa-lock"></i>
+                  <i class="fa-solid fa-eye"></i>
                 </div>
                 {/* {showError && (
                   <div

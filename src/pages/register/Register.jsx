@@ -11,7 +11,13 @@ const Register = () => {
   //Api
   const [addProfile] = useAddProfileMutation();
   //
-  const { handleSubmit, register, reset } = useForm();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
   //Error state
   const [showError, setShowError] = useState("");
   // const [disableErrorArea, setDisableErrorArea] = useState(false);
@@ -25,44 +31,45 @@ const Register = () => {
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
-    if (data.email.endsWith("@unidevgo.com")) {
-      createUser(data.email, data.password)
-        .then((result) => {
-          if (result.user) {
-            console.log("email firebase", result.user.email);
-            const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
-            fetch(url, {
-              method: "POST",
-              body: formData,
-            })
-              .then((res) => res.json())
-              .then((imgData) => {
-                if (imgData.success) {
-                  const profile = {
-                    name: data.name,
-                    desgination: data.desgination,
-                    gender: data.gender,
-                    img: imgData.data.url,
-                    joiningDate: data.joiningDate,
-                    mobile: data.mobile,
-                    address: data.address,
-                    email: data.email,
-                    role: "employee",
-                  };
-                  addProfile(profile);
-                  toast.success("Register Successfully", { id: "add-profile" });
-                  reset();
-                  navigate("/");
-                }
-              });
-          }
-        })
-        .catch((err) => setShowError(err.message));
-    } else {
-      toast.error(
-        "Invalid email domain. Registration failed. Must be use unidevgo email"
-      );
-    }
+    console.log(data)
+    // if (data.email.endsWith("@unidevgo.com")) {
+    //   createUser(data.email, data.password)
+    //     .then((result) => {
+    //       if (result.user) {
+    //         console.log("email firebase", result.user.email);
+    //         const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
+    //         fetch(url, {
+    //           method: "POST",
+    //           body: formData,
+    //         })
+    //           .then((res) => res.json())
+    //           .then((imgData) => {
+    //             if (imgData.success) {
+    //               const profile = {
+    //                 name: data.name,
+    //                 desgination: data.desgination,
+    //                 gender: data.gender,
+    //                 img: imgData.data.url,
+    //                 joiningDate: data.joiningDate,
+    //                 mobile: data.mobile,
+    //                 address: data.address,
+    //                 email: data.email,
+    //                 role: "employee",
+    //               };
+    //               addProfile(profile);
+    //               toast.success("Register Successfully", { id: "add-profile" });
+    //               reset();
+    //               navigate("/");
+    //             }
+    //           });
+    //       }
+    //     })
+    //     .catch((err) => setShowError(err.message));
+    // } else {
+    //   toast.error(
+    //     "Invalid email domain. Registration failed. Must be use unidevgo email"
+    //   );
+    // }
   };
 
   //
@@ -83,7 +90,7 @@ const Register = () => {
                 <div className="input-wrapper">
                   <input
                     required
-                    type="text"
+                    type="email"
                     placeholder="Your Email"
                     {...register("email")}
                   />
@@ -96,12 +103,20 @@ const Register = () => {
                     placeholder="Your Password"
                     {...register("password")}
                   />
-                  <i class="fa-solid fa-lock"></i>
+                 <i class="fa-solid fa-eye"></i>
                 </div>
                 <div className="row">
                   <div className="col-md-6">
                     <label>Name</label>
-                    <input required {...register("name")} />
+                    <input
+                      required
+                      {...register("name", { required: true, maxLength: 25 })}
+                    />
+                    {errors.name &&
+                      errors.name.type === "maxLength" &&
+                      toast.error("Max length 25 exceeded", {
+                        id: "register-name-field",
+                      })}
                   </div>
                   <div className="col-md-6">
                     <label>Desgination</label>
@@ -113,8 +128,17 @@ const Register = () => {
                   </div>
 
                   <div className="col-lg-6 col-md-12">
-                    <label for="hour">Mobile</label>
-                    <input required type="text" {...register("mobile")} />
+                    <label for="mobile">Mobile</label>
+                    <input
+                      name="phoneNumber"
+                      required
+                      type="tel"
+                      id="mobile"
+                      pattern="[0-9]{3}-[0-9]{8}"
+                      placeholder="01X-XXXXXXXX"
+                      {...register("mobile")}
+                    />
+                    {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
                   </div>
                   <div className="col-md-6">
                     <label>Upload Image</label>
@@ -143,25 +167,6 @@ const Register = () => {
                     <input required {...register("address")} />
                   </div>
                 </div>
-                
-                {/* 
-                {showError && (
-                  <div
-                    className={
-                      disableErrorArea === true
-                        ? "hide-error-message"
-                        : "error-message"
-                    }
-                  >
-                    <>
-                      <span>{showError}</span>
-                      <i
-                        onClick={() => setDisableErrorArea(true)}
-                        class="fa-solid fa-xmark"
-                      ></i>
-                    </>
-                  </div>
-                )} */}
 
                 <button className="login-register-btn" type="submit">
                   Register <i class="fa-solid fa-arrow-right"></i>
@@ -169,17 +174,6 @@ const Register = () => {
               </form>
               <hr />
               <div className="other-action">
-                {/* <h4>Or Register With</h4>
-
-                <button
-                  onClick={handleGoogleLogin}
-                  className="login-register-btn"
-                >
-                  {" "}
-                  Google
-                  <i class="fa-brands fa-google"></i>
-                </button>
-                <hr /> */}
                 <div className="login-register-navigation">
                   <h4>Already have account ?</h4>
                   <Link to={"/"}>

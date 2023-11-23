@@ -16,6 +16,7 @@ import { AuthContext } from "../../../providers/AuthProviders";
 const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
+
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
@@ -258,7 +259,6 @@ const Profile = () => {
                     </div>
                   </div>
                 )}
-                
               </div>
             </div>
           </div>
