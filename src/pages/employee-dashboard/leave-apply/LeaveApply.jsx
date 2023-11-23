@@ -6,7 +6,7 @@ import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi"
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const LeaveApply = () => {
-  const { handleSubmit, register, reset } = useForm();
+  const { handleSubmit, register, reset ,formState: { errors }} = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -27,22 +27,27 @@ const LeaveApply = () => {
     const timeDifference = endDate.getTime() - startDate.getTime();
     const days = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
+    if(type === " "){
+      toast.error('Please write valid input')
+    }else{
+      const leave = {
+        //leave data
+        leaveApply: currentDate,
+        leaveFrom,
+        leaveTo,
+        type,
+        totalDays: days + 1,
+        status: "pending",
+        //user info
+        employeeEmail: registerUser?.email,
+        employeeImg: registerUser?.img,
+        employeeName: registerUser?.name,
+      };
+      addLeaveApply(leave);
+      reset();
+    }
 
-    const leave = {
-      //leave data
-      leaveApply: currentDate,
-      leaveFrom,
-      leaveTo,
-      type,
-      totalDays : days + 1,
-      status: "pending",
-      //user info
-      employeeEmail: registerUser?.email,
-      employeeImg: registerUser?.img,
-      employeeName: registerUser?.name,
-    };
-    addLeaveApply(leave);
-    reset()
+
   };
 
   useEffect(() => {
@@ -78,7 +83,19 @@ const LeaveApply = () => {
 
                 <div className="col-md-6">
                   <label>Leave Type</label>
-                  <input required type="text" {...register("type")} />
+                  <input
+                    required
+                    type="text"
+                    {...register("type", {
+                      required: true,
+                      maxLength: 100,
+                    })}
+                  />
+                  {errors.type &&
+                    errors.type.type === "maxLength" &&
+                    toast.error("Max length 100 exceeded", {
+                      id: "register-designation-field",
+                    })}
                 </div>
 
                 <div className="col-md-12">

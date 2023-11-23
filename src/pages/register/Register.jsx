@@ -35,44 +35,44 @@ const Register = () => {
     const formData = new FormData();
     formData.append("image", image);
     console.log(data);
-    // if (data.email.endsWith("@unidevgo.com")) {
-    //   createUser(data.email, data.password)
-    //     .then((result) => {
-    //       if (result.user) {
-    //         console.log("email firebase", result.user.email);
-    //         const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
-    //         fetch(url, {
-    //           method: "POST",
-    //           body: formData,
-    //         })
-    //           .then((res) => res.json())
-    //           .then((imgData) => {
-    //             if (imgData.success) {
-    //               const profile = {
-    //                 name: data.name,
-    //                 desgination: data.desgination,
-    //                 gender: data.gender,
-    //                 img: imgData.data.url,
-    //                 joiningDate: data.joiningDate,
-    //                 mobile: data.mobile,
-    //                 address: data.address,
-    //                 email: data.email,
-    //                 role: "employee",
-    //               };
-    //               addProfile(profile);
-    //               toast.success("Register Successfully", { id: "add-profile" });
-    //               reset();
-    //               navigate("/");
-    //             }
-    //           });
-    //       }
-    //     })
-    //     .catch((err) => setShowError(err.message));
-    // } else {
-    //   toast.error(
-    //     "Invalid email domain. Registration failed. Must be use unidevgo email"
-    //   );
-    // }
+    if (data.email.endsWith("@unidevgo.com")) {
+      createUser(data.email, data.password)
+        .then((result) => {
+          if (result.user) {
+            console.log("email firebase", result.user.email);
+            const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
+            fetch(url, {
+              method: "POST",
+              body: formData,
+            })
+              .then((res) => res.json())
+              .then((imgData) => {
+                if (imgData.success) {
+                  const profile = {
+                    name: data.name,
+                    desgination: data.desgination,
+                    gender: data.gender,
+                    img: imgData.data.url,
+                    joiningDate: data.joiningDate,
+                    mobile: data.mobile,
+                    address: data.address,
+                    email: data.email,
+                    role: "employee",
+                  };
+                  addProfile(profile);
+                  toast.success("Register Successfully", { id: "add-profile" });
+                  reset();
+                  navigate("/");
+                }
+              });
+          }
+        })
+        .catch((err) => setShowError(err.message));
+    } else {
+      toast.error(
+        "Invalid email domain. Registration failed. Must be use unidevgo email"
+      );
+    }
   };
 
   //
