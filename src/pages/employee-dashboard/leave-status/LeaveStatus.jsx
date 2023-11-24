@@ -1,10 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
+import defaultImg from '../../../assets/default.png';
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
 } from "../../../features/leave-management/leaveManagementApi";
 import { AuthContext } from "../../../providers/AuthProviders";
+
+
 const LeaveStatus = () => {
   //Leave management data
   const { data } = useGetAllLeavesQuery();
@@ -63,7 +66,7 @@ const LeaveStatus = () => {
                     <td>
                       <img
                         className="employee-img"
-                        src={leave?.employeeImg}
+                        src={leave?.employeeImg ? leave?.employeeImg : defaultImg}
                         alt="employee"
                       />
                     </td>

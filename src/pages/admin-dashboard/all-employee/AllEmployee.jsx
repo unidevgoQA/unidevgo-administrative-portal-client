@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import defaultImg from '../../../assets/default.png';
 import {
   useDeleteProfileMutation,
   useGetProfileByEmailQuery,
@@ -74,7 +75,7 @@ const AllEmployee = () => {
                     <td>
                       <img
                         className="employee-img"
-                        src={employee?.img}
+                        src={employee?.img ? employee?.img : defaultImg}
                         alt="employee"
                       />
                     </td>

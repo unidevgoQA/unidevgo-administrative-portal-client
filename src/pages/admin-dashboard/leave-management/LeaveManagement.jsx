@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import defaultImg from '../../../assets/default.png';
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
@@ -101,7 +102,7 @@ const LeaveManagement = () => {
                     <td>
                       <img
                         className="employee-img"
-                        src={leave?.employeeImg}
+                        src={leave?.employeeImg ? leave?.employeeImg : defaultImg}
                         alt="employee"
                       />
                     </td>

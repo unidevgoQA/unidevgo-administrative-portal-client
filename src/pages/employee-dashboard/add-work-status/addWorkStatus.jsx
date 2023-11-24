@@ -6,7 +6,7 @@ import { useAddWorkTaskMutation } from "../../../features/work-status/workStatus
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const addWorkStatus = () => {
-  const { handleSubmit, register , reset } = useForm();
+  const { handleSubmit, register, reset } = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -37,8 +37,12 @@ const addWorkStatus = () => {
       employeeName: registerUser?.name,
     };
 
-    addWorkTask(workTask);
-    reset();
+    if (task.trim().length === 0 || description.trim().length === 0) {
+      toast.error("Provide valid input", { id: "add-work-status" });
+    } else {
+      addWorkTask(workTask);
+      reset();
+    }
   };
   useEffect(() => {
     if (isSuccess) {
@@ -73,7 +77,14 @@ const addWorkStatus = () => {
 
                 <div className="col-md-6">
                   <label for="hour">Hours Worked</label>
-                  <input name="hoursWorked" required type="number" min={"0"} max={"24"} {...register("hour")} />
+                  <input
+                    name="hoursWorked"
+                    required
+                    type="number"
+                    min={"0"}
+                    max={"24"}
+                    {...register("hour")}
+                  />
                 </div>
 
                 <div className="col-md-6">

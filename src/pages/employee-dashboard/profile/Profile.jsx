@@ -4,6 +4,7 @@ import exportFromJSON from "export-from-json";
 import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import defaultImg from '../../../assets/default.png';
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
@@ -126,8 +127,6 @@ const Profile = () => {
     0
   );
 
-  console.log(totalGetLeaveDays);
-
   //handle Update
   const handleStatusChange = (id, workStatus) => {
     const updatedStatus =
@@ -180,7 +179,7 @@ const Profile = () => {
                   <div className="row">
                     <div className="col-md-5">
                       <div className="user-img">
-                        <img src={registerUser?.img} alt="employee" />
+                        <img src={registerUser?.img ? registerUser?.img : defaultImg} alt="employee" />
                       </div>
                     </div>
                     <div className="col-md-7">
@@ -321,7 +320,7 @@ const Profile = () => {
                           <td>
                             <img
                               className="employee-img"
-                              src={work?.employeeImg}
+                              src={work?.employeeImg ? work?.employeeImg : defaultImg}
                               alt="employee"
                             />
                           </td>
