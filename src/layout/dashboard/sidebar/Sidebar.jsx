@@ -46,6 +46,10 @@ const Sidebar = () => {
               <i class="fa-solid fa-people-group"></i>
               <Link to={"all-employee"}>All Employee</Link>
             </li>
+            <li>
+              <i class="fa-solid fa-user-tie"></i>
+              <Link to={"profile"}>Profile</Link>
+            </li>
             {/* <li>
               <i class="fa-solid fa-battery-half"></i>
               <Link to={"work-status"}>Work Status</Link>

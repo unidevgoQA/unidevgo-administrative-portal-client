@@ -46,7 +46,7 @@ const Profile = () => {
 
   //Work Hours
   const workHoursNumbers = filteredStatusData?.map((work) => {
-    const totalHours = parseInt(work.hour);
+    const totalHours = parseFloat(work.hour);
     return totalHours;
   });
   const totalWorkHours = workHoursNumbers?.reduce(

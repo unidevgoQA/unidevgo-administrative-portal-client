@@ -40,7 +40,7 @@ const WorkStatus = () => {
   const url = `${baseUrl}profile/${id}`;
 
   const workHoursNumbers = filteredStatusData?.map((work) => {
-    const totalHours = parseInt(work.hour);
+    const totalHours = parseFloat(work.hour);
     return totalHours;
   });
 

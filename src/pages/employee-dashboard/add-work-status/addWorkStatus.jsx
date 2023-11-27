@@ -24,11 +24,13 @@ const addWorkStatus = () => {
     workStatus,
     description,
   }) => {
+    const convertHour = parseFloat(hour);
+
     const workTask = {
       //task data
       task,
       date,
-      hour,
+      hour: convertHour,
       workStatus,
       description,
       //user info
@@ -42,6 +44,7 @@ const addWorkStatus = () => {
     } else {
       addWorkTask(workTask);
       reset();
+  
     }
   };
   useEffect(() => {
@@ -83,6 +86,7 @@ const addWorkStatus = () => {
                     type="number"
                     min={"0"}
                     max={"24"}
+                    step={".1"}
                     {...register("hour")}
                   />
                 </div>
