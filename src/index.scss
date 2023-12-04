@@ -589,8 +589,7 @@ body {
   font-weight: 600;
   font-size: 14px;
 }
-//Calender
-.rdrCalendarWrapper {
+Calender .rdrCalendarWrapper {
   color: #000000;
   font-size: 12px;
   display: none;
@@ -598,10 +597,10 @@ body {
 .rdrInputRanges {
   display: none;
 }
-.rdrStaticRanges {
-  display: flex;
-  flex-direction: row;
-}
+// .rdrStaticRanges {
+//   display: flex;
+//   flex-direction: row;
+// }
 .rdrStaticRange {
   border: 0;
   cursor: pointer;
@@ -610,7 +609,7 @@ body {
   padding: 0;
   background: #fff;
   border-radius: 10px;
-  margin: 10px 5px 10px 0px;
+  margin: 5px 5px 10px 0px;
 }
 .rdrStaticRang:hover {
   background: #fff;

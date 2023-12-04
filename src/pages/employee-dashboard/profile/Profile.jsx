@@ -3,8 +3,19 @@ import React, { useContext, useEffect, useState } from "react";
 import exportFromJSON from "export-from-json";
 import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
-import defaultImg from '../../../assets/default.png';
+// import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+  Area,
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import defaultImg from "../../../assets/default.png";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
@@ -15,6 +26,7 @@ import {
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const Profile = () => {
+
   //User
   const { user } = useContext(AuthContext);
 
@@ -31,10 +43,15 @@ const Profile = () => {
   //States
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  console.log("Start", startDate, "End", endDate);
+
   const [filteredStatusData, setFilteredStatusData] = useState([]);
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
+
+  console.log(filteredStatusData);
 
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
@@ -179,7 +196,12 @@ const Profile = () => {
                   <div className="row">
                     <div className="col-md-5">
                       <div className="user-img">
-                        <img src={registerUser?.img ? registerUser?.img : defaultImg} alt="employee" />
+                        <img
+                          src={
+                            registerUser?.img ? registerUser?.img : defaultImg
+                          }
+                          alt="employee"
+                        />
                       </div>
                     </div>
                     <div className="col-md-7">
@@ -218,7 +240,7 @@ const Profile = () => {
                             </h3>
                           </div>
                         </div>
-                        <div className="update-area">
+                        {/* <div className="update-area">
                           <Link
                             to={`/dashboard/update-profile/${registerUser?._id}`}
                           >
@@ -230,7 +252,7 @@ const Profile = () => {
                               <i className="far fa-edit"></i>
                             </button>
                           </Link>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -280,26 +302,64 @@ const Profile = () => {
         {registerUser?.role === "employee" && (
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="table-responsive">
-                <div className="date-range">
-                  {/* <button
+              <div className="row">
+                <div className="col-lg-4 col-md-12 col-sm-12">
+                  <div className="date-picker-wrapper">
+                    <div className="table-responsive">
+                      <div className="date-range">
+                        {/* <button
                     className="show-all-task-btn"
                     onClick={() => showAllData()}
                   >
                     All
                   </button> */}
-                  <DateRangePicker
-                    direction="horizontal"
-                    rangeColors={["blue"]}
-                    showDateDisplay={false}
-                    showMonthAndYearPickers={false}
-                    ranges={[selectionRange]}
-                    onChange={handleSelect}
-                  />
+                        <DateRangePicker
+                          direction="horizontal"
+                          rangeColors={["blue"]}
+                          showDateDisplay={false}
+                          showMonthAndYearPickers={false}
+                          ranges={[selectionRange]}
+                          onChange={handleSelect}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-8 col-md-12 col-sm-12">
+                  <div style={{ width: "100%", height: "100%" }}>
+                    <ResponsiveContainer>
+                      <ComposedChart
+                        data={filteredStatusData}
+                        margin={{
+                          top: 20,
+                          right: 20,
+                          bottom: 20,
+                          left: 20,
+                        }}
+                      >
+                        <CartesianGrid stroke="#f5f5f5" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area
+                          type="monotone"
+                          dataKey="task"
+                          fill="#8884d8"
+                          stroke="#8884d8"
+                        />
+                        <Bar dataKey="hour" barSize={20} fill="#413ea0" />
+                        <Line
+                          type="string"
+                          dataKey="workStatus"
+                          stroke="#ff7300"
+                        />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-12 col-md-12col-sm-12">
+            <div className="col-lg-12 col-md-12col-sm-12 mt-3">
               {filteredStatusData?.length > 0 ? (
                 <div className="table-responsive">
                   <table class="table-modify table table-striped">
@@ -320,7 +380,11 @@ const Profile = () => {
                           <td>
                             <img
                               className="employee-img"
-                              src={work?.employeeImg ? work?.employeeImg : defaultImg}
+                              src={
+                                work?.employeeImg
+                                  ? work?.employeeImg
+                                  : defaultImg
+                              }
                               alt="employee"
                             />
                           </td>

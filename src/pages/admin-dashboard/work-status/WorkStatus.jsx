@@ -4,6 +4,17 @@ import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import {
+  Area,
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
   useUpdateWorkTaskMutation,
@@ -165,17 +176,60 @@ const WorkStatus = () => {
 
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="table-responsive">
-                <div className="date-range">
-                {/* <button className="show-all-task-btn" onClick={() => showAllData()}>All</button> */}
-                  <DateRangePicker
-                    rangeColors={["blue"]}
-                    direction="horizontal"
-                    showDateDisplay={false}
-                    showMonthAndYearPickers={false}
-                    ranges={[selectionRange]}
-                    onChange={handleSelect}
-                  />
+              <div className="row">
+                <div className="col-lg-4 col-md-12 col-sm-12">
+                  <div className="date-picker-wrapper">
+                    <div className="table-responsive">
+                      <div className="date-range">
+                        {/* <button
+                    className="show-all-task-btn"
+                    onClick={() => showAllData()}
+                  >
+                    All
+                  </button> */}
+                        <DateRangePicker
+                          direction="horizontal"
+                          rangeColors={["blue"]}
+                          showDateDisplay={false}
+                          showMonthAndYearPickers={false}
+                          ranges={[selectionRange]}
+                          onChange={handleSelect}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-8 col-md-12 col-sm-12">
+                  <div style={{ width: "100%", height: "100%" }}>
+                    <ResponsiveContainer>
+                      <ComposedChart
+                        data={filteredStatusData}
+                        margin={{
+                          top: 20,
+                          right: 20,
+                          bottom: 20,
+                          left: 20,
+                        }}
+                      >
+                        <CartesianGrid stroke="#f5f5f5" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area
+                          type="monotone"
+                          dataKey="task"
+                          fill="#8884d8"
+                          stroke="#8884d8"
+                        />
+                        <Bar dataKey="hour" barSize={20} fill="#413ea0" />
+                        <Line
+                          type="string"
+                          dataKey="workStatus"
+                          stroke="#ff7300"
+                        />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
             </div>

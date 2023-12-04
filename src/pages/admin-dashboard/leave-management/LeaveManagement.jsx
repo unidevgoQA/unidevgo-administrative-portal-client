@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import defaultImg from '../../../assets/default.png';
+import defaultImg from "../../../assets/default.png";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
@@ -8,6 +8,7 @@ import {
 } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
+
 const LeaveManagement = () => {
   //User
   const { user } = useContext(AuthContext);
@@ -90,10 +91,9 @@ const LeaveManagement = () => {
                   <th>Leave Type</th>
                   <th>Total Days</th>
                   <th>Update Status</th>
-                  {
-                     registerUser?.role === "super admin" &&  <th className="action-area">Action</th>
-                  }
-                 
+                  {registerUser?.role === "super admin" && (
+                    <th className="action-area">Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -102,7 +102,9 @@ const LeaveManagement = () => {
                     <td>
                       <img
                         className="employee-img"
-                        src={leave?.employeeImg ? leave?.employeeImg : defaultImg}
+                        src={
+                          leave?.employeeImg ? leave?.employeeImg : defaultImg
+                        }
                         alt="employee"
                       />
                     </td>
@@ -111,7 +113,7 @@ const LeaveManagement = () => {
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
                     <td>{leave?.leaveTo}</td>
-                   
+
                     <td>{leave?.type}</td>
                     <td>{leave?.totalDays}</td>
                     <td className="update-status">
