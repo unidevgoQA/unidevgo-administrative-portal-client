@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./app/store";
 import "./index.scss";
 import Dashboard from "./layout/dashboard/dashboard/dashboard";
+import AddNewEvent from "./pages/admin-dashboard/add-new-event/AddNewEvent";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: "calender",
         element: <Calender />,
+      },
+      {
+        path: "add-new-event",
+        element: <AddNewEvent />,
       },
     ],
   },

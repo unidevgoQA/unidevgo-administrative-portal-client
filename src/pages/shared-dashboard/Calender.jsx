@@ -3,8 +3,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Calender = () => {
+  const handleEventClick = (info) => {
+    console.log("clicked", info);
+  };
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -21,15 +25,22 @@ const Calender = () => {
               weekends={true}
               height={"85vh"}
               headerToolbar={{
-                start: "today prev,next", // will normally be on the left. if RTL, will be on the right
+                start: "today prev,next",
                 center: "title",
-                end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
+                end: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
               events={[
-                { title: "event 1", date: "2023-12-01" },
-                { title: "event 2", date: "2023-12-02" },
+                {
+                    "start": "2023-12-06",
+                    "end": "2023-12-08",
+                    "title": "asdas"
+                }
               ]}
+              eventClick={handleEventClick}
             />
+          </div>
+          <div className="add-event-wrapper">
+              <Link to={'/dashboard/add-new-event'} className="submit-btn">Add New Event</Link>
           </div>
         </div>
       </div>
