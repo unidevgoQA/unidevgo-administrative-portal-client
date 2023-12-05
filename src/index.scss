@@ -704,6 +704,27 @@ span.rdrStaticRangeLabel {
 .update-btn.status {
   margin-left: 5px;
 }
+
+//Full calender
+.calender-wrapper {
+  .fc-event-time {
+    display: none;
+  }
+  .fc-today-button.fc-button.fc-button-primary,
+  .fc-button-active {
+    background: #208536 !important;
+    opacity: 1;
+    text-transform: capitalize;
+    font-weight: 700;
+  }
+}
+.add-new-event-btn {
+  text-decoration: none;
+  padding: 20px 0px;
+  color: #145725;
+  font-size: 14px;
+  font-weight: 600;
+}
 //Dashboard
 //Responsive
 @media screen and (max-width: 1024px) {

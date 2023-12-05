@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useAddCalenderEventMutation } from "../../../features/calender-events/calenderEvents";
 
 const AddNewEvent = () => {
+  //Add event api
+  const [addEvent, { isLoading, isSuccess }] = useAddCalenderEventMutation();
+  //Form
   const {
     handleSubmit,
     register,
@@ -10,15 +14,26 @@ const AddNewEvent = () => {
     formState: { errors },
   } = useForm();
 
-  //Add work status handler
+  //Add event handler
   const handleAddEvent = ({ start, end, title }) => {
     const calenderEvent = {
       start,
       end,
       title,
     };
-    console.log(calenderEvent)
+    addEvent(calenderEvent);
+    reset();
   };
+
+  //Add event effects
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Added Successfully", { id: "add-event" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "add-event" });
+    }
+  }, [isSuccess, isLoading]);
   return (
     <div className="content-wrapper">
       <div className="row">

@@ -44,14 +44,12 @@ const Profile = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  console.log("Start", startDate, "End", endDate);
 
   const [filteredStatusData, setFilteredStatusData] = useState([]);
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
 
-  console.log(filteredStatusData);
 
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
