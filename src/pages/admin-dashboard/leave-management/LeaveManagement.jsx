@@ -113,7 +113,6 @@ const LeaveManagement = () => {
                     <td>{leave?.status}</td>
                     <td>{leave?.leaveFrom}</td>
                     <td>{leave?.leaveTo}</td>
-
                     <td>{leave?.type}</td>
                     <td>{leave?.totalDays}</td>
                     <td className="update-status">

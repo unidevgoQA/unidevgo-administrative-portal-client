@@ -19,6 +19,7 @@ import Profile from "./pages/employee-dashboard/profile/Profile";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import Calender from "./pages/shared-dashboard/Calender";
 import AuthProviders from "./providers/AuthProviders";
 import PrivateRoute from "./routes/PrivateRoute";
 const router = createBrowserRouter([
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "calender",
+        element: <Calender />,
       },
     ],
   },

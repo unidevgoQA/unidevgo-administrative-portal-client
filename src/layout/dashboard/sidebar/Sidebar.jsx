@@ -36,7 +36,8 @@ const Sidebar = () => {
       </div>
       <hr />
       <div className="side-links">
-        {registerUser?.role === "admin" || registerUser?.role === "super admin" ? (
+        {registerUser?.role === "admin" ||
+        registerUser?.role === "super admin" ? (
           <ul>
             <li>
               <i class="fa-solid fa-list-check"></i>
@@ -49,6 +50,10 @@ const Sidebar = () => {
             <li>
               <i class="fa-solid fa-user-tie"></i>
               <Link to={"profile"}>Profile</Link>
+            </li>
+            <li>
+              <i class="fa-regular fa-calendar-days"></i>
+              <Link to={"calender"}>Calender</Link>
             </li>
             {/* <li>
               <i class="fa-solid fa-battery-half"></i>
@@ -72,6 +77,10 @@ const Sidebar = () => {
             <li>
               <i class="fa-solid fa-user-tie"></i>
               <Link to={"profile"}>Profile</Link>
+            </li>
+            <li>
+              <i class="fa-regular fa-calendar-days"></i>
+              <Link to={"calender"}>Calender</Link>
             </li>
           </ul>
         )}
