@@ -64,6 +64,7 @@ const AllEmployee = () => {
                   <th>Address</th>
                   <th>Joining Date</th>
                   <th>Check Work Status</th>
+                  <th>Check Attendence</th>
                   {registerUser?.role === "super admin" && (
                     <th className="action-area">Action</th>
                   )}
@@ -89,13 +90,18 @@ const AllEmployee = () => {
                     <td>{employee?.address}</td>
                     <td>{employee?.joiningDate}</td>
                     <td>
-                      <Link to={`/dashboard/work-status/${employee._id}`}>
+                      <Link to={`/dashboard/work-status/${employee?._id}`}>
                         <button className="update-btn">Check Status</button>
                       </Link>
                     </td>
-                    {registerUser.role === "super admin" && (
+                    <td>
+                      <Link to={`/dashboard/attendence-report/${employee?._id}`}>
+                        <button className="update-btn">Check Attendence</button>
+                      </Link>
+                    </td>
+                    {registerUser?.role === "super admin" && (
                       <td>
-                        <Link to={`/dashboard/update-profile/${employee._id}`}>
+                        <Link to={`/dashboard/update-profile/${employee?._id}`}>
                           <button className="update-btn">
                             {" "}
                             <i className="far fa-edit"></i>
@@ -103,7 +109,7 @@ const AllEmployee = () => {
                         </Link>
 
                         <button
-                          onClick={() => handleDelete(employee._id)}
+                          onClick={() => handleDelete(employee?._id)}
                           className="delete-btn"
                         >
                           <i className="fas fa-trash-alt"></i>

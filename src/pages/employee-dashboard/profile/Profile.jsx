@@ -4,6 +4,7 @@ import exportFromJSON from "export-from-json";
 import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useForm } from "react-hook-form";
 import {
   Area,
   Bar,
@@ -16,6 +17,7 @@ import {
   YAxis,
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
+import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
@@ -26,7 +28,6 @@ import {
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const Profile = () => {
-
   //User
   const { user } = useContext(AuthContext);
 
@@ -44,12 +45,10 @@ const Profile = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-
   const [filteredStatusData, setFilteredStatusData] = useState([]);
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
-
 
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
@@ -131,6 +130,7 @@ const Profile = () => {
   const filterLeaves = allLeaveManagements?.filter(
     (leave) => leave.employeeEmail === user.email
   );
+
   //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
     (leave) => leave.status === "accepted"
@@ -159,6 +159,36 @@ const Profile = () => {
       deleteWorkStatus(id);
     }
   };
+
+  //Attendence
+
+  const [
+    addAttendence,
+    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
+  ] = useAddAttendenceMutation();
+  //Form
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  //Add work status handler
+  const handleSubmitAttendence = ({ date , status }) => {
+    const attendence = {
+      //attendence data
+      date,
+      status,
+      time: new Date().toLocaleTimeString(),
+      //user info
+      employeeEmail: registerUser?.email,
+      employeeImg: registerUser?.img,
+      employeeName: registerUser?.name,
+    };
+    addAttendence(attendence);
+  };
+
   //Delete Effects
   useEffect(() => {
     if (isSuccess) {
@@ -177,6 +207,16 @@ const Profile = () => {
       toast.loading("Loading", { id: "update-work-task" });
     }
   }, [workStatusSuccess, worksStatusLoading]);
+
+  //Attendence added effects
+  useEffect(() => {
+    if (attendenceSuccess) {
+      toast.success("Record Submitted", { id: "add-attendence" });
+    }
+    if (attendenceLoading) {
+      toast.loading("Loading", { id: "add-attendence" });
+    }
+  }, [attendenceLoading, attendenceSuccess]);
 
   return (
     <div className="content-wrapper">
@@ -313,7 +353,7 @@ const Profile = () => {
                   </button> */}
                         <DateRangePicker
                           direction="horizontal"
-                          rangeColors={["blue"]}
+                          rangeColors={["#208436"]}
                           showDateDisplay={false}
                           showMonthAndYearPickers={false}
                           ranges={[selectionRange]}
@@ -323,7 +363,7 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-8 col-md-12 col-sm-12">
+                <div className="col-lg-6 col-md-12 col-sm-12">
                   <div style={{ width: "100%", height: "100%" }}>
                     <ResponsiveContainer>
                       <ComposedChart
@@ -345,7 +385,7 @@ const Profile = () => {
                           fill="#8884d8"
                           stroke="#8884d8"
                         />
-                        <Bar dataKey="hour" barSize={20} fill="#413ea0" />
+                        <Bar dataKey="hour" barSize={20} fill="#208436" />
                         <Line
                           type="string"
                           dataKey="workStatus"
@@ -353,6 +393,51 @@ const Profile = () => {
                         />
                       </ComposedChart>
                     </ResponsiveContainer>
+                  </div>
+                </div>
+                <div className="col-lg-2 col-md-12 col-sm-12">
+                  <div className="apply-attendence-wrapper">
+                    <h6>Attendence</h6>
+                    <div className="attendence-form">
+                      <div className="profile-wrapper">
+                        <img
+                          width={"40px"}
+                          height={"40px"}
+                          src={registerUser?.img}
+                          alt="employee"
+                        />
+                        {/* <h6>{registerUser?.name}</h6> */}
+                      </div>
+                      <div className="attendence-form">
+                        <form onSubmit={handleSubmit(handleSubmitAttendence)}>
+                          <div className="row">
+                            <div className="col-md-12">
+                              <label>Date</label>
+                              <br />
+                              <input
+                                required
+                                type="date"
+                                defaultValue={new Date().toJSON().slice(0, 10)}
+                                {...register("date")}
+                              />
+                            </div>
+                            <div className="col-md-12">
+                              <label for="status">Status</label>
+                              <br />
+                              <select required {...register("status")}>
+                                <option value="present">Present</option>
+                                <option value="absent">Absent</option>
+                              </select>
+                            </div>
+                            <div className="col-md-12">
+                              <button className="attendence-submit-btn">
+                                Submit
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

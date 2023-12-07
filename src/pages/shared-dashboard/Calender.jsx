@@ -60,16 +60,17 @@ const Calender = () => {
               <span>Calender</span> <i class="fa-regular fa-calendar-days"></i>
             </h2>
           </div>
-          <div className="calender-wrapper mb-3">
+          <div className="table-responsive calender-wrapper mb-3">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               weekends={true}
               height={"80vh"}
               headerToolbar={{
-                start: "today prev,next",
+                start: "today",
                 center: "title",
-                end: "dayGridMonth,timeGridWeek,timeGridDay",
+                // end: "dayGridMonth,timeGridWeek,timeGridDay",
+                end: "prev,next",
               }}
               events={allEvents?.map((event) => ({
                 id: event?._id,

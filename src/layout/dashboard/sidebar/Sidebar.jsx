@@ -63,6 +63,14 @@ const Sidebar = () => {
         ) : (
           <ul>
             <li>
+              <i class="fa-solid fa-user-tie"></i>
+              <Link to={"profile"}>Profile</Link>
+            </li>
+            <li>
+              <i class="fa-solid fa-clipboard-user"></i>
+              <Link to={"attendence"}>Attendence</Link>
+            </li>
+            <li>
               <i class="fa-regular fa-square-plus"></i>
               <Link to={"add-work-status"}>Add Work Status</Link>
             </li>
@@ -74,10 +82,7 @@ const Sidebar = () => {
               <i class="fa-solid fa-person-walking-arrow-right"></i>
               <Link to={"leave-status"}>Leave Status</Link>
             </li>
-            <li>
-              <i class="fa-solid fa-user-tie"></i>
-              <Link to={"profile"}>Profile</Link>
-            </li>
+
             <li>
               <i class="fa-regular fa-calendar-days"></i>
               <Link to={"calender"}>Calender</Link>

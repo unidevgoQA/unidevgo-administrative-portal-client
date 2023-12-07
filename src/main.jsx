@@ -10,10 +10,12 @@ import "./index.scss";
 import Dashboard from "./layout/dashboard/dashboard/dashboard";
 import AddNewEvent from "./pages/admin-dashboard/add-new-event/AddNewEvent";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
+import AttendenceReport from "./pages/admin-dashboard/attendence-report/AttendenceReport";
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
+import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import LeaveApply from "./pages/employee-dashboard/leave-apply/LeaveApply";
 import LeaveStatus from "./pages/employee-dashboard/leave-status/LeaveStatus";
 import Profile from "./pages/employee-dashboard/profile/Profile";
@@ -87,6 +89,14 @@ const router = createBrowserRouter([
       {
         path: "add-new-event",
         element: <AddNewEvent />,
+      },
+      {
+        path: "attendence",
+        element: <Attendence />,
+      },
+      {
+        path: "attendence-report/:id",
+        element: <AttendenceReport />,
       },
     ],
   },

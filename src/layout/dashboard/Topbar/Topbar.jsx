@@ -34,15 +34,18 @@ const Topbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"> <i class="fa-solid fa-bars"></i></span>
+          <span className="navbar-toggler-icon">
+            {" "}
+            <i class="fa-solid fa-bars"></i>
+          </span>
         </button>
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNav"
         >
-            <hr />
+          <hr />
           <div className="side-links">
-            {registerUser?.role === "admin" ? (
+            {registerUser?.role === "admin" || registerUser?.role === "super admin" ? (
               <ul>
                 <li>
                   <i class="fa-solid fa-list-check"></i>
@@ -52,9 +55,25 @@ const Topbar = () => {
                   <i class="fa-solid fa-people-group"></i>
                   <Link to={"all-employee"}>All Employee</Link>
                 </li>
+                <li>
+                  <i class="fa-solid fa-user-tie"></i>
+                  <Link to={"profile"}>Profile</Link>
+                </li>
+                <li>
+                  <i class="fa-regular fa-calendar-days"></i>
+                  <Link to={"calender"}>Calender</Link>
+                </li>
               </ul>
             ) : (
               <ul>
+                <li>
+                  <i class="fa-solid fa-user-tie"></i>
+                  <Link to={"profile"}>Profile</Link>
+                </li>
+                <li>
+                  <i class="fa-solid fa-clipboard-user"></i>
+                  <Link to={"attendence"}>Attendence</Link>
+                </li>
                 <li>
                   <i class="fa-regular fa-square-plus"></i>
                   <Link to={"add-work-status"}>Add Work Status</Link>
@@ -67,9 +86,10 @@ const Topbar = () => {
                   <i class="fa-solid fa-person-walking-arrow-right"></i>
                   <Link to={"leave-status"}>Leave Status</Link>
                 </li>
+
                 <li>
-                  <i class="fa-solid fa-user-tie"></i>
-                  <Link to={"profile"}>Profile</Link>
+                  <i class="fa-regular fa-calendar-days"></i>
+                  <Link to={"calender"}>Calender</Link>
                 </li>
               </ul>
             )}
