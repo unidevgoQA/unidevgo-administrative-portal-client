@@ -55,6 +55,10 @@ const Sidebar = () => {
               <i class="fa-regular fa-calendar-days"></i>
               <Link to={"calender"}>Calender</Link>
             </li>
+            <li>
+              <i class="fa-regular fa-envelope"></i>
+              <Link to={"send-email"}>Send Email</Link>
+            </li>
             {/* <li>
               <i class="fa-solid fa-battery-half"></i>
               <Link to={"work-status"}>Work Status</Link>

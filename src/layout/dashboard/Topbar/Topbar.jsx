@@ -45,7 +45,8 @@ const Topbar = () => {
         >
           <hr />
           <div className="side-links">
-            {registerUser?.role === "admin" || registerUser?.role === "super admin" ? (
+            {registerUser?.role === "admin" ||
+            registerUser?.role === "super admin" ? (
               <ul>
                 <li>
                   <i class="fa-solid fa-list-check"></i>
@@ -62,6 +63,10 @@ const Topbar = () => {
                 <li>
                   <i class="fa-regular fa-calendar-days"></i>
                   <Link to={"calender"}>Calender</Link>
+                </li>
+                <li>
+                  <i class="fa-regular fa-envelope"></i>
+                  <Link to={"send-email"}>Send Email</Link>
                 </li>
               </ul>
             ) : (
