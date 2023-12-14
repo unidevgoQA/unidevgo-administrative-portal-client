@@ -4,6 +4,7 @@ import defaultImg from "../../../assets/default.png";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
+  useLeaveEmailMutation,
   useUpdateLeaveMutation,
 } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
@@ -22,6 +23,7 @@ const LeaveManagement = () => {
   //Api
   const { data } = useGetAllLeavesQuery();
   const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
+  const [leaveEmail , {isLoading : leaveEmailSuccess , isLoading : loadingEmailSuccess}] = useLeaveEmailMutation();
   const [
     updateLeave,
     { isSuccess: leaveUpdateSuccess, isLoading: leaveUpdateLoading },
@@ -32,11 +34,20 @@ const LeaveManagement = () => {
   const allLeaveManagements = data?.data;
 
   //handle Update
-  const handleLeaveStatusChange = (id) => {
+  const handleLeaveStatusChange = (id , employeeEmail , totalDays , employeeName , leaveApply , type) => {
+    const leave = {
+      leaveStatus,
+      employeeEmail,
+      employeeName,
+      totalDays,
+      leaveApply,
+      type
+    }
     if (leaveStatus === "") {
       toast.error("Please select the status");
     } else {
       updateLeave({ id: id, data: { leaveStatus } });
+      leaveEmail(leave);
     }
   };
 
@@ -128,7 +139,7 @@ const LeaveManagement = () => {
                       </select>
                       <button
                         title="Update Status"
-                        onClick={() => handleLeaveStatusChange(leave?._id)}
+                        onClick={() => handleLeaveStatusChange(leave?._id , leave?.employeeEmail , leave?.totalDays , leave?.employeeName , leave?.leaveApply , leave?.type)}
                         className="update-btn status"
                       >
                         {" "}

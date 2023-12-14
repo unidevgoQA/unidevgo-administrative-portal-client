@@ -175,18 +175,33 @@ const Profile = () => {
   } = useForm();
 
   //Add work status handler
-  const handleSubmitAttendence = ({ date , status }) => {
-    const attendence = {
-      //attendence data
-      date,
-      status,
-      time: new Date().toLocaleTimeString(),
-      //user info
-      employeeEmail: registerUser?.email,
-      employeeImg: registerUser?.img,
-      employeeName: registerUser?.name,
-    };
-    addAttendence(attendence);
+  const handleSubmitAttendence  = ({ date, status }) => {
+    // Check if the function has been called today
+    const lastDate = localStorage.getItem('lastAttendanceDate');
+  
+    const currentDate = new Date().toLocaleDateString();
+    
+    if (lastDate !== currentDate) {
+      // Add work status handler
+      const attendance = {
+        // Attendance data
+        date,
+        status,
+        time: new Date().toLocaleTimeString(),
+        // User info
+        employeeEmail: registerUser?.email,
+        employeeImg: registerUser?.img,
+        employeeName: registerUser?.name,
+      };
+  
+      // Call the function
+      addAttendence(attendance);
+  
+      // Update the last date in localStorage
+      localStorage.setItem('lastAttendanceDate', currentDate);
+    } else {
+      toast.error('Attendance already submitted for today.');
+    }
   };
 
   //Delete Effects
