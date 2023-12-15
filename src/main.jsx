@@ -20,6 +20,7 @@ import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import LeaveApply from "./pages/employee-dashboard/leave-apply/LeaveApply";
 import LeaveStatus from "./pages/employee-dashboard/leave-status/LeaveStatus";
 import Profile from "./pages/employee-dashboard/profile/Profile";
+import Support from "./pages/employee-dashboard/support/Support";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
       {
         path: "send-email",
         element: <SendEmail />,
+      },
+      {
+        path: "support",
+        element: <Support />,
       },
     ],
   },

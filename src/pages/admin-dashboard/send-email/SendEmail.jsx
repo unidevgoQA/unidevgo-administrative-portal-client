@@ -6,7 +6,7 @@ const SendEmail = () => {
   const [message, setMessage] = useState("");
 
   const sendEmail = () => {
-    fetch("http://localhost:5000/send-email", {
+    fetch(`${import.meta.env.VITE_BASE_URL}send-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,27 +33,30 @@ const SendEmail = () => {
                 <label>Recipients</label>
                 <input
                   type="text"
+                  required
                   placeholder="Recipients (comma-separated)"
                   onChange={(e) => setRecipients(e.target.value.split(","))}
                 />
               </div>
               <div className="col-lg-6">
-              <label>Subject</label>
+                <label>Subject</label>
                 <input
+                  required
                   type="text"
-                  placeholder="Subject"
                   onChange={(e) => setSubject(e.target.value)}
                 />
               </div>
               <div className="col-lg-12">
-              <label>Message</label>
+                <label>Message</label>
                 <textarea
-                  placeholder="Message"
+                  required
                   onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
             </div>
-            <button onClick={sendEmail}>Send Email</button>
+            <button className="send-email-btn" onClick={sendEmail}>
+              Send Email
+            </button>
           </div>
         </div>
       </div>

@@ -750,9 +750,21 @@ span.rdrStaticRangeLabel {
 }
 //Send Email
 .send-email-form {
+  .send-email-btn {
+    background: $primary;
+    color: $secondary;
+    padding: 5px 10px;
+    border: 1px solid $secondary;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 #0ad028;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 14px;
+  }
   label {
     width: 100%;
     margin-bottom: 20px;
+    font-weight: 600;
   }
   input,
   textarea {

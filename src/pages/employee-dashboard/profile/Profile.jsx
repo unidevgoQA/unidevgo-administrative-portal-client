@@ -178,9 +178,7 @@ const Profile = () => {
   const handleSubmitAttendence  = ({ date, status }) => {
     // Check if the function has been called today
     const lastDate = localStorage.getItem('lastAttendanceDate');
-  
     const currentDate = new Date().toLocaleDateString();
-    
     if (lastDate !== currentDate) {
       // Add work status handler
       const attendance = {
@@ -193,10 +191,8 @@ const Profile = () => {
         employeeImg: registerUser?.img,
         employeeName: registerUser?.name,
       };
-  
       // Call the function
       addAttendence(attendance);
-  
       // Update the last date in localStorage
       localStorage.setItem('lastAttendanceDate', currentDate);
     } else {

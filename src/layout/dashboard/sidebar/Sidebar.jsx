@@ -39,14 +39,7 @@ const Sidebar = () => {
         {registerUser?.role === "admin" ||
         registerUser?.role === "super admin" ? (
           <ul>
-            <li>
-              <i class="fa-solid fa-list-check"></i>
-              <Link to={"leave-management"}>Leave Management</Link>
-            </li>
-            <li>
-              <i class="fa-solid fa-people-group"></i>
-              <Link to={"all-employee"}>All Employee</Link>
-            </li>
+
             <li>
               <i class="fa-solid fa-user-tie"></i>
               <Link to={"profile"}>Profile</Link>
@@ -58,6 +51,14 @@ const Sidebar = () => {
             <li>
               <i class="fa-regular fa-envelope"></i>
               <Link to={"send-email"}>Send Email</Link>
+            </li>
+            <li>
+              <i class="fa-solid fa-list-check"></i>
+              <Link to={"leave-management"}>Leave Management</Link>
+            </li>
+            <li>
+              <i class="fa-solid fa-people-group"></i>
+              <Link to={"all-employee"}>All Employee</Link>
             </li>
             {/* <li>
               <i class="fa-solid fa-battery-half"></i>
@@ -90,6 +91,10 @@ const Sidebar = () => {
             <li>
               <i class="fa-regular fa-calendar-days"></i>
               <Link to={"calender"}>Calender</Link>
+            </li>
+            <li>
+            <i class="fa-solid fa-headset"></i>
+              <Link to={"support"}>Support</Link>
             </li>
           </ul>
         )}
