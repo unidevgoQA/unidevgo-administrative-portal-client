@@ -6,7 +6,7 @@ const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl : import.meta.env.VITE_BASE_URL,
     }),
-    tagTypes:["leaveManagement" , "profile","workStatus","calender-event"],
+    tagTypes:["leaveManagement" , "profile","workStatus","calender-event" ,"tickets"],
     endpoints : (builder) =>({})
 
 })

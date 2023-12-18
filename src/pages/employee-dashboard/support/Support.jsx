@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import { useAddTicketMutation } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const LeaveApply = () => {
@@ -12,6 +13,7 @@ const LeaveApply = () => {
   } = useForm();
   //User
   const { user } = useContext(AuthContext);
+  const [addTickets, { isSuccess, isLoading }] = useAddTicketMutation();
   //Get user using email API
   const { data } = useGetProfileByEmailQuery(user.email);
   //Set register user
@@ -22,7 +24,7 @@ const LeaveApply = () => {
   //Add work status handler
   const handleSendSupport = ({ message, attachment }) => {
     const suportTicket = {
-      //leave data
+      //ticket data
       date: currentDate,
       message,
       attachment: attachment[0],
@@ -31,13 +33,12 @@ const LeaveApply = () => {
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
-    console.log(suportTicket);
-    // if (type.trim().length === 0) {
-    //   toast.error("Provide valid input", { id: "leave-apply" });
-    // } else {
-    //   addLeaveApply(leave);
-    //   reset();
-    // }
+    if (message.trim().length === 0) {
+      toast.error("Provide valid input", { id: "support-ticket" });
+    } else {
+      addTickets(suportTicket);
+      //   reset();
+    }
   };
 
   //   useEffect(() => {
