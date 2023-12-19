@@ -8,6 +8,12 @@ const supportTicketsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["tickets"],
     }),
+    getSingleTickets: builder.query({
+      query: (id) => ({
+        url: `/support-tickets/${id}`,
+      }),
+      invalidatesTags: ["tickets"],
+    }),
     deleteTicket: builder.mutation({
       query: (id) => ({
         method: "DELETE",
@@ -24,7 +30,15 @@ const supportTicketsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["tickets"],
     }),
+    replyTicket: builder.mutation({
+      query: (data,id) => ({
+        method: "POST",
+        url: `/support-tickets/reply/${id}`,
+        body: data,
+      }),
+      invalidatesTags: ["tickets"],
+    }),
   }),
 });
 
-export const {useAddTicketMutation, useDeleteTicketMutation, useGetAllTicketsQuery} = supportTicketsApi;
+export const {useAddTicketMutation, useDeleteTicketMutation, useGetAllTicketsQuery , useGetSingleTicketsQuery , useReplyTicketMutation} = supportTicketsApi;

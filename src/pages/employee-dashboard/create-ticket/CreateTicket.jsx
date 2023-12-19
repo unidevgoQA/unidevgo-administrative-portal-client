@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { useAddTicketMutation } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
 
-const LeaveApply = () => {
+const CreateTicket = () => {
   const {
     handleSubmit,
     register,
@@ -22,12 +23,11 @@ const LeaveApply = () => {
   let currentDate = new Date().toJSON().slice(0, 10);
 
   //Add work status handler
-  const handleSendSupport = ({ message, attachment }) => {
+  const handleCreateTicket = ({ message }) => {
     const suportTicket = {
       //ticket data
       date: currentDate,
       message,
-      attachment: attachment[0],
       //user info
       employeeEmail: registerUser?.email,
       employeeImg: registerUser?.img,
@@ -37,18 +37,18 @@ const LeaveApply = () => {
       toast.error("Provide valid input", { id: "support-ticket" });
     } else {
       addTickets(suportTicket);
-      //   reset();
+      reset();
     }
   };
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       toast.success("Added Successfully", { id: "add-work-task" });
-  //     }
-  //     if (isLoading) {
-  //       toast.loading("Loading", { id: "add-work-task" });
-  //     }
-  //   }, [isSuccess, isLoading]);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Ticket Create Successfully", { id: "create-ticket" });
+    }
+    if (isLoading) {
+      toast.loading("Loading", { id: "create-ticket" });
+    }
+  }, [isSuccess, isLoading]);
 
   return (
     <div className="content-wrapper">
@@ -56,14 +56,14 @@ const LeaveApply = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Support</span> <i class="fa-solid fa-headset"></i>
+              <span>Create Ticket</span> <i class="fa-solid fa-headset"></i>
             </h2>
           </div>
-          <div className="add-form">
-            <form onSubmit={handleSubmit(handleSendSupport)}>
-              <div className="row">
-                <div className="col-md-12">
-                  <label>Message</label>
+          <div className="add-form send-message">
+            <form onSubmit={handleSubmit(handleCreateTicket)}>
+              <div className="chat-input-area">
+                <div className="text-area">
+                  <label>About Ticket</label>
                   <input
                     required
                     type="text"
@@ -73,18 +73,18 @@ const LeaveApply = () => {
                   />
                 </div>
 
-                <div className="col-md-6">
-                  <label>Attach file</label>
+                {/* <div className="attach-file-area">
                   <input
                     {...register("attachment")}
                     className="file"
+                    placeholder="Attach FIle?"
                     type="file"
                     required
                   />
-                </div>
+                </div> */}
 
-                <div className="col-md-12">
-                  <button className="submit-btn">Send Message</button>
+                <div className="submit-area">
+                  <button className="submit-btn">Create Ticket</button>
                 </div>
               </div>
             </form>
@@ -95,4 +95,4 @@ const LeaveApply = () => {
   );
 };
 
-export default LeaveApply;
+export default CreateTicket;

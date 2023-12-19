@@ -80,6 +80,10 @@ const Sidebar = () => {
               <Link to={"add-work-status"}>Add Work Status</Link>
             </li>
             <li>
+            <i class="fa-solid fa-headset"></i>
+              <Link to={"support-tickets"}>Support tickets</Link>
+            </li>
+            <li>
               <i class="fa-solid fa-check-double"></i>
               <Link to={"leave-apply"}>Leave Apply</Link>
             </li>
@@ -92,10 +96,8 @@ const Sidebar = () => {
               <i class="fa-regular fa-calendar-days"></i>
               <Link to={"calender"}>Calender</Link>
             </li>
-            <li>
-            <i class="fa-solid fa-headset"></i>
-              <Link to={"support"}>Support</Link>
-            </li>
+     
+          
           </ul>
         )}
 
