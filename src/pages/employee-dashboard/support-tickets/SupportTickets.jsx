@@ -12,7 +12,8 @@ const SupportTickets = () => {
   //Set ticket data
   const allTickets = data?.data;
   
-
+  const filterTickets = allTickets?.filter(ticket => ticket?.employeeEmail === user?.email)
+console.log(filterTickets)
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -25,17 +26,24 @@ const SupportTickets = () => {
           </div>
 
           <div className="row g-4 mb-3">
-            {allTickets?.length > 0 ? (
+            {filterTickets?.length > 0 ? (
               <>
-                {allTickets?.map((ticket) => (
+                {filterTickets?.map((ticket) => (
                   <div className="col-lg-4 col-md-6 col-sm-12">
                     <div className="ticket-wrapper">
                       <div className="left-content">
                         <img src={ticket?.employeeImg} alt="" />
                         <h6>{ticket?.employeeName}</h6>
                         <p>Ticket Message : {ticket?.message}</p>
+                        <button
+                          onClick={() => handleDelete(ticket?._id)}
+                          className="delete-btn"
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
                       </div>
                       <div className="right-content">
+
                         <h6>Ticket Create</h6>
                         <span>{ticket?.date}</span>
                         <Link to={`/dashboard/support-tickets/${ticket?._id}`}>

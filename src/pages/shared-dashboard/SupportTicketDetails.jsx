@@ -8,6 +8,7 @@ import {
     useReplyTicketMutation,
 } from "../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../providers/AuthProviders";
+import './support-ticket-details.scss';
 
 const SupportTicketDetails = () => {
   //Get id
@@ -15,6 +16,8 @@ const SupportTicketDetails = () => {
   const { data: ticket } = useGetSingleTicketsQuery(id);
   const [sendReply] = useReplyTicketMutation();
   const ticketDetails = ticket?.data;
+
+  console.log(ticketDetails);
 
   const {
     handleSubmit,
@@ -61,7 +64,19 @@ const SupportTicketDetails = () => {
               <i class="fa-solid fa-headset"></i>
             </h2>
           </div>
-          <div className="message-area mb-3"></div>
+          <div className="message-area mb-3 p-3">
+            {ticketDetails?.replies.map((text) => (
+              <div className="text-wrapper">
+                <div className="left-content">
+                  <img src={text?.employeeImg} alt="" />
+                </div>
+                <div className="right-content">
+                  <h6>{text?.employeeName}</h6>
+                  <p>{text.reply}</p>
+                </div>
+              </div>
+            ))}
+          </div>
           <div className="add-form send-message">
             <form onSubmit={handleSubmit(handleReply)}>
               <div className="chat-input-area">

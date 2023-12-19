@@ -1,0 +1,19 @@
+.text-wrapper {
+  display: flex;
+  gap: 10px;
+  .left-content {
+    img {
+      width: 40px;
+      border-radius: 5px;
+    }
+  }
+  .right-content {
+    h6 {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+}
