@@ -14,6 +14,7 @@ import AttendenceReport from "./pages/admin-dashboard/attendence-report/Attenden
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import SendEmail from "./pages/admin-dashboard/send-email/SendEmail";
+import SupportTIcketManagement from "./pages/admin-dashboard/support-ticket-management/SupportTIcketManagement";
 import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
 import Attendence from "./pages/employee-dashboard/attendence/Attendence";
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: "support-tickets",
         element: <SupportTickets />,
+      },
+      {
+        path: "support-tickets-management",
+        element: <SupportTIcketManagement />,
       },
     ],
   },

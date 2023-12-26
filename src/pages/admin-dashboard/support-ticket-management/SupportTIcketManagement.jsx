@@ -2,13 +2,12 @@ import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
-  useDeleteTicketMutation,
-  useGetAllTicketsQuery,
+    useDeleteTicketMutation,
+    useGetAllTicketsQuery,
 } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
-import "./support-tickets.scss";
 
-const SupportTickets = () => {
+const SupportTIcketManagement = () => {
   //User
   const { user } = useContext(AuthContext);
   const [deleteTicket, { isLoading, isSuccess }] = useDeleteTicketMutation();
@@ -16,10 +15,6 @@ const SupportTickets = () => {
   const { data } = useGetAllTicketsQuery();
   //Set ticket data
   const allTickets = data?.data;
-
-  const filterTickets = allTickets?.filter(
-    (ticket) => ticket?.employeeEmail === user?.email
-  );
 
   //handle Delete
   const handleDelete = (id) => {
@@ -51,9 +46,9 @@ const SupportTickets = () => {
           </div>
 
           <div className="row g-4 mb-3">
-            {filterTickets?.length > 0 ? (
+            {allTickets?.length > 0 ? (
               <>
-                {filterTickets?.map((ticket) => (
+                {allTickets?.map((ticket) => (
                   <div className="col-lg-4 col-md-6 col-sm-12">
                     <div className="ticket-wrapper">
                       <div className="left-content">
@@ -84,15 +79,15 @@ const SupportTickets = () => {
               </>
             )}
           </div>
-          <div className="create-ticket-wrapper">
+          {/* <div className="create-ticket-wrapper">
             <Link className="add-new-event-btn" to={"/dashboard/create-ticket"}>
               Create Ticket <i class="fa-solid fa-chevron-right"></i>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default SupportTickets;
+export default SupportTIcketManagement;

@@ -57,6 +57,10 @@ const Sidebar = () => {
               <Link to={"leave-management"}>Leave Management</Link>
             </li>
             <li>
+              <i class="fa-solid fa-list-check"></i>
+              <Link to={"support-tickets-management"}>Tickets Management</Link>
+            </li>
+            <li>
               <i class="fa-solid fa-people-group"></i>
               <Link to={"all-employee"}>All Employee</Link>
             </li>
