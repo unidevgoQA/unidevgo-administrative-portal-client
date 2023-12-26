@@ -11,11 +11,11 @@ import Dashboard from "./layout/dashboard/dashboard/dashboard";
 import AddNewEvent from "./pages/admin-dashboard/add-new-event/AddNewEvent";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
 import AttendenceReport from "./pages/admin-dashboard/attendence-report/AttendenceReport";
+import EmployeeWorkStatus from "./pages/admin-dashboard/employee-work-status/EmployeeWorkStatus";
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import SendEmail from "./pages/admin-dashboard/send-email/SendEmail";
 import SupportTIcketManagement from "./pages/admin-dashboard/support-ticket-management/SupportTIcketManagement";
-import WorkStatus from "./pages/admin-dashboard/work-status/WorkStatus";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
 import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import CreateTicket from "./pages/employee-dashboard/create-ticket/CreateTicket";
@@ -24,6 +24,7 @@ import LeaveStatus from "./pages/employee-dashboard/leave-status/LeaveStatus";
 import Profile from "./pages/employee-dashboard/profile/Profile";
 import SupportTickets from "./pages/employee-dashboard/support-tickets/SupportTickets";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
+import WorkStatus from "./pages/employee-dashboard/work-status/WorkStatus";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Calender from "./pages/shared-dashboard/Calender";
@@ -60,8 +61,8 @@ const router = createBrowserRouter([
         element: <LeaveManagement />,
       },
       {
-        path: "work-status/:id",
-        element: <WorkStatus />,
+        path: "employee-work-status/:id",
+        element: <EmployeeWorkStatus />,
       },
       {
         path: "projects",
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: "add-work-status",
         element: <AddWorkStatus />,
+      },
+      {
+        path: "work-status",
+        element: <WorkStatus />,
       },
       {
         path: "leave-apply",

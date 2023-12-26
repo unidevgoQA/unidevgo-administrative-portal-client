@@ -43,11 +43,19 @@ const SupportTickets = () => {
     <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
-          <div className="heading">
+          <div className="heading d-flex justify-content-between" >
             <h2>
               <span>Support Tickets</span>{" "}
               <i class="fa-solid fa-clipboard-user"></i>
             </h2>
+            <div className="add-new-area">
+              <Link
+                className="add-btn"
+                to={"/dashboard/create-ticket"}
+              >
+                <i class="fa-regular fa-square-plus"></i>  Create Ticket
+              </Link>
+            </div>
           </div>
 
           <div className="row g-4 mb-3">
@@ -84,11 +92,7 @@ const SupportTickets = () => {
               </>
             )}
           </div>
-          <div className="create-ticket-wrapper">
-            <Link className="add-new-event-btn" to={"/dashboard/create-ticket"}>
-              Create Ticket <i class="fa-solid fa-chevron-right"></i>
-            </Link>
-          </div>
+  
         </div>
       </div>
     </div>

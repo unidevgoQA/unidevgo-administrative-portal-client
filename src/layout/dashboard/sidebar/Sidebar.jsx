@@ -81,16 +81,16 @@ const Sidebar = () => {
             </li>
             <li>
               <i class="fa-regular fa-square-plus"></i>
-              <Link to={"add-work-status"}>Add Work Status</Link>
+              <Link to={"work-status"}>Work Status</Link>
             </li>
             <li>
             <i class="fa-solid fa-headset"></i>
               <Link to={"support-tickets"}>Support tickets</Link>
             </li>
-            <li>
+            {/* <li>
               <i class="fa-solid fa-check-double"></i>
               <Link to={"leave-apply"}>Leave Apply</Link>
-            </li>
+            </li> */}
             <li>
               <i class="fa-solid fa-person-walking-arrow-right"></i>
               <Link to={"leave-status"}>Leave Status</Link>

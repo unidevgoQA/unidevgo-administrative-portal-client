@@ -834,7 +834,19 @@ span.rdrStaticRangeLabel {
   background: #d8f3dc;
   border-radius: 10px;
 }
+
+//Common
+.add-btn {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+  &:hover {
+    color: #0ad028;
+  }
+}
 //Dashboard
+
 //Responsive
 @media screen and (max-width: 1024px) {
   .login-register

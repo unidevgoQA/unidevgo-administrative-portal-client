@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import defaultImg from '../../../assets/default.png';
 import {
   useDeleteLeaveMutation,
@@ -40,11 +41,19 @@ const LeaveStatus = () => {
     <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
-          <div className="heading">
+          <div className="heading d-flex justify-content-between">
             <h2>
               <span>Leave Status</span>{" "}
               <i class="fa-solid fa-person-walking-arrow-right"></i>
             </h2>
+            <div className="add-new-area">
+              <Link
+                className="add-btn"
+                to={"/dashboard/leave-apply"}
+              >
+                <i class="fa-regular fa-square-plus"></i>  Leave Apply
+              </Link>
+            </div>
           </div>
           <div className="table-responsive">
             <table class="table-modify table table-striped">

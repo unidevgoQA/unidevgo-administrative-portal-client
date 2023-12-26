@@ -90,7 +90,7 @@ const AllEmployee = () => {
                     <td>{employee?.address}</td>
                     <td>{employee?.joiningDate}</td>
                     <td>
-                      <Link to={`/dashboard/work-status/${employee?._id}`}>
+                      <Link to={`/dashboard/employee-work-status/${employee?._id}`}>
                         <button className="update-btn">Check Status</button>
                       </Link>
                     </td>
