@@ -2,7 +2,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import React, { useContext, useEffect } from "react";
+import html2canvas from "html2canvas";
+import React, { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
@@ -42,6 +43,25 @@ const Calender = () => {
       toast.error("You dont have access to modify the event");
     }
   };
+
+  //Export Calender
+  const calendarRef = useRef(null);
+
+  const handleExport = () => {
+    const calendarNode = calendarRef.current;
+
+    if (calendarNode) {
+      html2canvas(calendarNode).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "calendar.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    }
+  };
+
   //Delete efftects
   useEffect(() => {
     if (isSuccess) {
@@ -51,16 +71,33 @@ const Calender = () => {
       toast.loading("Loading", { id: "delete-event" });
     }
   }, [isSuccess, isLoading]);
+
   return (
     <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
-          <div className="heading">
+          <div className="heading d-flex justify-content-between">
             <h2>
               <span>Calender</span> <i class="fa-regular fa-calendar-days"></i>
             </h2>
+            {registerUser?.role === "admin" ||
+            registerUser?.role === "super admin" ? (
+              <div className="add-event-wrapper">
+                <Link
+                  className="add-btn"
+                  to={"/dashboard/add-new-event"}
+                >
+                <i class="fa-regular fa-square-plus"></i>  Add New Event 
+                </Link>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
-          <div className="table-responsive calender-wrapper mb-3">
+          <div
+            className="table-responsive calender-wrapper mb-3"
+            ref={calendarRef}
+          >
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -81,14 +118,12 @@ const Calender = () => {
               eventClick={handleDeleteEvent}
             />
           </div>
-          {registerUser?.role === "admin" ||
-          registerUser?.role === "super admin" ? (
-            <div className="add-event-wrapper">
-              <Link className="add-new-event-btn" to={"/dashboard/add-new-event"}>Add New Event  <i class="fa-solid fa-chevron-right"></i></Link>
-            </div>
-          ) : (
-            <></>
-          )}
+
+          <div>
+            <button className="export-btn" onClick={handleExport}>
+              Export Calendar
+            </button>
+          </div>
         </div>
       </div>
     </div>

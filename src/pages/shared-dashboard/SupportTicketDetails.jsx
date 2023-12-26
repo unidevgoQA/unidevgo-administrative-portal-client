@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useGetProfileByEmailQuery } from "../../features/profile/profileApi";
 import {
-    useGetSingleTicketsQuery,
-    useReplyTicketMutation,
+  useGetSingleTicketsQuery,
+  useReplyTicketMutation,
 } from "../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../providers/AuthProviders";
 import './support-ticket-details.scss';
@@ -13,11 +13,9 @@ import './support-ticket-details.scss';
 const SupportTicketDetails = () => {
   //Get id
   const { id } = useParams();
-  const { data: ticket } = useGetSingleTicketsQuery(id);
+  const { data: ticket } = useGetSingleTicketsQuery(id,{pollingInterval:3000});
   const [sendReply] = useReplyTicketMutation();
   const ticketDetails = ticket?.data;
-
-  console.log(ticketDetails);
 
   const {
     handleSubmit,

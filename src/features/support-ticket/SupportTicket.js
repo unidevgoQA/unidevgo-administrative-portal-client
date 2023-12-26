@@ -12,7 +12,7 @@ const supportTicketsApi = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/support-tickets/${id}`,
       }),
-      invalidatesTags: ["tickets"],
+      providesTags: ["tickets"],
     }),
     deleteTicket: builder.mutation({
       query: (id) => ({

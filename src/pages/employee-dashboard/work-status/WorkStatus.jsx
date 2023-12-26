@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import exportFromJSON from "export-from-json";
-import { DateRangePicker } from "react-date-range";
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Link } from "react-router-dom";
@@ -40,14 +41,14 @@ const WorkStatus = () => {
   const registerUser = userData?.data;
 
   //States
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-
   const [filteredStatusData, setFilteredStatusData] = useState([]);
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
+
+  //Filter work status based on user
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
       (status) => status?.employeeEmail === registerUser?.email
@@ -65,29 +66,22 @@ const WorkStatus = () => {
     (acc, current) => acc + current,
     0
   );
+  
   //Show all data handler
   const showAllData = () => {
     setFilteredStatusData(filteredStatusDataByEmail);
   };
-  // Date select
-  const handleSelect = (date) => {
-    let filtered = filteredStatusDataByEmail.filter((workStatus) => {
-      let statusDate = new Date(workStatus["date"]);
-      return (
-        statusDate >= date.selection.startDate &&
-        statusDate <= date.selection.endDate
-      );
-    });
-    setStartDate(date.selection.startDate);
-    setEndDate(date.selection.endDate);
-    setFilteredStatusData(filtered);
-  };
 
-  //Select date range
-  const selectionRange = {
-    startDate: startDate,
-    endDate: endDate,
-    key: "selection",
+  //Select date and filter data
+  const handleSelect = (date) => {
+    setSelectedDate(date);
+
+    const formattedDate = date.toISOString().split("T")[0];
+
+    const filtered = filteredStatusDataByEmail.filter(
+      (item) => item.date === formattedDate
+    );
+    setFilteredStatusData(filtered);
   };
 
   //Export Work Status
@@ -120,26 +114,6 @@ const WorkStatus = () => {
     { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
   ] = useUpdateWorkTaskMutation();
 
-  //Leave management data
-//   const { data } = useGetAllLeavesQuery();
-//   const allLeaveManagements = data?.data;
-
-//   //Filter leaves based on email
-//   const filterLeaves = allLeaveManagements?.filter(
-//     (leave) => leave.employeeEmail === user.email
-//   );
-
-//   //filter accepted leave
-//   const filerGetLeave = filterLeaves?.filter(
-//     (leave) => leave.status === "accepted"
-//   );
-
-//   //calculate total get leave days
-//   const totalGetLeaveDays = filerGetLeave?.reduce(
-//     (sum, leave) => sum + leave.totalDays,
-//     0
-//   );
-
   //handle Update
   const handleStatusChange = (id, workStatus) => {
     const updatedStatus =
@@ -157,46 +131,6 @@ const WorkStatus = () => {
       deleteWorkStatus(id);
     }
   };
-
-  //Attendence
-
-//   const [
-//     addAttendence,
-//     { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
-//   ] = useAddAttendenceMutation();
-//   //Form
-//   const {
-//     handleSubmit,
-//     register,
-//     reset,
-//     formState: { errors },
-//   } = useForm();
-
-  //Add work status handler
-//   const handleSubmitAttendence = ({ date, status }) => {
-//     // Check if the function has been called today
-//     const lastDate = localStorage.getItem("lastAttendanceDate");
-//     const currentDate = new Date().toLocaleDateString();
-//     if (lastDate !== currentDate) {
-//       // Add work status handler
-//       const attendance = {
-//         // Attendance data
-//         date,
-//         status,
-//         time: new Date().toLocaleTimeString(),
-//         // User info
-//         employeeEmail: registerUser?.email,
-//         employeeImg: registerUser?.img,
-//         employeeName: registerUser?.name,
-//       };
-//       // Call the function
-//       addAttendence(attendance);
-//       // Update the last date in localStorage
-//       localStorage.setItem("lastAttendanceDate", currentDate);
-//     } else {
-//       toast.error("Attendance already submitted for today.");
-//     }
-//   };
 
   //Delete Effects
   useEffect(() => {
@@ -217,16 +151,6 @@ const WorkStatus = () => {
     }
   }, [workStatusSuccess, worksStatusLoading]);
 
-//   //Attendence added effects
-//   useEffect(() => {
-//     if (attendenceSuccess) {
-//       toast.success("Record Submitted", { id: "add-attendence" });
-//     }
-//     if (attendenceLoading) {
-//       toast.loading("Loading", { id: "add-attendence" });
-//     }
-//   }, [attendenceLoading, attendenceSuccess]);
-
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -236,11 +160,8 @@ const WorkStatus = () => {
               <span>Work Status</span> <i class="fa-solid fa-user-tie"></i>
             </h2>
             <div className="add-new-area">
-              <Link
-                className="add-btn"
-                to={"/dashboard/add-work-status"}
-              >
-                <i class="fa-regular fa-square-plus"></i>  Add Work Status
+              <Link className="add-btn" to={"/dashboard/add-work-status"}>
+                <i class="fa-regular fa-square-plus"></i> Add Work Status
               </Link>
             </div>
           </div>
@@ -251,7 +172,7 @@ const WorkStatus = () => {
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="row">
-                <div className="col-lg-4 col-md-12 col-sm-12">
+                <div className="col-lg-3 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper">
                     <div className="table-responsive">
                       <div className="date-range">
@@ -261,19 +182,17 @@ const WorkStatus = () => {
                   >
                     All
                   </button> */}
-                        <DateRangePicker
-                          direction="horizontal"
-                          rangeColors={["#208436"]}
-                          showDateDisplay={false}
-                          showMonthAndYearPickers={false}
-                          ranges={[selectionRange]}
+                        <DatePicker
+                          inline
+                          open={true}
+                          selected={selectedDate}
                           onChange={handleSelect}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-8 col-md-12 col-sm-12">
+                <div className="col-lg-9 col-md-12 col-sm-12">
                   <div style={{ width: "100%", height: "100%" }}>
                     <ResponsiveContainer>
                       <ComposedChart
@@ -386,7 +305,9 @@ const WorkStatus = () => {
                   <div className="working-hours">
                     {totalWorkHours > 0 && (
                       <h6>
-                        Total Work Hours : <span>{totalWorkHours}</span> Hour
+                        Total Work Hours :{" "}
+                        <span>{parseFloat(totalWorkHours).toFixed(1)}</span>{" "}
+                        Hour
                       </h6>
                     )}
                   </div>

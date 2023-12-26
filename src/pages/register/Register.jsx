@@ -160,8 +160,8 @@ const Register = () => {
                       required
                       type="tel"
                       id="mobile"
-                      pattern="[0-9]{3}-[0-9]{8}"
-                      placeholder="01X-XXXXXXXX"
+                      pattern="[0-9]{11}"
+                      placeholder="01XXXXXXXXX"
                       {...register("mobile")}
                     />
                     {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
