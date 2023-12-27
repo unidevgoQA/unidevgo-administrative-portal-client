@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useDeleteAttendenceMutation, useGetAllAttendenceQuery } from "../../../features/attendence/attendenceApi";
+import {
+  useDeleteAttendenceMutation,
+  useGetAllAttendenceQuery,
+} from "../../../features/attendence/attendenceApi";
 
 const AttendenceReport = () => {
   //APIs
@@ -19,7 +24,7 @@ const AttendenceReport = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [profile, setProfile] = useState({});
   const [filteredAttendenceData, setFilteredAttendenceData] = useState([]);
-
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredAttendenceDataByEmail, setFilteredAttendenceDataByEmail] =
     useState([]);
 
@@ -67,6 +72,18 @@ const AttendenceReport = () => {
     key: "selection",
   };
 
+  //Select date and filter data
+  const handleSelectSpecificDate = (date) => {
+    setSelectedDate(date);
+
+    const formattedDate = date.toISOString().split("T")[0];
+
+    const filtered = filteredAttendenceDataByEmail.filter(
+      (item) => item.date === formattedDate
+    );
+    setFilteredAttendenceData(filtered);
+  };
+
   //handle Delete
   const handleDelete = (id) => {
     const deleteConfirm = window.confirm("Want to delete?");
@@ -85,8 +102,6 @@ const AttendenceReport = () => {
     }
   }, [isSuccess, isLoading]);
 
-
-
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -103,7 +118,7 @@ const AttendenceReport = () => {
               <div className="row">
                 <div className="col-lg-4 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper">
-                    <div className="table-responsive">
+                    <div className="table-responsive d-flex">
                       <div className="date-range">
                         {/* <button
                     className="show-all-task-btn"
@@ -120,13 +135,19 @@ const AttendenceReport = () => {
                           onChange={handleSelect}
                         />
                       </div>
+                      <div className="date-select">
+                        <DatePicker
+                          inline
+                          open={true}
+                          selected={selectedDate}
+                          onChange={handleSelectSpecificDate}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-lg-8 col-md-12 col-sm-12">
-                  <div style={{ width: "100%", height: "100%" }}>
-               
-                  </div>
+                  <div style={{ width: "100%", height: "100%" }}></div>
                 </div>
               </div>
             </div>
@@ -187,7 +208,6 @@ const AttendenceReport = () => {
                       </tbody>
                     </table>
                   </div>
-                  
                 </>
               ) : (
                 <>

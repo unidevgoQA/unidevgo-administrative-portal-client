@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 import exportFromJSON from "export-from-json";
+import { DateRangePicker } from "react-date-range";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
     Area,
@@ -18,6 +20,8 @@ import {
     YAxis,
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
+import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
+import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
     useDeleteWorkTaskMutation,
@@ -41,14 +45,14 @@ const WorkStatus = () => {
   const registerUser = userData?.data;
 
   //States
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredStatusData, setFilteredStatusData] = useState([]);
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
-
-  //Filter work status based on user
   useEffect(() => {
     const filterWorkStatus = workStatusData?.data.filter(
       (status) => status?.employeeEmail === registerUser?.email
@@ -66,14 +70,33 @@ const WorkStatus = () => {
     (acc, current) => acc + current,
     0
   );
-  
   //Show all data handler
   const showAllData = () => {
     setFilteredStatusData(filteredStatusDataByEmail);
   };
+  // Date select
+  const handleSelect = (date) => {
+    let filtered = filteredStatusDataByEmail.filter((workStatus) => {
+      let statusDate = new Date(workStatus["date"]);
+      return (
+        statusDate >= date.selection.startDate &&
+        statusDate <= date.selection.endDate
+      );
+    });
+    setStartDate(date.selection.startDate);
+    setEndDate(date.selection.endDate);
+    setFilteredStatusData(filtered);
+  };
+
+  //Select date range
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
 
   //Select date and filter data
-  const handleSelect = (date) => {
+  const handleSelectSpecificDate = (date) => {
     setSelectedDate(date);
 
     const formattedDate = date.toISOString().split("T")[0];
@@ -87,7 +110,7 @@ const WorkStatus = () => {
   //Export Work Status
   const exportWorkStatus = () => {
     const fileName = "Work Status";
-    const exportType = exportFromJSON.types.csv;
+    const exportType = exportFromJSON.types.xls;
 
     const combinedData = [
       ...filteredStatusData,
@@ -114,6 +137,26 @@ const WorkStatus = () => {
     { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
   ] = useUpdateWorkTaskMutation();
 
+  //Leave management data
+  const { data } = useGetAllLeavesQuery();
+  const allLeaveManagements = data?.data;
+
+  //Filter leaves based on email
+  const filterLeaves = allLeaveManagements?.filter(
+    (leave) => leave.employeeEmail === user.email
+  );
+
+  //filter accepted leave
+  const filerGetLeave = filterLeaves?.filter(
+    (leave) => leave.status === "accepted"
+  );
+
+  //calculate total get leave days
+  const totalGetLeaveDays = filerGetLeave?.reduce(
+    (sum, leave) => sum + leave.totalDays,
+    0
+  );
+
   //handle Update
   const handleStatusChange = (id, workStatus) => {
     const updatedStatus =
@@ -129,6 +172,46 @@ const WorkStatus = () => {
     const deleteConfirm = window.confirm("Want to delete?");
     if (deleteConfirm) {
       deleteWorkStatus(id);
+    }
+  };
+
+  //Attendence
+
+  const [
+    addAttendence,
+    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
+  ] = useAddAttendenceMutation();
+  //Form
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  //Add work status handler
+  const handleSubmitAttendence = ({ date, status }) => {
+    // Check if the function has been called today
+    const lastDate = localStorage.getItem("lastAttendanceDate");
+    const currentDate = new Date().toLocaleDateString();
+    if (lastDate !== currentDate) {
+      // Add work status handler
+      const attendance = {
+        // Attendance data
+        date,
+        status,
+        time: new Date().toLocaleTimeString(),
+        // User info
+        employeeEmail: registerUser?.email,
+        employeeImg: registerUser?.img,
+        employeeName: registerUser?.name,
+      };
+      // Call the function
+      addAttendence(attendance);
+      // Update the last date in localStorage
+      localStorage.setItem("lastAttendanceDate", currentDate);
+    } else {
+      toast.error("Attendance already submitted for today.");
     }
   };
 
@@ -150,6 +233,16 @@ const WorkStatus = () => {
       toast.loading("Loading", { id: "update-work-task" });
     }
   }, [workStatusSuccess, worksStatusLoading]);
+
+  //Attendence added effects
+  useEffect(() => {
+    if (attendenceSuccess) {
+      toast.success("Record Submitted", { id: "add-attendence" });
+    }
+    if (attendenceLoading) {
+      toast.loading("Loading", { id: "add-attendence" });
+    }
+  }, [attendenceLoading, attendenceSuccess]);
 
   return (
     <div className="content-wrapper">
@@ -174,7 +267,7 @@ const WorkStatus = () => {
               <div className="row">
                 <div className="col-lg-3 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper">
-                    <div className="table-responsive">
+                    <div className="table-responsive d-flex">
                       <div className="date-range">
                         {/* <button
                     className="show-all-task-btn"
@@ -182,11 +275,21 @@ const WorkStatus = () => {
                   >
                     All
                   </button> */}
+                        <DateRangePicker
+                          direction="horizontal"
+                          rangeColors={["blue"]}
+                          showDateDisplay={false}
+                          showMonthAndYearPickers={false}
+                          ranges={[selectionRange]}
+                          onChange={handleSelect}
+                        />
+                      </div>
+                      <div className="date-select">
                         <DatePicker
                           inline
                           open={true}
                           selected={selectedDate}
-                          onChange={handleSelect}
+                          onChange={handleSelectSpecificDate}
                         />
                       </div>
                     </div>
@@ -293,7 +396,7 @@ const WorkStatus = () => {
                 <div className="col-md-6 col-sm-12">
                   {filteredStatusData?.length > 0 && (
                     <div className="export-data">
-                      <h6>Export data to a CSV file ?</h6>
+                      <h6>Export data to a xls file ?</h6>
                       <button className="export-btn" onClick={exportWorkStatus}>
                         {" "}
                         Export Work Staus
@@ -306,8 +409,7 @@ const WorkStatus = () => {
                     {totalWorkHours > 0 && (
                       <h6>
                         Total Work Hours :{" "}
-                        <span>{parseFloat(totalWorkHours).toFixed(1)}</span>{" "}
-                        Hour
+                        <span>{totalWorkHours.toFixed(1)}</span> Hour
                       </h6>
                     )}
                   </div>

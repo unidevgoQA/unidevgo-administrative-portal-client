@@ -134,7 +134,7 @@ const Register = () => {
                       })}
                   </div>
                   <div className="col-md-6">
-                    <label>Desgination</label>
+                    {/* <label>Desgination</label>
                     <input
                       required
                       {...register("desgination", {
@@ -146,7 +146,22 @@ const Register = () => {
                       errors.desgination.type === "maxLength" &&
                       toast.error("Max length 50 exceeded", {
                         id: "register-designation-field",
-                      })}
+                      })} */}
+
+                    <label for="desgination">Designation</label>
+                    <select
+                      required
+                      className="gender-selection"
+                      {...register("desgination")}
+                    >
+                      <option value="Software QA Engineer">Software QA Engineer</option>
+                      <option value="Senior Software QA Engineer">Senior Software QA Engineer</option>
+                      <option value="Junior Software QA Engineer">Junior Software QA Engineer</option>
+                      <option value="Junior Software Engineer">Junior Software Engineer</option>
+                      <option value="Senior Software Engineer">Senior Software Engineer</option>
+                      <option value="Technical Lead">Technical Lead</option>
+                   
+                    </select>
                   </div>
                   <div className="col-md-6">
                     <label>Joining Date</label>

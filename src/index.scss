@@ -629,18 +629,19 @@ body {
   font-weight: 600;
   font-size: 14px;
 }
-Calender .rdrCalendarWrapper {
+//Date-range-picker
+.rdrCalendarWrapper {
   color: #000000;
   font-size: 12px;
   display: none;
 }
+.rdrCalendarWrapper {
+  display: none !important;
+}
 .rdrInputRanges {
   display: none;
 }
-// .rdrStaticRanges {
-//   display: flex;
-//   flex-direction: row;
-// }
+
 .rdrStaticRange {
   border: 0;
   cursor: pointer;
@@ -649,7 +650,7 @@ Calender .rdrCalendarWrapper {
   padding: 0;
   background: #fff;
   border-radius: 10px;
-  margin: 5px 5px 10px 0px;
+  margin: 0px 10px 9px 0px;
 }
 .rdrStaticRang:hover {
   background: #fff;
@@ -821,6 +822,7 @@ span.rdrStaticRangeLabel {
     margin: 0px;
   }
 }
+
 .add-new-event-btn {
   text-decoration: none;
   padding: 20px 0px;

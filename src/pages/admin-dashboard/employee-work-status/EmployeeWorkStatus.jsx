@@ -1,6 +1,8 @@
 import exportFromJSON from "export-from-json";
 import React, { useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import {
@@ -37,6 +39,7 @@ const WorkStatus = () => {
   //States
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [profile, setProfile] = useState({});
   const [filteredStatusData, setFilteredStatusData] = useState([]);
 
@@ -91,6 +94,16 @@ const WorkStatus = () => {
     setFilteredStatusData(filtered);
   };
 
+  //Select date and filter data
+  const handleSelectSpecificDate = (date) => {
+    setSelectedDate(date);
+    const formattedDate = date.toISOString().split("T")[0];
+    const filtered = filteredStatusDataByEmail.filter(
+      (item) => item.date === formattedDate
+    );
+    setFilteredStatusData(filtered);
+  };
+
   //Show all data handler
   const showAllData = () => {
     setFilteredStatusData(filteredStatusDataByEmail);
@@ -105,7 +118,7 @@ const WorkStatus = () => {
   //Export Work Status
   const exportWorkStatus = () => {
     const fileName = "Work Status";
-    const exportType = exportFromJSON.types.csv;
+    const exportType = exportFromJSON.types.xls;
 
     const combinedData = [
       ...filteredStatusData,
@@ -177,9 +190,9 @@ const WorkStatus = () => {
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="row">
-                <div className="col-lg-4 col-md-12 col-sm-12">
+                <div className="col-lg-3 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper">
-                    <div className="table-responsive">
+                  <div className="table-responsive d-flex">
                       <div className="date-range">
                         {/* <button
                     className="show-all-task-btn"
@@ -194,12 +207,22 @@ const WorkStatus = () => {
                           showMonthAndYearPickers={false}
                           ranges={[selectionRange]}
                           onChange={handleSelect}
+            
+                        />
+                        
+                      </div>
+                      <div className="date-select">
+                      <DatePicker
+                          inline
+                          open={true}
+                          selected={selectedDate}
+                          onChange={handleSelectSpecificDate}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-8 col-md-12 col-sm-12">
+                <div className="col-lg-9 col-md-12 col-sm-12">
                   <div style={{ width: "100%", height: "100%" }}>
                     <ResponsiveContainer>
                       <ComposedChart
@@ -294,7 +317,7 @@ const WorkStatus = () => {
                   <div className="row">
                     <div className="col-md-6 col-sm-12">
                       <div className="export-data">
-                        <h6>Export data to a CSV file ?</h6>
+                        <h6>Export data to a xls file ?</h6>
                         <button
                           className="export-btn"
                           onClick={exportWorkStatus}
@@ -308,7 +331,7 @@ const WorkStatus = () => {
                       <div className="working-hours">
                         {totalWorkHours > 0 && (
                           <h6>
-                            Total Work Hours : <span>{totalWorkHours}</span>{" "}
+                            Total Work Hours : <span>{totalWorkHours.toFixed(1)}</span>{" "}
                             Hour
                           </h6>
                         )}
