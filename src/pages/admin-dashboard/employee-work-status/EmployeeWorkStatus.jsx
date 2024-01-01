@@ -244,7 +244,7 @@ const WorkStatus = () => {
                           fill="#8884d8"
                           stroke="#8884d8"
                         />
-                        <Bar dataKey="hour" barSize={20} fill="#413ea0" />
+                        <Bar dataKey="hour" barSize={20} fill="#218436" />
                         <Line
                           type="string"
                           dataKey="workStatus"

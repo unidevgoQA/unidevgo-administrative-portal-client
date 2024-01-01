@@ -9,24 +9,24 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
-    Area,
-    Bar,
-    CartesianGrid,
-    ComposedChart,
-    Line,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
+  Area,
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
 import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
-    useDeleteWorkTaskMutation,
-    useGetWorkTasksQuery,
-    useUpdateWorkTaskMutation,
+  useDeleteWorkTaskMutation,
+  useGetWorkTasksQuery,
+  useUpdateWorkTaskMutation,
 } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
