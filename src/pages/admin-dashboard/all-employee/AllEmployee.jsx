@@ -97,12 +97,12 @@ const AllEmployee = () => {
 
                     {registerUser?.role === "super admin" && (
                       <td>
-                        <Link to={`/dashboard/update-profile/${employee?._id}`}>
+                        {/* <Link to={`/dashboard/update-profile/${employee?._id}`}>
                           <button className="update-btn">
                             {" "}
                             <i className="far fa-edit"></i>
                           </button>
-                        </Link>
+                        </Link> */}
 
                         <button
                           onClick={() => handleDelete(employee?._id)}
