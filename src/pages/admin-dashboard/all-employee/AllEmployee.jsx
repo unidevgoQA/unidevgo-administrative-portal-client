@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import defaultImg from '../../../assets/default.png';
+import defaultImg from "../../../assets/default.png";
 import {
   useDeleteProfileMutation,
   useGetProfileByEmailQuery,
@@ -88,13 +88,13 @@ const AllEmployee = () => {
                     </td>
                     <td>{employee?.address}</td>
                     <td>{employee?.joiningDate}</td>
-                    
+
                     <td>
                       <Link to={`/dashboard/employee-details/${employee?._id}`}>
                         <button className="update-btn">Show Details</button>
                       </Link>
                     </td>
-                   
+
                     {registerUser?.role === "super admin" && (
                       <td>
                         <Link to={`/dashboard/update-profile/${employee?._id}`}>

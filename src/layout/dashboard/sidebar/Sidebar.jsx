@@ -39,7 +39,6 @@ const Sidebar = () => {
         {registerUser?.role === "admin" ||
         registerUser?.role === "super admin" ? (
           <ul>
-
             <li>
               <i class="fa-solid fa-user-tie"></i>
               <Link to={"profile"}>Profile</Link>
@@ -53,6 +52,10 @@ const Sidebar = () => {
               <Link to={"send-email"}>Send Email</Link>
             </li>
             <li>
+              <i class="fa-solid fa-people-group"></i>
+              <Link to={"all-employee"}>All Employee</Link>
+            </li>
+            <li>
               <i class="fa-solid fa-list-check"></i>
               <Link to={"leave-management"}>Leave Management</Link>
             </li>
@@ -60,10 +63,7 @@ const Sidebar = () => {
               <i class="fa-solid fa-list-check"></i>
               <Link to={"support-tickets-management"}>Tickets Management</Link>
             </li>
-            <li>
-              <i class="fa-solid fa-people-group"></i>
-              <Link to={"all-employee"}>All Employee</Link>
-            </li>
+
             {/* <li>
               <i class="fa-solid fa-battery-half"></i>
               <Link to={"work-status"}>Work Status</Link>
@@ -84,7 +84,7 @@ const Sidebar = () => {
               <Link to={"work-status"}>Work Status</Link>
             </li>
             <li>
-            <i class="fa-solid fa-headset"></i>
+              <i class="fa-solid fa-headset"></i>
               <Link to={"support-tickets"}>Support tickets</Link>
             </li>
             {/* <li>
@@ -100,8 +100,6 @@ const Sidebar = () => {
               <i class="fa-regular fa-calendar-days"></i>
               <Link to={"calender"}>Calender</Link>
             </li>
-     
-          
           </ul>
         )}
 

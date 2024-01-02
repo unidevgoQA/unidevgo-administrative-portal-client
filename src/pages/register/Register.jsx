@@ -154,13 +154,27 @@ const Register = () => {
                       className="gender-selection"
                       {...register("desgination")}
                     >
-                      <option value="Software QA Engineer">Software QA Engineer</option>
-                      <option value="Senior Software QA Engineer">Senior Software QA Engineer</option>
-                      <option value="Junior Software QA Engineer">Junior Software QA Engineer</option>
-                      <option value="Junior Software Engineer">Junior Software Engineer</option>
-                      <option value="Senior Software Engineer">Senior Software Engineer</option>
+                      <option value="Software QA Engineer">
+                        Software QA Engineer
+                      </option>
+                      <option value="Software Engineer">
+                        Software Engineer
+                      </option>
+
+                      <option value="Junior Software QA Engineer">
+                        Junior Software QA Engineer
+                      </option>
+
+                      <option value="Junior Software Engineer">
+                        Junior Software Engineer
+                      </option>
+                      <option value="Senior Software QA Engineer">
+                        Senior Software QA Engineer
+                      </option>
+                      <option value="Senior Software Engineer">
+                        Senior Software Engineer
+                      </option>
                       <option value="Technical Lead">Technical Lead</option>
-                   
                     </select>
                   </div>
                   <div className="col-md-6">
