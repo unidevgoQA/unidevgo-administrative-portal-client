@@ -569,8 +569,8 @@ body {
   padding: 20px;
   border-radius: 10px;
   img {
-    height: 80px;
-    width: 80px;
+    height: 50px;
+    width: 50px;
     margin-bottom: 10px;
     border-radius: 10px;
   }
@@ -847,12 +847,26 @@ span.rdrStaticRangeLabel {
     color: #0ad028;
   }
 }
-
+.common-btn {
+  background: $primary;
+  color: $secondary;
+  padding: 10px 20px;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 3px 3px 0 #0ad028;
+  transition: 0.3s;
+  margin: 20px 10px 10px 0px;
+  &:hover {
+    box-shadow: none;
+  }
+}
 //Date picker
 .react-datepicker {
   font-family: "Montserrat", sans-serif !important;
   font-size: 0.8rem;
-  background-color: #e5fae8;
+  background-color: #e5fae8 !important;
   color: #328331 !important;
   border: 1px solid #328431 !important;
   border-radius: 0.3rem;

@@ -157,9 +157,9 @@ const Profile = () => {
   } = useForm();
 
   //Add work status handler
-  const handleSubmitAttendence  = ({ date, status }) => {
+  const handleSubmitAttendence = ({ date, status }) => {
     // Check if the function has been called today
-    const lastDate = localStorage.getItem('lastAttendanceDate');
+    const lastDate = localStorage.getItem("lastAttendanceDate");
     const currentDate = new Date().toLocaleDateString();
     if (lastDate !== currentDate) {
       // Add work status handler
@@ -176,9 +176,9 @@ const Profile = () => {
       // Call the function
       addAttendence(attendance);
       // Update the last date in localStorage
-      localStorage.setItem('lastAttendanceDate', currentDate);
+      localStorage.setItem("lastAttendanceDate", currentDate);
     } else {
-      toast.error('Attendance already submitted for today.');
+      toast.error("Attendance already submitted for today.");
     }
   };
 
@@ -221,7 +221,7 @@ const Profile = () => {
             </h2>
           </div>
           <div className="profile-current-task-wrapper">
-            <div className="row">
+            <div className="row g-4">
               <div className="col-lg-6 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row">
@@ -289,7 +289,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-12">
+              <div className="col-lg-4 col-md-12">
                 {registerUser?.role === "employee" && (
                   <div className="employee-vailability">
                     <div className="row gy-3">
@@ -325,99 +325,62 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+
+              <div className="col-lg-2 col-md-12 col-sm-12">
+                <>
+                  {registerUser?.role === "employee" && (
+                    <div className="apply-attendence-wrapper">
+                      <h6>Attendence</h6>
+                      <div className="attendence-form">
+                        <div className="profile-wrapper">
+                          <img
+                            width={"40px"}
+                            height={"40px"}
+                            src={registerUser?.img}
+                            alt="employee"
+                          />
+                          {/* <h6>{registerUser?.name}</h6> */}
+                        </div>
+                        <div className="attendence-form">
+                          <form onSubmit={handleSubmit(handleSubmitAttendence)}>
+                            <div className="row">
+                              <div className="col-md-12">
+                                <label>Date</label>
+                                <br />
+                                <input
+                                  required
+                                  type="date"
+                                  defaultValue={new Date()
+                                    .toJSON()
+                                    .slice(0, 10)}
+                                  {...register("date")}
+                                />
+                              </div>
+                              <div className="col-md-12">
+                                <label for="status">Status</label>
+                                <br />
+                                <select required {...register("status")}>
+                                  <option value="present">Present</option>
+                                  <option value="absent">Absent</option>
+                                </select>
+                              </div>
+                              <div className="col-md-12">
+                                <button className="attendence-submit-btn">
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <>
-        {registerUser?.role === "employee" && (
-          <div className="row mb-5">
-            <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="row">
-              
-                {/* <div className="col-lg-6 col-md-12 col-sm-12">
-                  <div style={{ width: "100%", height: "100%" }}>
-                    <ResponsiveContainer>
-                      <ComposedChart
-                        data={filteredStatusData}
-                        margin={{
-                          top: 20,
-                          right: 20,
-                          bottom: 20,
-                          left: 20,
-                        }}
-                      >
-                        <CartesianGrid stroke="#f5f5f5" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip />
-                        <Area
-                          type="monotone"
-                          dataKey="task"
-                          fill="#8884d8"
-                          stroke="#8884d8"
-                        />
-                        <Bar dataKey="hour" barSize={20} fill="#208436" />
-                        <Line
-                          type="string"
-                          dataKey="workStatus"
-                          stroke="#ff7300"
-                        />
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div> */}
-                <div className="col-lg-2 col-md-12 col-sm-12">
-                  <div className="apply-attendence-wrapper">
-                    <h6>Attendence</h6>
-                    <div className="attendence-form">
-                      <div className="profile-wrapper">
-                        <img
-                          width={"40px"}
-                          height={"40px"}
-                          src={registerUser?.img}
-                          alt="employee"
-                        />
-                        {/* <h6>{registerUser?.name}</h6> */}
-                      </div>
-                      <div className="attendence-form">
-                        <form onSubmit={handleSubmit(handleSubmitAttendence)}>
-                          <div className="row">
-                            <div className="col-md-12">
-                              <label>Date</label>
-                              <br />
-                              <input
-                                required
-                                type="date"
-                                defaultValue={new Date().toJSON().slice(0, 10)}
-                                {...register("date")}
-                              />
-                            </div>
-                            <div className="col-md-12">
-                              <label for="status">Status</label>
-                              <br />
-                              <select required {...register("status")}>
-                                <option value="present">Present</option>
-                                <option value="absent">Absent</option>
-                              </select>
-                            </div>
-                            <div className="col-md-12">
-                              <button className="attendence-submit-btn">
-                                Submit
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-           
-          </div>
-        )}
-      </>
     </div>
   );
 };

@@ -63,8 +63,7 @@ const AllEmployee = () => {
                   <th>Email</th>
                   <th>Address</th>
                   <th>Joining Date</th>
-                  <th>Check Work Status</th>
-                  <th>Check Attendence</th>
+                  <th>Details</th>
                   {registerUser?.role === "super admin" && (
                     <th className="action-area">Action</th>
                   )}
@@ -89,16 +88,13 @@ const AllEmployee = () => {
                     </td>
                     <td>{employee?.address}</td>
                     <td>{employee?.joiningDate}</td>
+                    
                     <td>
-                      <Link to={`/dashboard/employee-work-status/${employee?._id}`}>
-                        <button className="update-btn">Check Status</button>
+                      <Link to={`/dashboard/employee-details/${employee?._id}`}>
+                        <button className="update-btn">Show Details</button>
                       </Link>
                     </td>
-                    <td>
-                      <Link to={`/dashboard/attendence-report/${employee?._id}`}>
-                        <button className="update-btn">Check Attendence</button>
-                      </Link>
-                    </td>
+                   
                     {registerUser?.role === "super admin" && (
                       <td>
                         <Link to={`/dashboard/update-profile/${employee?._id}`}>
