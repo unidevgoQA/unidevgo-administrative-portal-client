@@ -104,7 +104,7 @@ const Attendence = () => {
             </h2>
           </div>
 
-          <div className="row mb-5">
+          <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="row">
                 <div className="col-lg-3 col-md-12 col-sm-12">

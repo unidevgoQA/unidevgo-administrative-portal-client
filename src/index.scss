@@ -151,11 +151,6 @@ body {
   .heading {
     background: rgb(7, 28, 11);
     margin-bottom: 30px;
-    background: linear-gradient(
-      90deg,
-      rgba(7, 28, 11, 1) 0%,
-      rgba(32, 134, 55, 1) 100%
-    );
     color: #fff;
     padding: 14px 15px 5px;
     margin-top: 20px;
@@ -292,45 +287,6 @@ body {
   }
 }
 
-.apply-attendence-wrapper {
-  height: 100%;
-  background: #4e7b8961;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 20px;
-  border-radius: 10px;
-  img {
-    height: 50px;
-    width: 50px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-  }
-  h6 {
-    font-weight: 600;
-  }
-  label {
-    font-weight: 600;
-  }
-  input,
-  select {
-    width: 100%;
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin-bottom: 10px;
-    border: none;
-    outline: none;
-  }
-  button.attendence-submit-btn {
-    background: green;
-    color: #fff;
-    margin-top: 10px;
-    border: none;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-}
 //Total hours
 .working-hours {
   text-align: end;
