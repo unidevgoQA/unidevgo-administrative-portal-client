@@ -144,169 +144,6 @@ body {
 .dashboard {
   overflow-x: hidden;
 }
-//Sidebar
-.sidebar-collapse {
-  z-index: 99999;
-  transition: all 0.5s ease-in;
-  margin-left: -230px;
-  top: 0;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  width: 300px;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  background: rgb(7, 28, 11);
-  background: linear-gradient(
-    180deg,
-    rgba(7, 28, 11, 1) 0%,
-    rgba(32, 134, 55, 1) 100%
-  );
-  hr {
-    height: 1px;
-    color: #fff;
-  }
-
-  .heading-wrapper {
-    display: flex;
-    padding: 20px;
-    justify-content: space-between;
-    align-items: center;
-    h3 {
-      font-weight: 700;
-      color: #fff;
-    }
-    button {
-      background: $primary;
-      color: $secondary;
-      padding: 5px 10px;
-      border: 1px solid $secondary;
-      border-radius: 10px;
-      box-shadow: 3px 3px 0 #0ad028;
-      margin-bottom: 10px;
-
-      i {
-      }
-    }
-  }
-  .side-links {
-    ul {
-      li {
-        list-style: none;
-        margin: 10px 0px;
-        i {
-          color: #fff;
-          margin-right: 15px;
-          width: 20px;
-        }
-
-        a {
-          text-decoration: none;
-          color: #fff;
-        }
-      }
-    }
-  }
-  .logout-btn {
-    background: $primary;
-    color: $secondary;
-    padding: 5px 10px;
-    border: 1px solid $secondary;
-    border-radius: 10px;
-    box-shadow: -3px 3px 0 #0ad028;
-    margin-bottom: 10px;
-    margin-left: 32px;
-  }
-}
-.sidebar {
-  transition: all 0.5s ease-in-out;
-  // display: none;
-  z-index: 99999;
-  top: 0;
-  height: 100vh;
-  background-color: #0f1c94;
-  position: fixed;
-  left: 0;
-  width: 300px;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  background: rgb(7, 28, 11);
-  background: linear-gradient(
-    180deg,
-    rgba(7, 28, 11, 1) 0%,
-    rgba(32, 134, 55, 1) 100%
-  );
-  hr {
-    height: 1px;
-    color: #fff;
-  }
-  .heading-wrapper {
-    display: flex;
-    padding: 20px;
-    justify-content: space-between;
-    align-items: center;
-    h3 {
-      font-weight: 700;
-      color: #fff;
-    }
-    button {
-      background: $primary;
-      color: $secondary;
-      padding: 5px 10px;
-      border: 1px solid $secondary;
-      border-radius: 10px;
-      box-shadow: 3px 3px 0 #0ad028;
-      margin-bottom: 10px;
-    }
-  }
-  .side-links {
-    ul {
-      li {
-        list-style: none;
-        margin: 20px 0px;
-        i {
-          color: #fff;
-          margin-right: 15px;
-          width: 20px;
-        }
-
-        a {
-          text-decoration: none;
-          color: #fff;
-          border-bottom: 2px solid transparent;
-          transition: 0.3s;
-          &:hover {
-            border-bottom: 2px solid #0ad028;
-            padding: 0px 5px;
-          }
-        }
-      }
-    }
-  }
-  .logout-btn {
-    background: $primary;
-    color: $secondary;
-    padding: 5px 10px;
-    border: 1px solid $secondary;
-    border-radius: 10px;
-    box-shadow: -3px 3px 0 #0ad028;
-    margin-bottom: 10px;
-    margin-left: 32px;
-    font-weight: 600;
-  }
-}
-
-.toggle-btn {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  background: aqua;
-}
 
 //Wrapper - Table
 .content-wrapper {
@@ -797,7 +634,7 @@ span.rdrStaticRangeLabel {
     font-weight: 700;
   }
   .fc .fc-daygrid-day.fc-day-today {
-    background: #071c0b;
+    background: #1f8336;
   }
   .fc-h-event {
     background: linear-gradient(
@@ -813,8 +650,9 @@ span.rdrStaticRangeLabel {
     text-decoration: none;
   }
   .fc .fc-daygrid-day-number {
-    color: #000;
+    color: #000000;
     text-decoration: none;
+    font-weight: 600;
   }
   .fc .fc-toolbar-title {
     font-size: 1.5 rem;
@@ -835,6 +673,7 @@ span.rdrStaticRangeLabel {
   height: 70vh;
   background: #d8f3dc;
   border-radius: 10px;
+  overflow-y: scroll;
 }
 
 //Common
@@ -960,7 +799,7 @@ span.rdrStaticRangeLabel {
 }
 //Scrollbar
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 10px;
   height: 3px;
 
   background: #fff;

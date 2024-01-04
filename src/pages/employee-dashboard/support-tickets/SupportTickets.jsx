@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteTicketMutation,
   useGetAllTicketsQuery,
@@ -95,6 +96,7 @@ const SupportTickets = () => {
   
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

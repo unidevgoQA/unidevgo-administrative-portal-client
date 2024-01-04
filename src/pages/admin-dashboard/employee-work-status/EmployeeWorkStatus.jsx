@@ -16,6 +16,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteWorkTaskMutation,
   useGetWorkTasksQuery,
@@ -348,6 +349,7 @@ const WorkStatus = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 import defaultImg from "../../../assets/default.png";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteAttendenceMutation,
   useGetAllAttendenceQuery,
@@ -208,6 +209,7 @@ const Attendence = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

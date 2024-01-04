@@ -20,6 +20,7 @@ import {
   YAxis,
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
+import GoBack from "../../../components/go-back/GoBack";
 import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
@@ -419,6 +420,7 @@ const WorkStatus = () => {
           </div>
         )}
       </>
+      <GoBack/>
     </div>
   );
 };

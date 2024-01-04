@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import GoBack from "../../../components/go-back/GoBack";
 import { useAddCalenderEventMutation } from "../../../features/calender-events/calenderEvents";
 
 const AddNewEvent = () => {
@@ -82,6 +83,7 @@ const AddNewEvent = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

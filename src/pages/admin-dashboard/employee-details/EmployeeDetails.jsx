@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import GoBack from "../../../components/go-back/GoBack";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 
 const EmployeeDetails = () => {
@@ -158,6 +159,7 @@ const EmployeeDetails = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

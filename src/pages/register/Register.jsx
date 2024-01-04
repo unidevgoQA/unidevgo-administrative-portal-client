@@ -42,7 +42,6 @@ const Register = () => {
         createUser(data.email, data.password)
           .then((result) => {
             if (result.user) {
-              console.log("email firebase", result.user.email);
               const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
               fetch(url, {
                 method: "POST",
@@ -125,11 +124,11 @@ const Register = () => {
                     <label>Name</label>
                     <input
                       required
-                      {...register("name", { required: true, maxLength: 25 })}
+                      {...register("name", { required: true, maxLength: 30 })}
                     />
                     {errors.name &&
                       errors.name.type === "maxLength" &&
-                      toast.error("Max length 25 exceeded", {
+                      toast.error("Max length 30 exceeded", {
                         id: "register-name-field",
                       })}
                   </div>
@@ -219,7 +218,18 @@ const Register = () => {
                   </div>
                   <div className="col-md-12">
                     <label>Address</label>
-                    <input required {...register("address")} />
+                    <input
+                      required
+                      {...register("address", {
+                        required: true,
+                        maxLength: 50,
+                      })}
+                    />
+                    {errors.address &&
+                      errors.address.type === "maxLength" &&
+                      toast.error("Max length 50 exceeded", {
+                        id: "register-address-field",
+                      })}
                   </div>
                 </div>
 

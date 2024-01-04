@@ -1,21 +1,29 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import GoBack from "../../components/go-back/GoBack";
 import { useGetProfileByEmailQuery } from "../../features/profile/profileApi";
 import {
   useGetSingleTicketsQuery,
   useReplyTicketMutation,
 } from "../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../providers/AuthProviders";
-import './support-ticket-details.scss';
+import "./support-ticket-details.scss";
 
 const SupportTicketDetails = () => {
   //Get id
   const { id } = useParams();
-  const { data: ticket } = useGetSingleTicketsQuery(id,{pollingInterval:3000});
+  const { data: ticket } = useGetSingleTicketsQuery(id, {
+    pollingInterval: 3000,
+  });
   const [sendReply] = useReplyTicketMutation();
   const ticketDetails = ticket?.data;
+
+  const setRef = useCallback((node) => {
+    if (node) {
+      node.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   const {
     handleSubmit,
@@ -33,17 +41,19 @@ const SupportTicketDetails = () => {
   let currentDate = new Date().toJSON().slice(0, 10);
 
   //Add work status handler
-  const handleReply = ({ reply }) => {
+  const handleReply = ({ reply ,attachment}) => {
     const suportTicket = {
       //ticket data
       date: currentDate,
       parentId: ticketDetails?._id,
       reply,
+      attachment  : attachment[0],
       //user info
       employeeEmail: registerUser?.email,
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
+
     if (reply.trim().length === 0) {
       toast.error("Provide valid input", { id: "reply-support-ticket" });
     } else {
@@ -51,6 +61,7 @@ const SupportTicketDetails = () => {
       reset();
     }
   };
+
 
   return (
     <div className="content-wrapper">
@@ -63,17 +74,24 @@ const SupportTicketDetails = () => {
             </h2>
           </div>
           <div className="message-area mb-3 p-3">
-            {ticketDetails?.replies.map((text) => (
-              <div className="text-wrapper">
-                <div className="left-content">
-                  <img src={text?.employeeImg} alt="" />
+            {ticketDetails?.replies.map((chat, index) => {
+              const lastMessage = ticketDetails?.replies.length - 1 === index;
+              return (
+                <div
+                  className="text-wrapper"
+                  key={chat._id}
+                  ref={lastMessage ? setRef : null}
+                >
+                  <div className="left-content">
+                    <img src={chat?.employeeImg} alt="" />
+                  </div>
+                  <div className="right-content">
+                    <h6>{chat?.employeeName}</h6>
+                    <p>{chat.reply}</p>
+                  </div>
                 </div>
-                <div className="right-content">
-                  <h6>{text?.employeeName}</h6>
-                  <p>{text.reply}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="add-form send-message">
             <form onSubmit={handleSubmit(handleReply)}>
@@ -86,6 +104,13 @@ const SupportTicketDetails = () => {
                     {...register("reply", {
                       required: true,
                     })}
+                  />
+                </div>
+                <div className="attach-file-area">
+                  <input
+                    {...register("attachment")}
+                    className="file"
+                    type="file"
                   />
                 </div>
 
@@ -109,6 +134,7 @@ const SupportTicketDetails = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

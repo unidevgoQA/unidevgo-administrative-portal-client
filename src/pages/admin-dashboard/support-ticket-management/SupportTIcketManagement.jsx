@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import GoBack from "../../../components/go-back/GoBack";
 import {
-    useDeleteTicketMutation,
-    useGetAllTicketsQuery,
+  useDeleteTicketMutation,
+  useGetAllTicketsQuery,
 } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
 
@@ -86,6 +87,7 @@ const SupportTIcketManagement = () => {
           </div> */}
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

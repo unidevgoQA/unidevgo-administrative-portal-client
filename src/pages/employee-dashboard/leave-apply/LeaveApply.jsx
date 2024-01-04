@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import GoBack from "../../../components/go-back/GoBack";
 import { useAddLeaveApplyMutation } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
@@ -110,6 +111,7 @@ const LeaveApply = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

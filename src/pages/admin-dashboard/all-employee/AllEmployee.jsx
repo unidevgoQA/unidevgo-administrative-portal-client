@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import defaultImg from "../../../assets/default.png";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteProfileMutation,
   useGetProfileByEmailQuery,
@@ -119,6 +120,7 @@ const AllEmployee = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

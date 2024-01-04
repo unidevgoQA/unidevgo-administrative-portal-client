@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useGetProfileByEmailQuery,
   useUpdateProfileMutation,
@@ -42,19 +43,23 @@ const UpdateProfile = () => {
   //update profile
   const handleNameChange = (e) => {
     const updatedName = e.target.value;
-    const updatedProfile = {
-      name: updatedName,
-      desgination: updateProfile.desgination,
-      gender: updateProfile.gender,
-      joiningDate: updateProfile.joiningDate,
-      mobile: updateProfile.mobile,
-      role: updateProfile.role,
-      address: updateProfile.address,
-      img: updateProfile.img,
-      email: updateProfile.email,
-    };
 
-    setUpdateProfile(updatedProfile);
+    if (updatedName.length <= 30) {
+      const updatedProfile = {
+        name: updatedName,
+        desgination: updateProfile.desgination,
+        gender: updateProfile.gender,
+        joiningDate: updateProfile.joiningDate,
+        mobile: updateProfile.mobile,
+        role: updateProfile.role,
+        address: updateProfile.address,
+        img: updateProfile.img,
+        email: updateProfile.email,
+      };
+      setUpdateProfile(updatedProfile);
+    } else {
+      toast.error("Name cannot be more than 25 characters");
+    }
   };
 
   const handleDesignationChange = (e) => {
@@ -165,7 +170,7 @@ const UpdateProfile = () => {
     if (isLoading) {
       toast.loading("Loading", { id: "update-profile" });
     }
-  }, [isSuccess , isLoading]);
+  }, [isSuccess, isLoading]);
 
   return (
     <div className="content-wrapper">
@@ -180,7 +185,9 @@ const UpdateProfile = () => {
             <form onSubmit={handleProfileUpdate}>
               <div className="row">
                 <div className="col-md-6">
-                  <label>Name</label>
+                  <label>
+                    Name <span>*</span>
+                  </label>
                   <input
                     required
                     onChange={handleNameChange}
@@ -191,12 +198,31 @@ const UpdateProfile = () => {
                 </div>
                 <div className="col-md-6">
                   <label>Designation</label>
-                  <input
+                  <select
                     onChange={handleDesignationChange}
                     value={updateProfile?.desgination}
-                    type="text"
                     name="designation"
-                  />
+                  >
+                    <option value="Software QA Engineer">
+                      Software QA Engineer
+                    </option>
+                    <option value="Software Engineer">Software Engineer</option>
+
+                    <option value="Junior Software QA Engineer">
+                      Junior Software QA Engineer
+                    </option>
+
+                    <option value="Junior Software Engineer">
+                      Junior Software Engineer
+                    </option>
+                    <option value="Senior Software QA Engineer">
+                      Senior Software QA Engineer
+                    </option>
+                    <option value="Senior Software Engineer">
+                      Senior Software Engineer
+                    </option>
+                    <option value="Technical Lead">Technical Lead</option>
+                  </select>
                 </div>
                 <div className="col-md-6">
                   <label>Address</label>
@@ -274,6 +300,7 @@ const UpdateProfile = () => {
           </div>
         </div>
       </div>
+      <GoBack />
     </div>
   );
 };

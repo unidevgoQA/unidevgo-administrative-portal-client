@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import GoBack from "../../../components/go-back/GoBack";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { useAddWorkTaskMutation } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
@@ -111,6 +112,7 @@ const addWorkStatus = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

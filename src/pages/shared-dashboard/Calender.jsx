@@ -6,6 +6,7 @@ import html2canvas from "html2canvas";
 import React, { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import GoBack from "../../components/go-back/GoBack";
 import {
   useDeleteCalenderEventMutation,
   useGetAllEventsQuery,
@@ -126,6 +127,7 @@ const Calender = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

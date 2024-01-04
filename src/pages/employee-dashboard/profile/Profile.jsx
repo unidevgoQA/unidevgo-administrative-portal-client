@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useForm } from "react-hook-form";
 import defaultImg from "../../../assets/default.png";
+import GoBack from "../../../components/go-back/GoBack";
 import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
@@ -16,93 +17,8 @@ const Profile = () => {
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
-  // const [deleteWorkStatus, { isSuccess, isLoading }] =
-  //   useDeleteWorkTaskMutation();
-  // //Get all task
-  // const { data: workStatusData } = useGetWorkTasksQuery();
-  // //Register User
   const registerUser = userData?.data;
 
-  // //States
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
-
-  // const [filteredStatusData, setFilteredStatusData] = useState([]);
-  // const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   const filterWorkStatus = workStatusData?.data.filter(
-  //     (status) => status?.employeeEmail === registerUser?.email
-  //   );
-  //   setFilteredStatusDataByEmail(filterWorkStatus);
-  //   setFilteredStatusData(filterWorkStatus);
-  // }, [workStatusData, registerUser]);
-
-  //Work Hours
-  // const workHoursNumbers = filteredStatusData?.map((work) => {
-  //   const totalHours = parseFloat(work.hour);
-  //   return totalHours;
-  // });
-  // const totalWorkHours = workHoursNumbers?.reduce(
-  //   (acc, current) => acc + current,
-  //   0
-  // );
-  // //Show all data handler
-  // const showAllData = () => {
-  //   setFilteredStatusData(filteredStatusDataByEmail);
-  // };
-  // // Date select
-  // const handleSelect = (date) => {
-  //   let filtered = filteredStatusDataByEmail.filter((workStatus) => {
-  //     let statusDate = new Date(workStatus["date"]);
-  //     return (
-  //       statusDate >= date.selection.startDate &&
-  //       statusDate <= date.selection.endDate
-  //     );
-  //   });
-  //   setStartDate(date.selection.startDate);
-  //   setEndDate(date.selection.endDate);
-  //   setFilteredStatusData(filtered);
-  // };
-
-  // //Select date range
-  // const selectionRange = {
-  //   startDate: startDate,
-  //   endDate: endDate,
-  //   key: "selection",
-  // };
-
-  //Export Work Status
-  // const exportWorkStatus = () => {
-  //   const fileName = "Work Status";
-  //   const exportType = exportFromJSON.types.csv;
-
-  //   const combinedData = [
-  //     ...filteredStatusData,
-  //     { TotalHours: totalWorkHours },
-  //   ];
-  //   exportFromJSON({
-  //     data: combinedData,
-  //     fields: {
-  //       employeeName: "NAME",
-  //       task: "TASK",
-  //       date: "DATE",
-  //       hour: "HOURS",
-  //       workStatus: "STATUS",
-  //       TotalHours: "TOTAL WORK HOURS",
-  //     },
-  //     fileName,
-  //     exportType,
-  //   });
-  // };
-
-  //Update API
-  // const [
-  //   handleUpdateWorkStatus,
-  //   { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
-  // ] = useUpdateWorkTaskMutation();
 
   //Leave management data
   const { data } = useGetAllLeavesQuery();
@@ -123,24 +39,6 @@ const Profile = () => {
     (sum, leave) => sum + leave.totalDays,
     0
   );
-
-  // //handle Update
-  // const handleStatusChange = (id, workStatus) => {
-  //   const updatedStatus =
-  //     workStatus === "complete" ? "in progress" : "complete";
-  //   const updateWorkTask = {
-  //     workStatus: updatedStatus,
-  //   };
-  //   handleUpdateWorkStatus({ id: id, data: updateWorkTask });
-  // };
-
-  // //handle Delete
-  // const handleDelete = (id) => {
-  //   const deleteConfirm = window.confirm("Want to delete?");
-  //   if (deleteConfirm) {
-  //     deleteWorkStatus(id);
-  //   }
-  // };
 
   //Attendence
 
@@ -182,25 +80,6 @@ const Profile = () => {
     }
   };
 
-  // //Delete Effects
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     toast.success("Deleted Successfully", { id: "delete-work-task" });
-  //   }
-  //   if (isLoading) {
-  //     toast.loading("Loading", { id: "delete-work-task" });
-  //   }
-  // }, [isSuccess, isLoading]);
-  // //Update Effects
-  // useEffect(() => {
-  //   if (workStatusSuccess) {
-  //     toast.success("Update Successfully", { id: "update-work-task" });
-  //   }
-  //   if (worksStatusLoading) {
-  //     toast.loading("Loading", { id: "update-work-task" });
-  //   }
-  // }, [workStatusSuccess, worksStatusLoading]);
-
   //Attendence added effects
   useEffect(() => {
     if (attendenceSuccess) {
@@ -209,7 +88,9 @@ const Profile = () => {
     if (attendenceLoading) {
       toast.loading("Loading", { id: "add-attendence" });
     }
-  }, [attendenceLoading, attendenceSuccess]);
+  }, [attendenceLoading, attendenceSuccess])
+
+
 
   return (
     <div className="content-wrapper">
@@ -381,6 +262,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };

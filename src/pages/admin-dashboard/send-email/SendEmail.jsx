@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import GoBack from "../../../components/go-back/GoBack";
 
 const SendEmail = () => {
   const [recipients, setRecipients] = useState([]);
@@ -60,6 +61,7 @@ const SendEmail = () => {
           </div>
         </div>
       </div>
+      <GoBack/>
     </div>
   );
 };
