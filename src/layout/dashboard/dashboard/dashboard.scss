@@ -1,0 +1,11 @@
+.with-topbar {
+  display: none;
+}
+@media screen and (max-width: 575px) {
+  .with-sidenav {
+    display: none;
+  }
+  .with-topbar {
+    display: block;
+  }
+}

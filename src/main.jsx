@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./app/store";
 import "./index.scss";
-import Dashboard from "./layout/dashboard/dashboard/dashboard";
+import Dashboard from "./layout/dashboard/dashboard/Dashboard";
 import AddNewEvent from "./pages/admin-dashboard/add-new-event/AddNewEvent";
 import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
 import AttendenceReport from "./pages/admin-dashboard/attendence-report/AttendenceReport";
@@ -22,7 +22,6 @@ import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import CreateTicket from "./pages/employee-dashboard/create-ticket/CreateTicket";
 import LeaveApply from "./pages/employee-dashboard/leave-apply/LeaveApply";
 import LeaveStatus from "./pages/employee-dashboard/leave-status/LeaveStatus";
-
 import Profile from "./pages/employee-dashboard/profile/Profile";
 import SupportTickets from "./pages/employee-dashboard/support-tickets/SupportTickets";
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";

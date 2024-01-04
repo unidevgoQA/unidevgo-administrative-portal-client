@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
@@ -9,6 +10,7 @@ import { useAddAttendenceMutation } from "../../../features/attendence/attendenc
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
+import './profile.scss';
 
 const Profile = () => {
   //User
@@ -117,7 +119,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="col-md-7">
-                      <div className="user-info">
+                      <Box className="user-info">
                         <div className="row">
                           <div className="col-md-12">
                             <h2>{registerUser?.name}</h2>
@@ -165,7 +167,7 @@ const Profile = () => {
                             </button>
                           </Link>
                         </div> */}
-                      </div>
+                      </Box>
                     </div>
                   </div>
                 </div>

@@ -11,7 +11,6 @@ import { AuthContext } from "../../../providers/AuthProviders";
 const UpdateProfile = () => {
   //User
   const { user } = useContext(AuthContext);
-
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
@@ -126,18 +125,23 @@ const UpdateProfile = () => {
 
   const handleAddressChange = (e) => {
     const updatedAddress = e.target.value;
-    const updatedProfile = {
-      name: updateProfile.name,
-      desgination: updateProfile.desgination,
-      gender: updateProfile.gender,
-      joiningDate: updateProfile.joiningDate,
-      mobile: updateProfile.mobile,
-      role: updateProfile.role,
-      address: updatedAddress,
-      img: updateProfile.img,
-      email: updateProfile.email,
-    };
-    setUpdateProfile(updatedProfile);
+
+    if (updatedAddress.length <= 50) {
+      const updatedProfile = {
+        name: updateProfile.name,
+        desgination: updateProfile.desgination,
+        gender: updateProfile.gender,
+        joiningDate: updateProfile.joiningDate,
+        mobile: updateProfile.mobile,
+        role: updateProfile.role,
+        address: updatedAddress,
+        img: updateProfile.img,
+        email: updateProfile.email,
+      };
+      setUpdateProfile(updatedProfile);
+    } else {
+      toast.error("Address cannot be more than 50 characters");
+    }
   };
 
   const handleRoleChange = (e) => {
@@ -160,6 +164,7 @@ const UpdateProfile = () => {
   const handleProfileUpdate = (e) => {
     e.preventDefault();
     appleProfileUpdate({ id: id, data: { updateProfile } });
+    // navigate(-1)
   };
 
   //Update effects
@@ -239,8 +244,9 @@ const UpdateProfile = () => {
                   <input
                     onChange={handleMobileChange}
                     value={updateProfile?.mobile}
-                    type="text"
-                    name="mobile"
+                    type="tel"
+                    pattern="[0-9]{11}"
+                    placeholder="01XXXXXXXXX"
                   />
                 </div>
                 <div

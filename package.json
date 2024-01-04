@@ -11,11 +11,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@fullcalendar/core": "^6.1.10",
     "@fullcalendar/daygrid": "^6.1.10",
     "@fullcalendar/interaction": "^6.1.10",
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
+    "@mui/icons-material": "^5.15.3",
+    "@mui/material": "^5.15.3",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.3",
     "dotenv": "^16.3.1",
