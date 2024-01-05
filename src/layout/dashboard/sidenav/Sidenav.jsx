@@ -290,7 +290,7 @@ export default function Sidenav() {
                 />
               </ListItemButton>
             </ListItem>
-            <Divider />
+          
           </List>
         ) : (
           <List sx={{ p: 0 }}>
@@ -469,7 +469,7 @@ export default function Sidenav() {
             </ListItem>
           </List>
         )}
-
+        <Divider />
         <List sx={{ p: 0 }}>
           <ListItem
             disablePadding
