@@ -1,0 +1,46 @@
+//Full calender
+.calender-wrapper {
+  .fc-event-time {
+    display: none;
+  }
+  .fc-today-button.fc-button.fc-button-primary,
+  .fc-button-active {
+    background: #208536 !important;
+    opacity: 1;
+    text-transform: capitalize;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+  .fc .fc-daygrid-day.fc-day-today {
+    background: #1f8336;
+  }
+  .fc-h-event {
+    background: rgb(7, 28, 11);
+    border: none;
+    display: block;
+    letter-spacing: 1px;
+  }
+  .fc .fc-col-header-cell-cushion {
+    color: #208436;
+    text-decoration: none;
+  }
+  .fc .fc-daygrid-day-number {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  .fc .fc-toolbar-title {
+    font-size: 1.5 rem;
+    font-weight: 600;
+    margin: 0px;
+  }
+}
+
+.add-new-event-btn {
+  text-decoration: none;
+  padding: 20px 0px;
+  color: #145725;
+  font-size: 14px;
+  font-weight: 600;
+}

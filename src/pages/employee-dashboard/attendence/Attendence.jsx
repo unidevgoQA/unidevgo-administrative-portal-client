@@ -209,7 +209,7 @@ const Attendence = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

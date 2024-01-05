@@ -28,7 +28,7 @@ import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfi
 import WorkStatus from "./pages/employee-dashboard/work-status/WorkStatus";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import Calender from "./pages/shared-dashboard/Calender";
+import Calender from "./pages/shared-dashboard/calender/Calender";
 import SupportTicketDetails from "./pages/shared-dashboard/SupportTicketDetails";
 import AuthProviders from "./providers/AuthProviders";
 import PrivateRoute from "./routes/PrivateRoute";

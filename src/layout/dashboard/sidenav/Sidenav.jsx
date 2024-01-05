@@ -86,15 +86,12 @@ export default function Sidenav() {
   const navigate = useNavigate();
 
   //context
-  const { logoutUser, user, isOpen, setIsOpen } = React.useContext(AuthContext);
+  const { logoutUser, user } = React.useContext(AuthContext);
 
   const { data } = useGetProfileByEmailQuery(user.email);
 
   const registerUser = data?.data;
-  //Sidebar toggler
-  const toggleSidebar = () => {
-    setIsOpen((current) => !current);
-  };
+
   //Logout
   const handleLogout = () => {
     logoutUser()
@@ -148,6 +145,7 @@ export default function Sidenav() {
                 />
               </ListItemButton>
             </ListItem>
+            <Divider />
             <ListItem
               disablePadding
               sx={{ display: "block" }}
@@ -471,7 +469,7 @@ export default function Sidenav() {
             </ListItem>
           </List>
         )}
-        <Divider />
+
         <List sx={{ p: 0 }}>
           <ListItem
             disablePadding

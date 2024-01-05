@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import { useAddCalenderEventMutation } from "../../../features/calender-events/calenderEvents";
 
@@ -14,6 +15,8 @@ const AddNewEvent = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate();
 
   //Add event handler
   const handleAddEvent = ({ start, end, title }) => {
@@ -30,11 +33,13 @@ const AddNewEvent = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-event" });
+      navigate("/dashboard/calender");
     }
     if (isLoading) {
       toast.loading("Loading", { id: "add-event" });
     }
   }, [isSuccess, isLoading]);
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -49,28 +54,30 @@ const AddNewEvent = () => {
             <form onSubmit={handleSubmit(handleAddEvent)}>
               <div className="row">
                 <div className="col-md-6">
-                  <label>Start Date</label>
+                  <label>
+                    Start Date <span>*</span>
+                  </label>
                   <input required type="date" {...register("start")} />
                 </div>
 
                 <div className="col-md-6">
-                  <label>End Date</label>
+                  <label>
+                    End Date <span>*</span>
+                  </label>
                   <input required type="date" {...register("end")} />
                 </div>
 
                 <div className="col-md-6">
-                  <label>Title</label>
+                  <label>
+                    Title <span>*</span>
+                  </label>
                   <input
                     required
-                    type="text"
-                    {...register("title", {
-                      required: true,
-                      maxLength: 100,
-                    })}
+                    {...register("title", { required: true, maxLength: 35 })}
                   />
-                  {errors.type &&
-                    errors.type.type === "maxLength" &&
-                    toast.error("Max length 100 exceeded", {
+                  {errors.title &&
+                    errors.title.type === "maxLength" &&
+                    toast.error("Max length 35 exceeded", {
                       id: "event-title-field",
                     })}
                 </div>
@@ -83,7 +90,7 @@ const AddNewEvent = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

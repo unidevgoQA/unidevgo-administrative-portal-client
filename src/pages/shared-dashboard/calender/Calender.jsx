@@ -6,13 +6,14 @@ import html2canvas from "html2canvas";
 import React, { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import GoBack from "../../components/go-back/GoBack";
+import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteCalenderEventMutation,
   useGetAllEventsQuery,
-} from "../../features/calender-events/calenderEvents";
-import { useGetProfileByEmailQuery } from "../../features/profile/profileApi";
-import { AuthContext } from "../../providers/AuthProviders";
+} from "../../../features/calender-events/calenderEvents";
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
+import './calender.scss';
 
 const Calender = () => {
   //User
@@ -96,14 +97,14 @@ const Calender = () => {
             )}
           </div>
           <div
-            className="table-responsive calender-wrapper mb-3"
+            className="table-responsive calender-wrapper mb-3 rounded p-3 border"
             ref={calendarRef}
           >
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               weekends={true}
-              height={"80vh"}
+              height={"65vh"}
               headerToolbar={{
                 start: "today",
                 center: "title",

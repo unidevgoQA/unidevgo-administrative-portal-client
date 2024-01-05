@@ -164,13 +164,17 @@ const UpdateProfile = () => {
   const handleProfileUpdate = (e) => {
     e.preventDefault();
     appleProfileUpdate({ id: id, data: { updateProfile } });
-    // navigate(-1)
   };
 
   //Update effects
   useEffect(() => {
     if (isSuccess) {
       toast.success("Updated Successfully", { id: "update-profile" });
+      if(registerUser.role === "admin" || registerUser.role === "super admin"){
+        navigate(-1)
+      }else{
+        navigate('/dashboard/profile')
+      }
     }
     if (isLoading) {
       toast.loading("Loading", { id: "update-profile" });

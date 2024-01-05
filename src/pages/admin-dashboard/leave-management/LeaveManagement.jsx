@@ -144,7 +144,7 @@ const LeaveManagement = () => {
                         className="update-btn status"
                       >
                         {" "}
-                        <i className="far fa-edit"></i>
+                        <i class="fa-solid fa-pen-nib"></i>
                       </button>
                     </td>
                     {registerUser?.role === "super admin" && (
