@@ -96,11 +96,11 @@ const LeaveApply = () => {
                       maxLength: 100,
                     })}
                   />
-                  {errors.type &&
-                    errors.type.type === "maxLength" &&
-                    toast.error("Max length 100 exceeded", {
-                      id: "register-designation-field",
-                    })}
+                  {errors.type && errors.type.type === "maxLength" && (
+                    <div style={{ color: "red" }}>
+                      Max length of 100 exceeded
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-12">
@@ -111,7 +111,7 @@ const LeaveApply = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

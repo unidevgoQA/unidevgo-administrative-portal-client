@@ -42,11 +42,10 @@ const SupportTicketDetails = () => {
 
   //Add work status handler
   const handleReply = ({ reply }) => {
-    console.log(reply)
     const suportTicket = {
       //ticket data
       date: currentDate,
-      time : new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString(),
       parentId: ticketDetails?._id,
       reply,
       // attachment: attachment[0],
@@ -55,13 +54,12 @@ const SupportTicketDetails = () => {
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
-    console.log(suportTicket)
-    // if (reply.trim().length === 0) {
-    //   toast.error("Provide valid input", { id: "reply-support-ticket" });
-    // } else {
-    //   sendReply(suportTicket);
-    //   reset();
-    // }
+    if (reply.trim().length === 0) {
+      toast.error("Provide valid input", { id: "reply-support-ticket" });
+    } else {
+      sendReply(suportTicket);
+      reset();
+    }
   };
 
   return (
@@ -80,8 +78,16 @@ const SupportTicketDetails = () => {
                 <img src={registerUser?.img} alt="" />
               </div>
               <div className="right-content">
-                <h6>{registerUser?.name}</h6>
-                <p>{ticketDetails?.message}</p>
+                <div className="name-message">
+                  {" "}
+                  <h6>{registerUser?.name}</h6>
+                  <p>{ticketDetails?.message}</p>
+                </div>
+                <div className="date-time">
+                  <p>
+                    {ticketDetails?.date} - {ticketDetails?.time}
+                  </p>
+                </div>
               </div>
             </div>
             {ticketDetails?.replies.map((chat, index) => {
@@ -96,21 +102,31 @@ const SupportTicketDetails = () => {
                     <img src={chat?.employeeImg} alt="" />
                   </div>
                   <div className="right-content">
-                    <h6>{chat?.employeeName}</h6>
+                   
+
+                    <div className="name-message">
+                  {" "}
+                  <h6>{chat?.employeeName}</h6>
                     <p>{chat.reply}</p>
+                </div>
+                <div className="date-time">
+                  <p>
+                    {chat?.date} - {chat?.time}
+                  </p>
+                </div>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="add-form send-message">
+          <div className="add-form">
             <form onSubmit={handleSubmit(handleReply)}>
-              <div className="chat-input-area">
+              <div className="chat-input">
                 <div className="text-area">
                   <input
                     required
                     type="text"
-                    placeholder="Your Message"
+                    placeholder="Your Reply"
                     {...register("reply", {
                       required: true,
                     })}
@@ -123,7 +139,8 @@ const SupportTicketDetails = () => {
                     type="file"
                   />
                 </div> */}
-                <div className="submit-area">
+                <div className="submit-area d-flex align-items-center justify-content-between">
+                <GoBack />
                   <button type="submit" className="send-message-btn">
                     <i class="fa-regular fa-paper-plane"></i>
                   </button>
@@ -133,7 +150,7 @@ const SupportTicketDetails = () => {
           </div>
         </div>
       </div>
-      <GoBack />
+     
     </div>
   );
 };

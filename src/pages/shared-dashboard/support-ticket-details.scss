@@ -2,7 +2,7 @@ $primary: #071c0b;
 $secondary: #0ad028;
 .text-wrapper {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   .left-content {
     img {
       width: 40px;
@@ -12,21 +12,20 @@ $secondary: #0ad028;
   .right-content {
     h6 {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       margin-bottom: 5px;
     }
     p {
       font-size: 14px;
+      font-weight: 600;
     }
   }
 }
 
-.chat-input-area {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 95% 5%;
-  align-items: center;
-  gap: 15px;
+.date-time p {
+  color: #7d7d7d;
+  font-size: 12px !important;
+  margin-top: -10px;
 }
 .send-message-btn {
   background: $primary;
@@ -42,3 +41,14 @@ $secondary: #0ad028;
     box-shadow: none;
   }
 }
+
+//Responsive
+// @media screen and (max-width: 1440px) {
+//   .chat-input {
+//     width: 100%;
+//     display: grid;
+//     grid-template-columns: 95% 5%;
+//     align-items: center;
+//     gap: 15px;
+//   }
+// }
