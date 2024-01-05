@@ -41,8 +41,8 @@ const SupportTIcketManagement = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Support Tickets</span>{" "}
-              <i class="fa-solid fa-clipboard-user"></i>
+              <span>Support Tickets Management</span>{" "}
+              <i class="fa-solid fa-headset"></i>
             </h2>
           </div>
 
@@ -51,25 +51,29 @@ const SupportTIcketManagement = () => {
               <>
                 {allTickets?.map((ticket) => (
                   <div className="col-lg-4 col-md-6 col-sm-12">
-                    <div className="ticket-wrapper">
-                      <div className="left-content">
-                        <img src={ticket?.employeeImg} alt="" />
-                        <h6>{ticket?.employeeName}</h6>
-                        <p>Ticket Message : {ticket?.message}</p>
-                        <button
-                          onClick={() => handleDelete(ticket?._id)}
-                          className="delete-btn"
-                        >
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
+                    <div className="ticket-wrapper-main">
+                      <div className="ticket-wrapper">
+                        <div className="left-content">
+                          <img src={ticket?.employeeImg} alt="" />
+                          <h6>{ticket?.employeeName}</h6>
+                        </div>
+                        <div className="right-content">
+                          <h6>Ticket Create</h6>
+                          <span>{ticket?.date}</span>
+                          <Link
+                            to={`/dashboard/support-tickets/${ticket?._id}`}
+                          >
+                            <button>Reply</button>
+                          </Link>
+                        </div>
                       </div>
-                      <div className="right-content">
-                        <h6>Ticket Create</h6>
-                        <span>{ticket?.date}</span>
-                        <Link to={`/dashboard/support-tickets/${ticket?._id}`}>
-                          <button>Reply</button>
-                        </Link>
-                      </div>
+                      <p>Ticket Message : {ticket?.message}</p>
+                      <button
+                        onClick={() => handleDelete(ticket?._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -87,7 +91,7 @@ const SupportTIcketManagement = () => {
           </div> */}
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

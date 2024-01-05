@@ -41,27 +41,28 @@ const SupportTicketDetails = () => {
   let currentDate = new Date().toJSON().slice(0, 10);
 
   //Add work status handler
-  const handleReply = ({ reply ,attachment}) => {
+  const handleReply = ({ reply }) => {
+    console.log(reply)
     const suportTicket = {
       //ticket data
       date: currentDate,
+      time : new Date().toLocaleTimeString(),
       parentId: ticketDetails?._id,
       reply,
-      attachment  : attachment[0],
+      // attachment: attachment[0],
       //user info
       employeeEmail: registerUser?.email,
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
-
-    if (reply.trim().length === 0) {
-      toast.error("Provide valid input", { id: "reply-support-ticket" });
-    } else {
-      sendReply(suportTicket);
-      reset();
-    }
+    console.log(suportTicket)
+    // if (reply.trim().length === 0) {
+    //   toast.error("Provide valid input", { id: "reply-support-ticket" });
+    // } else {
+    //   sendReply(suportTicket);
+    //   reset();
+    // }
   };
-
 
   return (
     <div className="content-wrapper">
@@ -69,11 +70,20 @@ const SupportTicketDetails = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>{ticketDetails?.message}</span>{" "}
-              <i class="fa-solid fa-headset"></i>
+              <span>Support Ticket Chat</span>{" "}
+              <i class="fa-regular fa-comments"></i>
             </h2>
           </div>
           <div className="message-area mb-3 p-3">
+            <div className="text-wrapper">
+              <div className="left-content">
+                <img src={registerUser?.img} alt="" />
+              </div>
+              <div className="right-content">
+                <h6>{registerUser?.name}</h6>
+                <p>{ticketDetails?.message}</p>
+              </div>
+            </div>
             {ticketDetails?.replies.map((chat, index) => {
               const lastMessage = ticketDetails?.replies.length - 1 === index;
               return (
@@ -106,27 +116,16 @@ const SupportTicketDetails = () => {
                     })}
                   />
                 </div>
-                <div className="attach-file-area">
-                  <input
-                    {...register("attachment")}
-                    className="file"
-                    type="file"
-                  />
-                </div>
-
                 {/* <div className="attach-file-area">
                   <input
                     {...register("attachment")}
                     className="file"
-                    placeholder="Attach FIle?"
                     type="file"
-                    required
                   />
                 </div> */}
-
                 <div className="submit-area">
-                  <button className="submit-btn">
-                    <i class="fa-solid fa-angle-right"></i>
+                  <button type="submit" className="send-message-btn">
+                    <i class="fa-regular fa-paper-plane"></i>
                   </button>
                 </div>
               </div>
@@ -134,7 +133,7 @@ const SupportTicketDetails = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

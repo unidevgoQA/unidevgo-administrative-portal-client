@@ -28,6 +28,7 @@ const CreateTicket = () => {
     const suportTicket = {
       //ticket data
       date: currentDate,
+      time : new Date().toLocaleTimeString(),
       message,
       //user info
       employeeEmail: registerUser?.email,

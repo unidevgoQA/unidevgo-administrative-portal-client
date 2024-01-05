@@ -1,3 +1,5 @@
+$primary: #071c0b;
+$secondary: #0ad028;
 .text-wrapper {
   display: flex;
   gap: 10px;
@@ -16,5 +18,27 @@
     p {
       font-size: 14px;
     }
+  }
+}
+
+.chat-input-area {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 95% 5%;
+  align-items: center;
+  gap: 15px;
+}
+.send-message-btn {
+  background: $primary;
+  color: $secondary;
+  padding: 15px 20px;
+  border: 1px solid $secondary;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 3px 3px 0 #0ad028;
+  transition: 0.3s;
+  &:hover {
+    box-shadow: none;
   }
 }

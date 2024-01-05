@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
@@ -10,7 +9,7 @@ import { useAddAttendenceMutation } from "../../../features/attendence/attendenc
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-import './profile.scss';
+import "./profile.scss";
 
 const Profile = () => {
   //User
@@ -20,7 +19,6 @@ const Profile = () => {
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
   const registerUser = userData?.data;
-
 
   //Leave management data
   const { data } = useGetAllLeavesQuery();
@@ -90,9 +88,7 @@ const Profile = () => {
     if (attendenceLoading) {
       toast.loading("Loading", { id: "add-attendence" });
     }
-  }, [attendenceLoading, attendenceSuccess])
-
-
+  }, [attendenceLoading, attendenceSuccess]);
 
   return (
     <div className="content-wrapper">
@@ -119,7 +115,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="col-lg-7 col-md-8 col-sm-12">
-                      <Box className="user-info">
+                      <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">
                             <h2>{registerUser?.name}</h2>
@@ -167,7 +163,7 @@ const Profile = () => {
                             </button>
                           </Link>
                         </div> */}
-                      </Box>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -259,13 +255,11 @@ const Profile = () => {
                   </div>
                 )}
               </div>
-
-             
             </div>
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };
