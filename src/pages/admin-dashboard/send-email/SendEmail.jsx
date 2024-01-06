@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import GoBack from "../../../components/go-back/GoBack";
 
 const SendEmail = () => {
@@ -15,8 +16,17 @@ const SendEmail = () => {
       body: JSON.stringify({ recipients, subject, message }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error:", error));
+      .then(({status}) => {
+        console.log(status)
+        if (status === true) {
+          toast.success("Email send successfully", { id: "send-email" });
+          setRecipients([])
+          setSubject("")
+          setMessage("")
+        }else{
+          toast.error("Failded to send", { id: "send-email" });
+        }
+      });
   };
 
   return (
@@ -61,7 +71,7 @@ const SendEmail = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

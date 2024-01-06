@@ -50,7 +50,10 @@ const SupportTIcketManagement = () => {
             {allTickets?.length > 0 ? (
               <>
                 {allTickets?.map((ticket) => (
-                  <div className="col-lg-4 col-md-6 col-sm-12">
+                  <div
+                    key={ticket?._id}
+                    className="col-lg-4 col-md-6 col-sm-12"
+                  >
                     <div className="ticket-wrapper-main">
                       <div className="ticket-wrapper">
                         <div className="left-content">
