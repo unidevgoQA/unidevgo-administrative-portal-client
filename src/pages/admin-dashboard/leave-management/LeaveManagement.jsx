@@ -185,6 +185,7 @@ const LeaveManagement = () => {
                         }
                         className="update-btn status"
                       >
+                        
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td>
@@ -194,6 +195,7 @@ const LeaveManagement = () => {
                           onClick={() => handleDelete(leave?._id)}
                           className="delete-btn"
                         >
+                        
                           <i className="fas fa-trash-alt"></i>
                         </button>
                       </td>

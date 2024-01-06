@@ -1,13 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { useAddWorkTaskMutation } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const addWorkStatus = () => {
-  const { handleSubmit, register, reset } = useForm();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
   //User
   const { user } = useContext(AuthContext);
   //Add work task API
@@ -16,6 +22,8 @@ const addWorkStatus = () => {
   const { data } = useGetProfileByEmailQuery(user.email);
   //Set register user
   const registerUser = data?.data;
+
+  const navigate = useNavigate();
 
   //Add work status handler
   const handleAddWorkStatus = ({
@@ -45,12 +53,12 @@ const addWorkStatus = () => {
     } else {
       addWorkTask(workTask);
       reset();
-  
     }
   };
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-work-task" });
+      navigate('/dashboard/work-status')
     }
     if (isLoading) {
       toast.loading("Loading", { id: "add-work-task" });
@@ -72,7 +80,19 @@ const addWorkStatus = () => {
               <div className="row">
                 <div className="col-md-6">
                   <label>Task / Project</label>
-                  <input required {...register("task")} />
+                  <input
+                    required
+                    type="text"
+                    {...register("task", {
+                      required: true,
+                      maxLength: 50,
+                    })}
+                  />
+                  {errors.task && errors.task.type === "maxLength" && (
+                    <div style={{ color: "red" }}>
+                      Max length of 50 exceeded
+                    </div>
+                  )}
                 </div>
                 <div className="col-md-6">
                   <label>Date of Report</label>
@@ -102,7 +122,16 @@ const addWorkStatus = () => {
 
                 <div className="col-md-12">
                   <label for="description">Work Description</label>
-                  <textarea required {...register("description")} />
+                  <textarea required  {...register("description", {
+                      required: true,
+                      maxLength: 100,
+                    })}
+                  />
+                  {errors.description && errors.description.type === "maxLength" && (
+                    <div style={{ color: "red" }}>
+                      Max length of 100 exceeded
+                    </div>
+                  )}
                 </div>
                 <div className="col-md-6">
                   <button className="submit-btn">Add Work Status </button>
@@ -112,7 +141,7 @@ const addWorkStatus = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };
