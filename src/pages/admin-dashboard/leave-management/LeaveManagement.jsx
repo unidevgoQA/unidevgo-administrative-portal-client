@@ -24,30 +24,61 @@ const LeaveManagement = () => {
   //Api
   const { data } = useGetAllLeavesQuery();
   const [deleteLeave, { isSuccess, isLoading }] = useDeleteLeaveMutation();
-  const [leaveEmail , {isLoading : leaveEmailSuccess , isLoading : loadingEmailSuccess}] = useLeaveEmailMutation();
+  const [
+    leaveEmail,
+    { isLoading: leaveEmailSuccess, isLoading: loadingEmailSuccess },
+  ] = useLeaveEmailMutation();
   const [
     updateLeave,
     { isSuccess: leaveUpdateSuccess, isLoading: leaveUpdateLoading },
   ] = useUpdateLeaveMutation();
+
   //state
-  const [leaveStatus, setLeaveStatus] = useState("");
+  const [leaveStatuses, setLeaveStatuses] = useState({});
+
   //set data
   const allLeaveManagements = data?.data;
 
-  //handle Update
-  const handleLeaveStatusChange = (id , employeeEmail , totalDays , employeeName , leaveApply , type) => {
+  useEffect(() => {
+    // Initialize leaveStatuses state when allLeaveManagements is loaded or changed
+    const initialStatuses = {};
+    allLeaveManagements?.forEach((leave) => {
+      initialStatuses[leave._id] = leave.status;
+    });
+    setLeaveStatuses(initialStatuses);
+  }, [allLeaveManagements]);
+
+  //handle status change
+  const handleStatusChange = (leaveId, newStatus) => {
+    setLeaveStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [leaveId]: newStatus,
+    }));
+  };
+  const handleLeaveStatusChange = (
+    leaveId,
+    employeeEmail,
+    totalDays,
+    employeeName,
+    leaveApply,
+    type
+  ) => {
+    // Use leaveStatuses[leaveId] to get the updated status
+    const leaveStatus = leaveStatuses[leaveId];
+    // console.log(leaveStatus);
+
     const leave = {
       leaveStatus,
       employeeEmail,
       employeeName,
       totalDays,
       leaveApply,
-      type
-    }
+      type,
+    };
     if (leaveStatus === "") {
       toast.error("Please select the status");
     } else {
-      updateLeave({ id: id, data: { leaveStatus } });
+      updateLeave({ id: leaveId, data: { leaveStatus } });
       leaveEmail(leave);
     }
   };
@@ -129,8 +160,10 @@ const LeaveManagement = () => {
                     <td>{leave?.totalDays}</td>
                     <td className="update-status">
                       <select
-                        value={leave?.status}
-                        onChange={(e) => setLeaveStatus(e.target.value)}
+                        value={leaveStatuses[leave._id] || leave.status}
+                        onChange={(e) =>
+                          handleStatusChange(leave._id, e.target.value)
+                        }
                         name="status"
                         required
                       >
@@ -140,11 +173,19 @@ const LeaveManagement = () => {
                       </select>
                       <button
                         title="Update Status"
-                        onClick={() => handleLeaveStatusChange(leave?._id , leave?.employeeEmail , leave?.totalDays , leave?.employeeName , leave?.leaveApply , leave?.type)}
+                        onClick={() =>
+                          handleLeaveStatusChange(
+                            leave?._id,
+                            leave?.employeeEmail,
+                            leave?.totalDays,
+                            leave?.employeeName,
+                            leave?.leaveApply,
+                            leave?.type
+                          )
+                        }
                         className="update-btn status"
                       >
-                        {" "}
-                        <i class="fa-solid fa-pen-nib"></i>
+                        <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td>
                     {registerUser?.role === "super admin" && (
@@ -164,7 +205,7 @@ const LeaveManagement = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };
