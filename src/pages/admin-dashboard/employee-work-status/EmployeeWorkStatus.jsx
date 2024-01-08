@@ -188,7 +188,7 @@ const WorkStatus = () => {
             </h2>
           </div>
 
-          <div className="row mb-5">
+          <div className="row mb-3">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="row align-items-center">
               

@@ -22,8 +22,9 @@ import * as React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-
+import './sidenav.scss';
 const drawerWidth = 240;
+
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -289,7 +290,6 @@ export default function Sidenav() {
                 />
               </ListItemButton>
             </ListItem>
-          
           </List>
         ) : (
           <List sx={{ p: 0 }}>
@@ -498,6 +498,17 @@ export default function Sidenav() {
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
+        {/* <div className="dashboard-header">
+          <div className="logo">
+            <img src={logo} alt="logo" />
+          </div>
+
+          <div className="profile">
+            
+            <h6>{registerUser?.name}</h6>
+            <img src={registerUser?.img} alt="user" />
+          </div>
+        </div> */}
         <Outlet></Outlet>
       </Box>
     </Box>
