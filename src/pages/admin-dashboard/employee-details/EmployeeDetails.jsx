@@ -5,7 +5,7 @@ import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveMa
 
 const EmployeeDetails = () => {
   const [profile, setProfile] = useState({});
-  console.log(profile);
+
   const { id } = useParams();
 
   //Set url

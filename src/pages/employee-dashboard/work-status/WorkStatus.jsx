@@ -265,25 +265,22 @@ const WorkStatus = () => {
         {registerUser?.role === "employee" && (
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="row">
-                <div className="col-lg-3 col-md-12 col-sm-12">
-                  <div className="date-picker-wrapper">
-                    <div className="table-responsive d-flex">
-                      <div className="date-range">
-                        {/* <button
-                    className="show-all-task-btn"
-                    onClick={() => showAllData()}
-                  >
-                    All
-                  </button> */}
-                        <DateRangePicker
-                          direction="horizontal"
-                          rangeColors={["blue"]}
-                          showDateDisplay={false}
-                          showMonthAndYearPickers={false}
-                          ranges={[selectionRange]}
-                          onChange={handleSelect}
-                        />
+            <div className="row align-items-center">
+              
+                  <div className="col-lg-5 col-md-12 col-sm-12">
+                    <div className="date-picker-wrapper">
+              
+                      <div className="table-responsive d-flex">
+                        <div className="date-range">
+                          <DateRangePicker
+                            direction="horizontal"
+                            rangeColors={["blue"]}
+                            showDateDisplay={false}
+                            showMonthAndYearPickers={false}
+                            ranges={[selectionRange]}
+                            onChange={handleSelect}
+                          />
+                        </div>
                       </div>
                       <div className="date-select">
                         <DatePicker
@@ -295,39 +292,40 @@ const WorkStatus = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-9 col-md-12 col-sm-12">
-                  <div style={{ width: "100%", height: "100%" }}>
-                    <ResponsiveContainer>
-                      <ComposedChart
-                        data={filteredStatusData}
-                        margin={{
-                          top: 20,
-                          right: 20,
-                          bottom: 20,
-                          left: 20,
-                        }}
-                      >
-                        <CartesianGrid stroke="#f5f5f5" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip />
-                        <Area
-                          type="monotone"
-                          dataKey="task"
-                          fill="#8884d8"
-                          stroke="#8884d8"
-                        />
-                        <Bar dataKey="hour" barSize={20} fill="#208436" />
-                        <Line
-                          type="string"
-                          dataKey="workStatus"
-                          stroke="#ff7300"
-                        />
-                      </ComposedChart>
-                    </ResponsiveContainer>
+                  <div className="col-lg-7 col-md-12 col-sm-12">
+                    <div className="chart-wrapper">
+                      <div style={{ width: "100%", height: "300px" }}>
+                        <ResponsiveContainer>
+                          <ComposedChart
+                            data={filteredStatusData}
+                            margin={{
+                              top: 20,
+                              right: 20,
+                              bottom: 20,
+                              left: 0,
+                            }}
+                          >
+                            <CartesianGrid stroke="#F5F5F5" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Area
+                              type="monotone"
+                              dataKey="task"
+                              fill="#8884D8"
+                              stroke="#8884D8"
+                            />
+                            <Bar dataKey="hour" barSize={10} fill="#208436" />
+                            <Line
+                              type="string"
+                              dataKey="workStatus"
+                              stroke="#FF7300"
+                            />
+                          </ComposedChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
             <div className="col-lg-12 col-md-12col-sm-12 mt-3">

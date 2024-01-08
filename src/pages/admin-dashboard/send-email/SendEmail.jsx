@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import GoBack from "../../../components/go-back/GoBack";
+import './send-email.scss';
 
 const SendEmail = () => {
   const [recipients, setRecipients] = useState([]);

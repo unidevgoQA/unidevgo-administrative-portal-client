@@ -1,0 +1,36 @@
+$primary: #071c0b;
+$secondary: #0ad028;
+//Send Email
+.send-email-form {
+  .send-email-btn {
+    background: $primary;
+    color: $secondary;
+    padding: 5px 10px;
+    border: 1px solid $secondary;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 #0ad028;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  label {
+    width: 100%;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  input,
+  textarea {
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    &:focus {
+      outline: none;
+      border: none;
+    }
+  }
+}

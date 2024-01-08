@@ -116,17 +116,11 @@ const AttendenceReport = () => {
 
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="row">
-                <div className="col-lg-4 col-md-12 col-sm-12">
-                  <div className="date-picker-wrapper">
+            <div className="row align-items-center">
+                <div className="col-lg-12 col-md-12 col-sm-12">
+                  <div className="date-picker-wrapper mb-3">
                     <div className="table-responsive d-flex">
                       <div className="date-range">
-                        {/* <button
-                    className="show-all-task-btn"
-                    onClick={() => showAllData()}
-                  >
-                    All
-                  </button> */}
                         <DateRangePicker
                           direction="horizontal"
                           rangeColors={["blue"]}
@@ -136,19 +130,16 @@ const AttendenceReport = () => {
                           onChange={handleSelect}
                         />
                       </div>
-                      <div className="date-select">
-                        <DatePicker
-                          inline
-                          open={true}
-                          selected={selectedDate}
-                          onChange={handleSelectSpecificDate}
-                        />
-                      </div>
+                    </div>
+                    <div className="date-select">
+                      <DatePicker
+                        inline
+                        open={true}
+                        selected={selectedDate}
+                        onChange={handleSelectSpecificDate}
+                      />
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-8 col-md-12 col-sm-12">
-                  <div style={{ width: "100%", height: "100%" }}></div>
                 </div>
               </div>
             </div>
@@ -219,7 +210,7 @@ const AttendenceReport = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };
