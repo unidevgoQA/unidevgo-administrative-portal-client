@@ -111,7 +111,7 @@ const SupportTicketDetails = () => {
                 </div>
                 <div className="date-time">
                   <p>
-                    {chat?.date} - {chat?.time}
+                    {chat?.date} | {chat?.time}
                   </p>
                 </div>
                   </div>

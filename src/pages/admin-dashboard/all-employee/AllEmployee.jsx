@@ -96,7 +96,7 @@ const AllEmployee = () => {
                       </Link>
                     </td>
 
-                    {registerUser?.role === "super admin" && (
+              
                       <td>
                         {/* <Link to={`/dashboard/update-profile/${employee?._id}`}>
                           <button className="update-btn">
@@ -112,7 +112,7 @@ const AllEmployee = () => {
                           <i className="fas fa-trash-alt"></i>
                         </button>
                       </td>
-                    )}
+                
                   </tr>
                 ))}
               </tbody>

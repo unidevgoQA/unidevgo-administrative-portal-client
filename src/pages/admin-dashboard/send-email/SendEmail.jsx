@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import GoBack from "../../../components/go-back/GoBack";
-import './send-email.scss';
+import "./send-email.scss";
 
 const SendEmail = () => {
   const [recipients, setRecipients] = useState([]);
@@ -17,19 +17,19 @@ const SendEmail = () => {
       body: JSON.stringify({ recipients, subject, message }),
     })
       .then((response) => response.json())
-      .then(({status}) => {
-        console.log(status)
+      .then(({ status }) => {
         if (status === true) {
-          toast.success("Email send successfully", { id: "send-email" });
-          setRecipients([])
-          setSubject("")
-          setMessage("")
-        }else{
-          toast.error("Failded to send", { id: "send-email" });
+          toast.success("Email sent successfully", { id: "send-email" });
+          setRecipients([]);
+          setSubject("");
+          setMessage("");
         }
+      })
+      .catch(err => {
+        console.error("Error sending email:", err);
+        toast.error("Error sending email", { id: "send-email" });
       });
   };
-
   return (
     <div className="content-wrapper">
       <div className="row">
