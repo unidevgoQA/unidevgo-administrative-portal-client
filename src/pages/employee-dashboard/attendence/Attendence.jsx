@@ -2,15 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
 import {
+  useAddAttendenceMutation,
   useDeleteAttendenceMutation,
   useGetAllAttendenceQuery,
 } from "../../../features/attendence/attendenceApi";
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-
+import './attendence.scss';
 const Attendence = () => {
   const { data } = useGetAllAttendenceQuery();
   const allAttendence = data?.data;
@@ -19,6 +21,11 @@ const Attendence = () => {
     useDeleteAttendenceMutation();
   //User
   const { user } = useContext(AuthContext);
+
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  const registerUser = userData?.data;
 
   //Filter leaves based on email
   const filterAttendence = allAttendence?.filter(
@@ -83,6 +90,88 @@ const Attendence = () => {
     }
   };
 
+  // Attendence
+
+const [
+  addAttendence,
+  { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
+] = useAddAttendenceMutation();
+
+// Form
+const {
+  handleSubmit,
+  register,
+  reset,
+  formState: { errors },
+} = useForm();
+
+// Function to submit absent status
+const submitAbsentStatus = () => {
+  const attendance = {
+    // Attendance data
+    date: new Date().toISOString().slice(0, 10),
+    status: "absent",
+    time: new Date().toLocaleTimeString(),
+    // User info
+    employeeEmail: registerUser?.email,
+    employeeImg: registerUser?.img,
+    employeeName: registerUser?.name,
+  };
+
+  // Call the function to add attendence
+  addAttendence(attendance);
+};
+
+// Add work status handler
+const handleSubmitAttendence = ({ date, status }) => {
+  // Check if the function has been called today
+  const lastDate = localStorage.getItem("lastAttendanceDate");
+  const currentDate = new Date().toISOString().slice(0, 10);
+
+  if (lastDate !== currentDate) {
+    // Add work status handler
+    const attendance = {
+      // Attendance data
+      date,
+      status,
+      time: new Date().toLocaleTimeString(),
+      // User info
+      employeeEmail: registerUser?.email,
+      employeeImg: registerUser?.img,
+      employeeName: registerUser?.name,
+    };
+
+    // Call the function to add attendence
+    addAttendence(attendance);
+
+    // Update the last date in localStorage
+    localStorage.setItem("lastAttendanceDate", currentDate);
+  } else {
+    toast.error("Attendance already submitted for today.");
+  }
+};
+
+// Check if attendance is submitted for today, if not, submit absent status
+useEffect(() => {
+  const lastDate = localStorage.getItem("lastAttendanceDate");
+  const currentDate = new Date().toISOString().slice(0, 10);
+
+  if (lastDate !== currentDate) {
+    submitAbsentStatus();
+    localStorage.setItem("lastAttendanceDate", currentDate);
+  }
+}, []);
+
+// Attendence added effects
+useEffect(() => {
+  if (attendenceSuccess) {
+    toast.success("Record Submitted", { id: "add-attendence" });
+  }
+  if (attendenceLoading) {
+    toast.loading("Loading", { id: "add-attendence" });
+  }
+}, [attendenceLoading, attendenceSuccess]);
+
   //Delete Effects
   useEffect(() => {
     if (isSuccess) {
@@ -106,8 +195,8 @@ const Attendence = () => {
 
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="row align-items-center">
-                <div className="col-lg-12 col-md-12 col-sm-12">
+              <div className="row mb-3">
+                <div className="col-lg-8 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper mb-3">
                     <div className="table-responsive d-flex">
                       <div className="date-range">
@@ -131,6 +220,52 @@ const Attendence = () => {
                     </div>
                   </div>
                 </div>
+                <div className="col-lg-4 col-md-12 col-sm-12">
+                  <>
+                    {registerUser?.role === "employee" && (
+                      <div className="apply-attendence-wrapper">
+                        <h6>Attendence</h6>
+                        <div className="attendence-form">
+                          <div className="attendence-form">
+                            <form
+                              onSubmit={handleSubmit(handleSubmitAttendence)}
+                            >
+                              <div className="row">
+                                <div className="col-md-12">
+                                  <label>Date</label>
+                                  <br />
+                                  <input
+                                    required
+                                    type="date"
+                                    defaultValue={new Date()
+                                      .toJSON()
+                                      .slice(0, 10)}
+                                    min={new Date().toISOString().slice(0, 10)}
+                                    max={new Date().toISOString().slice(0, 10)}
+                                    {...register("date")}
+                                  />
+                                </div>
+                                <div className="col-md-12">
+                                  <label for="status">Status</label>
+                                  <br />
+                                  <select required {...register("status")}>
+                                    <option value="present">Present</option>
+                                    <option value="absent">Absent</option>
+                                  </select>
+                                </div>
+                                <div className="col-md-12">
+                                  <button className="attendence-submit-btn">
+                                    Submit
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                </div>
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
@@ -140,7 +275,7 @@ const Attendence = () => {
                     <table class="table-modify table table-striped">
                       <thead>
                         <tr>
-                          <th>Image</th>
+                          {/* <th>Image</th> */}
                           <th>Name</th>
                           <th>Date</th>
                           <th>Time</th>
@@ -151,7 +286,7 @@ const Attendence = () => {
                       <tbody>
                         {filteredAttendenceData?.map((attendence) => (
                           <tr key={attendence?._id}>
-                            <td>
+                            {/* <td>
                               <img
                                 className="employee-img"
                                 src={
@@ -161,7 +296,7 @@ const Attendence = () => {
                                 }
                                 alt="employee"
                               />
-                            </td>
+                            </td> */}
                             <td>{attendence?.employeeName}</td>
                             <td>{attendence?.date}</td>
                             <td>{attendence?.time}</td>

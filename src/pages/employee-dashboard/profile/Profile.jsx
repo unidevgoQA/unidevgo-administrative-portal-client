@@ -1,11 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
-import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useForm } from "react-hook-form";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
-import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
@@ -40,56 +37,6 @@ const Profile = () => {
     0
   );
 
-  //Attendence
-
-  const [
-    addAttendence,
-    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
-  ] = useAddAttendenceMutation();
-  //Form
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  //Add work status handler
-  const handleSubmitAttendence = ({ date, status }) => {
-    // Check if the function has been called today
-    const lastDate = localStorage.getItem("lastAttendanceDate");
-    const currentDate = new Date().toLocaleDateString();
-    if (lastDate !== currentDate) {
-      // Add work status handler
-      const attendance = {
-        // Attendance data
-        date,
-        status,
-        time: new Date().toLocaleTimeString(),
-        // User info
-        employeeEmail: registerUser?.email,
-        employeeImg: registerUser?.img,
-        employeeName: registerUser?.name,
-      };
-      // Call the function
-      addAttendence(attendance);
-      // Update the last date in localStorage
-      localStorage.setItem("lastAttendanceDate", currentDate);
-    } else {
-      toast.error("Attendance already submitted for today.");
-    }
-  };
-
-  //Attendence added effects
-  useEffect(() => {
-    if (attendenceSuccess) {
-      toast.success("Record Submitted", { id: "add-attendence" });
-    }
-    if (attendenceLoading) {
-      toast.loading("Loading", { id: "add-attendence" });
-    }
-  }, [attendenceLoading, attendenceSuccess]);
-
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -101,10 +48,10 @@ const Profile = () => {
           </div>
           <div className="profile-current-task-wrapper">
             <div className="row g-4">
-              <div className="col-lg-8 col-md-12">
+              <div className="col-lg-12 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row align-items-center">
-                    <div className="col-lg-5 col-md-4 col-sm-12">
+                    <div className="col-lg-3 col-md-4 col-sm-12">
                       <div className="user-img">
                         <img
                           src={
@@ -114,7 +61,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-7 col-md-8 col-sm-12">
+                    <div className="col-lg-9 col-md-8 col-sm-12">
                       <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">
@@ -168,57 +115,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-4 col-md-12">
-                <>
-                  {registerUser?.role === "employee" && (
-                    <div className="apply-attendence-wrapper">
-                      <h6>Attendence</h6>
-                      <div className="attendence-form">
-                        <div className="profile-wrapper">
-                          <img
-                            width={"40px"}
-                            height={"40px"}
-                            src={registerUser?.img}
-                            alt="employee"
-                          />
-                          {/* <h6>{registerUser?.name}</h6> */}
-                        </div>
-                        <div className="attendence-form">
-                          <form onSubmit={handleSubmit(handleSubmitAttendence)}>
-                            <div className="row">
-                              <div className="col-md-12">
-                                <label>Date</label>
-                                <br />
-                                <input
-                                  required
-                                  type="date"
-                                  defaultValue={new Date()
-                                    .toJSON()
-                                    .slice(0, 10)}
-                                  {...register("date")}
-                                />
-                              </div>
-                              <div className="col-md-12">
-                                <label for="status">Status</label>
-                                <br />
-                                <select required {...register("status")}>
-                                  <option value="present">Present</option>
-                                  <option value="absent">Absent</option>
-                                </select>
-                              </div>
-                              <div className="col-md-12">
-                                <button className="attendence-submit-btn">
-                                  Submit
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              </div>
+
               <div className="col-lg-12 col-md-12">
                 {registerUser?.role === "employee" && (
                   <div className="employee-vailability">
