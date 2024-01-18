@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
@@ -34,56 +34,23 @@ const LeaveManagement = () => {
     { isSuccess: leaveUpdateSuccess, isLoading: leaveUpdateLoading },
   ] = useUpdateLeaveMutation();
 
-  // //state
-  // const [leaveStatuses, setLeaveStatuses] = useState({});
-
   //set data
   const allLeaveManagements = data?.data;
 
-  // useEffect(() => {
-  //   // Initialize leaveStatuses state when allLeaveManagements is loaded or changed
-  //   const initialStatuses = {};
-  //   allLeaveManagements?.forEach((leave) => {
-  //     initialStatuses[leave._id] = leave.status;
-  //   });
-  //   setLeaveStatuses(initialStatuses);
-  // }, [allLeaveManagements]);
+  //Tab
+  const [activeTab, setActiveTab] = useState("All");
 
-  // //handle status change
-  // const handleStatusChange = (leaveId, newStatus) => {
-  //   setLeaveStatuses((prevStatuses) => ({
-  //     ...prevStatuses,
-  //     [leaveId]: newStatus,
-  //   }));
-  // };
-  // const handleLeaveStatusChange = (
-  //   leaveId,
-  //   employeeEmail,
-  //   totalDays,
-  //   employeeName,
-  //   leaveApply,
-  //   type
-  // ) => {
-  //   // Use leaveStatuses[leaveId] to get the updated status
-  //   const leaveStatus = leaveStatuses[leaveId];
-  //   // console.log(leaveStatus);
+  const filterItems = (status) => {
+    setActiveTab(status);
+  };
 
-  //   const leave = {
-  //     leaveStatus,
-  //     employeeEmail,
-  //     employeeName,
-  //     totalDays,
-  //     leaveApply,
-  //     type,
-  //   };
-  //   if (leaveStatus === "") {
-  //     toast.error("Please select the status");
-  //   } else {
-  //     updateLeave({ id: leaveId, data: { leaveStatus } });
-  //     leaveEmail(leave);
-  //   }
-  // };
+  const getFilteredItems = () => {
+    if (activeTab === "All") return allLeaveManagements;
+    return allLeaveManagements.filter((item) => item.status === activeTab);
+  };
+  //Tab
 
+  //Accept leave handler
   const handleAcceptLeave = (
     leaveId,
     employeeEmail,
@@ -106,7 +73,9 @@ const LeaveManagement = () => {
       leaveEmail(leave);
     }
   };
+  //Accept leave handler
 
+  //Rejected leave handler
   const handleRejectLeave = (
     leaveId,
     employeeEmail,
@@ -129,6 +98,7 @@ const LeaveManagement = () => {
       leaveEmail(leave);
     }
   };
+  //Rejected leave handler
 
   //handle Delete
   const handleDelete = (id) => {
@@ -168,44 +138,76 @@ const LeaveManagement = () => {
               <i class="fa-solid fa-list-check"></i>
             </h2>
           </div>
-          <div className="table-responsive">
-            <table class="table-modify table table-striped">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Apply Date</th>
-                  <th>Status</th>
-                  <th>Leave From</th>
-                  <th>Leave To</th>
-                  <th>Leave Type</th>
-                  <th>Total Days</th>
-                  {/* <th>Update Status</th> */}
-                  {registerUser?.role === "super admin" && (
-                    <th className="action-area">Action</th>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {allLeaveManagements?.map((leave) => (
-                  <tr key={leave?._id}>
-                    <td>
-                      <img
-                        className="employee-img"
-                        src={
-                          leave?.employeeImg ? leave?.employeeImg : defaultImg
-                        }
-                        alt="employee"
-                      />
-                    </td>
-                    <td>{leave?.employeeName}</td>
-                    <td>{leave?.leaveApply}</td>
-                    <td>{leave?.status}</td>
-                    <td>{leave?.leaveFrom}</td>
-                    <td>{leave?.leaveTo}</td>
-                    <td>{leave?.type}</td>
-                    <td>{leave?.totalDays}</td>
-                    {/* <td className="update-status">
+
+          <div className="tab">
+            <button
+              onClick={() => filterItems("All")}
+              className={activeTab === "All" ? "active" : ""}
+            >
+              All
+            </button>
+            <button
+              onClick={() => filterItems("pending")}
+              className={activeTab === "pending" ? "active" : ""}
+            >
+              Pending
+            </button>
+            <button
+              onClick={() => filterItems("accepted")}
+              className={activeTab === "accepted" ? "active" : ""}
+            >
+              Accepted
+            </button>
+            <button
+              onClick={() => filterItems("rejected")}
+              className={activeTab === "rejected" ? "active" : ""}
+            >
+              Rejected
+            </button>
+          </div>
+
+          {getFilteredItems()?.length > 0 ? (
+            <>
+              <div className="table-responsive">
+                <table class="table-modify table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Name</th>
+                      <th>Apply Date</th>
+                      <th>Status</th>
+                      <th>Leave From</th>
+                      <th>Leave To</th>
+                      <th>Leave Type</th>
+                      <th>Total Days</th>
+                      {/* <th>Update Status</th> */}
+                      {registerUser?.role === "super admin" && (
+                        <th className="action-area">Action</th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getFilteredItems()?.map((leave) => (
+                      <tr key={leave?._id}>
+                        <td>
+                          <img
+                            className="employee-img"
+                            src={
+                              leave?.employeeImg
+                                ? leave?.employeeImg
+                                : defaultImg
+                            }
+                            alt="employee"
+                          />
+                        </td>
+                        <td>{leave?.employeeName}</td>
+                        <td>{leave?.leaveApply}</td>
+                        <td>{leave?.status}</td>
+                        <td>{leave?.leaveFrom}</td>
+                        <td>{leave?.leaveTo}</td>
+                        <td>{leave?.type}</td>
+                        <td>{leave?.totalDays}</td>
+                        {/* <td className="update-status">
                       <select
                         value={leaveStatuses[leave._id] || leave.status}
                         onChange={(e) =>
@@ -236,52 +238,56 @@ const LeaveManagement = () => {
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td> */}
-                    {registerUser?.role === "admin" ||
-                      (registerUser?.role === "super admin" && (
-                        <td>
-                          <button
-                            className="leave-accept-btn"
-                            onClick={() =>
-                              handleAcceptLeave(
-                                leave?._id,
-                                leave?.employeeEmail,
-                                leave?.totalDays,
-                                leave?.employeeName,
-                                leave?.leaveApply,
-                                leave?.type
-                              )
-                            }
-                          >
-                            Accept
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleRejectLeave(
-                                leave?._id,
-                                leave?.employeeEmail,
-                                leave?.totalDays,
-                                leave?.employeeName,
-                                leave?.leaveApply,
-                                leave?.type
-                              )
-                            }
-                            className="leave-reject-btn"
-                          >
-                            Reject
-                          </button>
-                          <button
-                            onClick={() => handleDelete(leave?._id)}
-                            className="delete-btn"
-                          >
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                        </td>
-                      ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        {registerUser?.role === "admin" ||
+                          (registerUser?.role === "super admin" && (
+                            <td>
+                              <button
+                                className="leave-accept-btn"
+                                onClick={() =>
+                                  handleAcceptLeave(
+                                    leave?._id,
+                                    leave?.employeeEmail,
+                                    leave?.totalDays,
+                                    leave?.employeeName,
+                                    leave?.leaveApply,
+                                    leave?.type
+                                  )
+                                }
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleRejectLeave(
+                                    leave?._id,
+                                    leave?.employeeEmail,
+                                    leave?.totalDays,
+                                    leave?.employeeName,
+                                    leave?.leaveApply,
+                                    leave?.type
+                                  )
+                                }
+                                className="leave-reject-btn"
+                              >
+                                Reject
+                              </button>
+                              <button
+                                onClick={() => handleDelete(leave?._id)}
+                                className="delete-btn"
+                              >
+                                <i className="fas fa-trash-alt"></i>
+                              </button>
+                            </td>
+                          ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <h6 className="mt-4">No Data Found</h6>
+          )}
         </div>
       </div>
       <GoBack />

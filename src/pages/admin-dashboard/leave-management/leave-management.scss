@@ -16,3 +16,30 @@ button.leave-reject-btn {
   margin-right: 5px;
   font-weight: 600;
 }
+.tab {
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #d7eddd;
+  margin-bottom: 10px;
+}
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tab button:hover {
+  background-color: #ddd;
+}
+
+.tab button.active {
+  color: #222;
+  background-color: #37f42e;
+}
