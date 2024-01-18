@@ -1,12 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { useAddTicketMutation } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const CreateTicket = () => {
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
@@ -40,6 +43,7 @@ const CreateTicket = () => {
     } else {
       addTickets(suportTicket);
       reset();
+      navigate('/dashboard/support-tickets')
     }
   };
 

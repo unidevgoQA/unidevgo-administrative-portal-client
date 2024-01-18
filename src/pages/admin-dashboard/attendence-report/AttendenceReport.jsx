@@ -166,8 +166,6 @@ const AttendenceReport = () => {
                                 className="employee-img"
                                 src={
                                   attendence?.employeeImg
-                                    ? attendence?.employeeImg
-                                    : defaultImg
                                 }
                                 alt="employee"
                               />

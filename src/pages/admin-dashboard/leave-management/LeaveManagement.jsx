@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
@@ -10,6 +10,7 @@ import {
 } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
+import "./leave-management.scss";
 
 const LeaveManagement = () => {
   //User
@@ -33,29 +34,57 @@ const LeaveManagement = () => {
     { isSuccess: leaveUpdateSuccess, isLoading: leaveUpdateLoading },
   ] = useUpdateLeaveMutation();
 
-  //state
-  const [leaveStatuses, setLeaveStatuses] = useState({});
+  // //state
+  // const [leaveStatuses, setLeaveStatuses] = useState({});
 
   //set data
   const allLeaveManagements = data?.data;
 
-  useEffect(() => {
-    // Initialize leaveStatuses state when allLeaveManagements is loaded or changed
-    const initialStatuses = {};
-    allLeaveManagements?.forEach((leave) => {
-      initialStatuses[leave._id] = leave.status;
-    });
-    setLeaveStatuses(initialStatuses);
-  }, [allLeaveManagements]);
+  // useEffect(() => {
+  //   // Initialize leaveStatuses state when allLeaveManagements is loaded or changed
+  //   const initialStatuses = {};
+  //   allLeaveManagements?.forEach((leave) => {
+  //     initialStatuses[leave._id] = leave.status;
+  //   });
+  //   setLeaveStatuses(initialStatuses);
+  // }, [allLeaveManagements]);
 
-  //handle status change
-  const handleStatusChange = (leaveId, newStatus) => {
-    setLeaveStatuses((prevStatuses) => ({
-      ...prevStatuses,
-      [leaveId]: newStatus,
-    }));
-  };
-  const handleLeaveStatusChange = (
+  // //handle status change
+  // const handleStatusChange = (leaveId, newStatus) => {
+  //   setLeaveStatuses((prevStatuses) => ({
+  //     ...prevStatuses,
+  //     [leaveId]: newStatus,
+  //   }));
+  // };
+  // const handleLeaveStatusChange = (
+  //   leaveId,
+  //   employeeEmail,
+  //   totalDays,
+  //   employeeName,
+  //   leaveApply,
+  //   type
+  // ) => {
+  //   // Use leaveStatuses[leaveId] to get the updated status
+  //   const leaveStatus = leaveStatuses[leaveId];
+  //   // console.log(leaveStatus);
+
+  //   const leave = {
+  //     leaveStatus,
+  //     employeeEmail,
+  //     employeeName,
+  //     totalDays,
+  //     leaveApply,
+  //     type,
+  //   };
+  //   if (leaveStatus === "") {
+  //     toast.error("Please select the status");
+  //   } else {
+  //     updateLeave({ id: leaveId, data: { leaveStatus } });
+  //     leaveEmail(leave);
+  //   }
+  // };
+
+  const handleAcceptLeave = (
     leaveId,
     employeeEmail,
     totalDays,
@@ -63,22 +92,40 @@ const LeaveManagement = () => {
     leaveApply,
     type
   ) => {
-    // Use leaveStatuses[leaveId] to get the updated status
-    const leaveStatus = leaveStatuses[leaveId];
-    // console.log(leaveStatus);
-
     const leave = {
-      leaveStatus,
+      leaveStatus: "accepted",
       employeeEmail,
       employeeName,
       totalDays,
       leaveApply,
       type,
     };
-    if (leaveStatus === "") {
-      toast.error("Please select the status");
-    } else {
-      updateLeave({ id: leaveId, data: { leaveStatus } });
+    const acceptLeave = window.confirm("Want to Accept this leave request?");
+    if (acceptLeave) {
+      updateLeave({ id: leaveId, data: { leave } });
+      leaveEmail(leave);
+    }
+  };
+
+  const handleRejectLeave = (
+    leaveId,
+    employeeEmail,
+    totalDays,
+    employeeName,
+    leaveApply,
+    type
+  ) => {
+    const leave = {
+      leaveStatus: "rejected",
+      employeeEmail,
+      employeeName,
+      totalDays,
+      leaveApply,
+      type,
+    };
+    const rejectLeave = window.confirm("Want to Reject this leave request?");
+    if (rejectLeave) {
+      updateLeave({ id: leaveId, data: { leave } });
       leaveEmail(leave);
     }
   };
@@ -133,7 +180,7 @@ const LeaveManagement = () => {
                   <th>Leave To</th>
                   <th>Leave Type</th>
                   <th>Total Days</th>
-                  <th>Update Status</th>
+                  {/* <th>Update Status</th> */}
                   {registerUser?.role === "super admin" && (
                     <th className="action-area">Action</th>
                   )}
@@ -158,7 +205,7 @@ const LeaveManagement = () => {
                     <td>{leave?.leaveTo}</td>
                     <td>{leave?.type}</td>
                     <td>{leave?.totalDays}</td>
-                    <td className="update-status">
+                    {/* <td className="update-status">
                       <select
                         value={leaveStatuses[leave._id] || leave.status}
                         onChange={(e) =>
@@ -188,18 +235,48 @@ const LeaveManagement = () => {
                         
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
-                    </td>
-                    {registerUser?.role === "super admin" && (
-                      <td>
-                        <button
-                          onClick={() => handleDelete(leave?._id)}
-                          className="delete-btn"
-                        >
-                        
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                      </td>
-                    )}
+                    </td> */}
+                    {registerUser?.role === "admin" ||
+                      (registerUser?.role === "super admin" && (
+                        <td>
+                          <button
+                            className="leave-accept-btn"
+                            onClick={() =>
+                              handleAcceptLeave(
+                                leave?._id,
+                                leave?.employeeEmail,
+                                leave?.totalDays,
+                                leave?.employeeName,
+                                leave?.leaveApply,
+                                leave?.type
+                              )
+                            }
+                          >
+                            Accept
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleRejectLeave(
+                                leave?._id,
+                                leave?.employeeEmail,
+                                leave?.totalDays,
+                                leave?.employeeName,
+                                leave?.leaveApply,
+                                leave?.type
+                              )
+                            }
+                            className="leave-reject-btn"
+                          >
+                            Reject
+                          </button>
+                          <button
+                            onClick={() => handleDelete(leave?._id)}
+                            className="delete-btn"
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
+                      ))}
                   </tr>
                 ))}
               </tbody>

@@ -12,7 +12,7 @@ import {
 } from "../../../features/attendence/attendenceApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-import './attendence.scss';
+import "./attendence.scss";
 const Attendence = () => {
   const { data } = useGetAllAttendenceQuery();
   const allAttendence = data?.data;
@@ -26,11 +26,6 @@ const Attendence = () => {
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
   const registerUser = userData?.data;
-
-  //Filter leaves based on email
-  const filterAttendence = allAttendence?.filter(
-    (attendence) => attendence.employeeEmail === user.email
-  );
 
   //States
   const [startDate, setStartDate] = useState(new Date());
@@ -92,48 +87,25 @@ const Attendence = () => {
 
   // Attendence
 
-const [
-  addAttendence,
-  { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
-] = useAddAttendenceMutation();
+  const [
+    addAttendence,
+    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
+  ] = useAddAttendenceMutation();
 
-// Form
-const {
-  handleSubmit,
-  register,
-  reset,
-  formState: { errors },
-} = useForm();
+  // Form
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-// Function to submit absent status
-const submitAbsentStatus = () => {
-  const attendance = {
-    // Attendance data
-    date: new Date().toISOString().slice(0, 10),
-    status: "absent",
-    time: new Date().toLocaleTimeString(),
-    // User info
-    employeeEmail: registerUser?.email,
-    employeeImg: registerUser?.img,
-    employeeName: registerUser?.name,
-  };
-
-  // Call the function to add attendence
-  addAttendence(attendance);
-};
-
-// Add work status handler
-const handleSubmitAttendence = ({ date, status }) => {
-  // Check if the function has been called today
-  const lastDate = localStorage.getItem("lastAttendanceDate");
-  const currentDate = new Date().toISOString().slice(0, 10);
-
-  if (lastDate !== currentDate) {
-    // Add work status handler
+  // Function to submit absent status
+  const submitAbsentStatus = () => {
     const attendance = {
       // Attendance data
-      date,
-      status,
+      date: new Date().toISOString().slice(0, 10),
+      status: "absent",
       time: new Date().toLocaleTimeString(),
       // User info
       employeeEmail: registerUser?.email,
@@ -143,34 +115,57 @@ const handleSubmitAttendence = ({ date, status }) => {
 
     // Call the function to add attendence
     addAttendence(attendance);
+  };
 
-    // Update the last date in localStorage
-    localStorage.setItem("lastAttendanceDate", currentDate);
-  } else {
-    toast.error("Attendance already submitted for today.");
-  }
-};
+  // Add work status handler
+  const handleSubmitAttendence = ({ date, status }) => {
+    // Check if the function has been called today
+    const lastDate = localStorage.getItem("lastAttendanceDate");
+    const currentDate = new Date().toISOString().slice(0, 10);
 
-// Check if attendance is submitted for today, if not, submit absent status
-useEffect(() => {
-  const lastDate = localStorage.getItem("lastAttendanceDate");
-  const currentDate = new Date().toISOString().slice(0, 10);
+    if (lastDate !== currentDate) {
+      // Add work status handler
+      const attendance = {
+        // Attendance data
+        date,
+        status,
+        time: new Date().toLocaleTimeString(),
+        // User info
+        employeeEmail: registerUser?.email,
+        employeeImg: registerUser?.img,
+        employeeName: registerUser?.name,
+      };
 
-  if (lastDate !== currentDate) {
-    submitAbsentStatus();
-    localStorage.setItem("lastAttendanceDate", currentDate);
-  }
-}, []);
+      // Call the function to add attendence
+      addAttendence(attendance);
 
-// Attendence added effects
-useEffect(() => {
-  if (attendenceSuccess) {
-    toast.success("Record Submitted", { id: "add-attendence" });
-  }
-  if (attendenceLoading) {
-    toast.loading("Loading", { id: "add-attendence" });
-  }
-}, [attendenceLoading, attendenceSuccess]);
+      // Update the last date in localStorage
+      localStorage.setItem("lastAttendanceDate", currentDate);
+    } else {
+      toast.error("Attendance already submitted for today.");
+    }
+  };
+
+  // // Check if attendance is submitted for today, if not, submit absent status
+  // useEffect(() => {
+  //   const lastDate = localStorage.getItem("lastAttendanceDate");
+  //   const currentDate = new Date().toISOString().slice(0, 10);
+
+  //   if (lastDate !== currentDate) {
+  //     submitAbsentStatus();
+  //     localStorage.setItem("lastAttendanceDate", currentDate);
+  //   }
+  // }, []);
+
+  // Attendence added effects
+  useEffect(() => {
+    if (attendenceSuccess) {
+      toast.success("Record Submitted", { id: "add-attendence" });
+    }
+    if (attendenceLoading) {
+      toast.loading("Loading", { id: "add-attendence" });
+    }
+  }, [attendenceLoading, attendenceSuccess]);
 
   //Delete Effects
   useEffect(() => {

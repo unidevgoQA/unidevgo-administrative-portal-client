@@ -102,18 +102,16 @@ const SupportTicketDetails = () => {
                     <img src={chat?.employeeImg} alt="" />
                   </div>
                   <div className="right-content">
-                   
-
                     <div className="name-message">
-                  {" "}
-                  <h6>{chat?.employeeName}</h6>
-                    <p>{chat.reply}</p>
-                </div>
-                <div className="date-time">
-                  <p>
-                    {chat?.date} | {chat?.time}
-                  </p>
-                </div>
+                      {" "}
+                      <h6>{chat?.employeeName}</h6>
+                      <p>{chat.reply}</p>
+                    </div>
+                    <div className="date-time">
+                      <p>
+                        {chat?.date} | {chat?.time}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -127,6 +125,12 @@ const SupportTicketDetails = () => {
                     required
                     type="text"
                     placeholder="Your Reply"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault(); // Prevent default behavior (form submission)
+                        handleSubmit(handleReply)();
+                      }
+                    }}
                     {...register("reply", {
                       required: true,
                     })}
@@ -140,7 +144,7 @@ const SupportTicketDetails = () => {
                   />
                 </div> */}
                 <div className="submit-area d-flex align-items-center justify-content-between">
-                <GoBack />
+                  <GoBack />
                   <button type="submit" className="send-message-btn">
                     <i class="fa-regular fa-paper-plane"></i>
                   </button>
@@ -150,7 +154,6 @@ const SupportTicketDetails = () => {
           </div>
         </div>
       </div>
-     
     </div>
   );
 };

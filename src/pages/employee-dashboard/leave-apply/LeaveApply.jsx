@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import { useAddLeaveApplyMutation } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
 const LeaveApply = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -58,6 +60,7 @@ const LeaveApply = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-work-task" });
+      navigate('/dashboard/leave-status')
     }
     if (isLoading) {
       toast.loading("Loading", { id: "add-work-task" });
