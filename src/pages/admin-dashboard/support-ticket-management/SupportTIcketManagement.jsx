@@ -83,8 +83,8 @@ const SupportTIcketManagement = () => {
               Active
             </div>
             <div
-              className={`tab ${selectedTab === "closed" ? "active" : ""}`}
-              onClick={() => handleTabChange("closed")}
+              className={`tab ${selectedTab === "close" ? "active" : ""}`}
+              onClick={() => handleTabChange("close")}
             >
               Close
             </div>
@@ -132,7 +132,7 @@ const SupportTIcketManagement = () => {
                               onClick={() =>
                                 handleStatusChange(ticket?._id, ticket?.status)
                               }
-                              className="update-btn bg-danger text-white"
+                              className={ticket?.status === 'active' ? `update-btn bg-danger text-white` : `update-btn bg-success text-white`}
                             >
                               {ticket?.status == "active"
                                 ? "Close Ticket"
