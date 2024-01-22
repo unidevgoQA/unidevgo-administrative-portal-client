@@ -37,6 +37,7 @@ const CreateTicket = () => {
       employeeEmail: registerUser?.email,
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
+      status: 'active'
     };
     if (message.trim().length === 0) {
       toast.error("Provide valid input", { id: "support-ticket" });

@@ -16,6 +16,7 @@ const SupportTIcketManagement = () => {
   const { data } = useGetAllTicketsQuery();
   //Set ticket data
   const allTickets = data?.data;
+  console.log(allTickets);
 
   //handle Delete
   const handleDelete = (id) => {
@@ -49,37 +50,56 @@ const SupportTIcketManagement = () => {
           <div className="row g-4 mb-3">
             {allTickets?.length > 0 ? (
               <>
-                {allTickets?.map((ticket) => (
-                  <div
-                    key={ticket?._id}
-                    className="col-lg-4 col-md-6 col-sm-12"
-                  >
-                    <div className="ticket-wrapper-main">
-                      <div className="ticket-wrapper">
-                        <div className="left-content">
-                          <img src={ticket?.employeeImg} alt="" />
-                          <h6>{ticket?.employeeName}</h6>
-                        </div>
-                        <div className="right-content">
-                          <h6>Ticket Create</h6>
-                          <span>{ticket?.date}</span>
-                          <Link
-                            to={`/dashboard/support-tickets/${ticket?._id}`}
-                          >
-                            <button>Reply</button>
-                          </Link>
-                        </div>
-                      </div>
-                      <p>Ticket Message : {ticket?.message}</p>
-                      <button
-                        onClick={() => handleDelete(ticket?._id)}
-                        className="delete-btn"
-                      >
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                <div className="table-responsive">
+                  <table class="table-modify table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th>Name</th>
+                        <th>Ticket Create</th>
+                        <th>Status</th>
+                        <th className="description">Ticket Message</th>
+                        <th className="action-area">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allTickets?.map((ticket) => (
+                        <tr key={ticket?._id}>
+                          <td>
+                            <img
+                              className="employee-img"
+                              src={ticket?.employeeImg}
+                              alt="employee"
+                            />
+                          </td>
+                          <td>{ticket?.employeeName}</td>
+                          <td>{ticket?.date}</td>
+                          <td>{ticket?.status}</td>
+                          <td>{ticket?.message}</td>
+                          <td>
+                            <Link
+                              to={`/dashboard/support-tickets/${ticket?._id}`}
+                            >
+                              <button className="update-btn">Reply</button>
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(ticket?._id)}
+                              className="delete-btn"
+                            >
+                              Close Ticket
+                            </button>
+                            <button
+                              onClick={() => handleDelete(ticket?._id)}
+                              className="delete-btn"
+                            >
+                              <i className="fas fa-trash-alt"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             ) : (
               <>
