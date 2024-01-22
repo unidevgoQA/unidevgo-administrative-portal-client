@@ -270,8 +270,8 @@ const Attendence = () => {
                     <table class="table-modify table table-striped">
                       <thead>
                         <tr>
-                          {/* <th>Image</th> */}
-                          <th>Name</th>
+                          <th>Image</th>
+                          {/* <th>Name</th> */}
                           <th>Date</th>
                           <th>Time</th>
                           <th>Status</th>
@@ -281,7 +281,7 @@ const Attendence = () => {
                       <tbody>
                         {filteredAttendenceData?.map((attendence) => (
                           <tr key={attendence?._id}>
-                            {/* <td>
+                            <td>
                               <img
                                 className="employee-img"
                                 src={
@@ -291,8 +291,8 @@ const Attendence = () => {
                                 }
                                 alt="employee"
                               />
-                            </td> */}
-                            <td>{attendence?.employeeName}</td>
+                            </td>
+                            {/* <td>{attendence?.employeeName}</td> */}
                             <td>{attendence?.date}</td>
                             <td>{attendence?.time}</td>
                             <td>

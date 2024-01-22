@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
@@ -26,7 +26,28 @@ const SupportTickets = () => {
   const filterTickets = allTickets?.filter(
     (ticket) => ticket?.employeeEmail === user?.email
   );
+  //Tab
+  const [selectedTab, setSelectedTab] = useState("all");
+  const [filteredTickets, setFilteredTickets] = useState([]);
 
+  useEffect(() => {
+    // Filter tickets based on the selected tab
+    if (selectedTab === "all") {
+      setFilteredTickets(filterTickets);
+    } else if (selectedTab === "active") {
+      setFilteredTickets(
+        filterTickets.filter((ticket) => ticket.status === "active")
+      );
+    } else if (selectedTab === "close") {
+      setFilteredTickets(
+        filterTickets.filter((ticket) => ticket.status === "close")
+      );
+    }
+  }, [selectedTab, filterTickets]);
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
   //handle Update
   const handleStatusChange = (id, ticketStatus) => {
     const updatedStatus = ticketStatus === "active" ? "close" : "active";
@@ -79,16 +100,36 @@ const SupportTickets = () => {
               </Link>
             </div>
           </div>
+          <div className="tab-container">
+            <div
+              className={`tab ${selectedTab === "all" ? "active" : ""}`}
+              onClick={() => handleTabChange("all")}
+            >
+              All
+            </div>
+            <div
+              className={`tab ${selectedTab === "active" ? "active" : ""}`}
+              onClick={() => handleTabChange("active")}
+            >
+              Active
+            </div>
+            <div
+              className={`tab ${selectedTab === "closed" ? "active" : ""}`}
+              onClick={() => handleTabChange("closed")}
+            >
+              Close
+            </div>
+          </div>
 
           <div className="row g-4 mb-3">
-            {filterTickets?.length > 0 ? (
+            {filteredTickets?.length > 0 ? (
               <>
                 <div className="table-responsive">
                   <table class="table-modify table table-striped">
                     <thead>
                       <tr>
-                        <th>Employee</th>
-                        <th>Name</th>
+                        <th>Image</th>
+                        {/* <th>Name</th> */}
                         <th>Ticket Create</th>
                         <th>Status</th>
                         <th className="description">Ticket Message</th>
@@ -96,7 +137,7 @@ const SupportTickets = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filterTickets?.map((ticket) => (
+                      {filteredTickets?.map((ticket) => (
                         <tr key={ticket?._id}>
                           <td>
                             <img
@@ -105,7 +146,7 @@ const SupportTickets = () => {
                               alt="employee"
                             />
                           </td>
-                          <td>{ticket?.employeeName}</td>
+                          {/* <td>{ticket?.employeeName}</td> */}
                           <td>{ticket?.date}</td>
                           <td>{ticket?.status}</td>
                           <td>{ticket?.message}</td>
@@ -113,7 +154,9 @@ const SupportTickets = () => {
                             <Link
                               to={`/dashboard/support-tickets/${ticket?._id}`}
                             >
-                              <button className="update-btn bg-primary">Reply</button>
+                              <button className="update-btn bg-primary">
+                                Reply
+                              </button>
                             </Link>
 
                             <button

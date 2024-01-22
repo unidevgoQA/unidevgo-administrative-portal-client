@@ -17,7 +17,7 @@ const SupportTIcketManagement = () => {
   const { data } = useGetAllTicketsQuery();
   //Set ticket data
   const allTickets = data?.data;
-  console.log(allTickets);
+
 
   const [selectedTab, setSelectedTab] = useState("all");
   const [filteredTickets, setFilteredTickets] = useState([]);

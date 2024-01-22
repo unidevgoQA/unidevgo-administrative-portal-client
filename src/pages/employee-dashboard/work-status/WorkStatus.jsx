@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
   Area,
@@ -21,7 +20,6 @@ import {
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
-import { useAddAttendenceMutation } from "../../../features/attendence/attendenceApi";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
@@ -176,46 +174,6 @@ const WorkStatus = () => {
     }
   };
 
-  //Attendence
-
-  const [
-    addAttendence,
-    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
-  ] = useAddAttendenceMutation();
-  //Form
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  //Add work status handler
-  const handleSubmitAttendence = ({ date, status }) => {
-    // Check if the function has been called today
-    const lastDate = localStorage.getItem("lastAttendanceDate");
-    const currentDate = new Date().toLocaleDateString();
-    if (lastDate !== currentDate) {
-      // Add work status handler
-      const attendance = {
-        // Attendance data
-        date,
-        status,
-        time: new Date().toLocaleTimeString(),
-        // User info
-        employeeEmail: registerUser?.email,
-        employeeImg: registerUser?.img,
-        employeeName: registerUser?.name,
-      };
-      // Call the function
-      addAttendence(attendance);
-      // Update the last date in localStorage
-      localStorage.setItem("lastAttendanceDate", currentDate);
-    } else {
-      toast.error("Attendance already submitted for today.");
-    }
-  };
-
   //Delete Effects
   useEffect(() => {
     if (isSuccess) {
@@ -235,15 +193,6 @@ const WorkStatus = () => {
     }
   }, [workStatusSuccess, worksStatusLoading]);
 
-  //Attendence added effects
-  useEffect(() => {
-    if (attendenceSuccess) {
-      toast.success("Record Submitted", { id: "add-attendence" });
-    }
-    if (attendenceLoading) {
-      toast.loading("Loading", { id: "add-attendence" });
-    }
-  }, [attendenceLoading, attendenceSuccess]);
 
   return (
     <div className="content-wrapper">
