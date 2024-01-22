@@ -14,6 +14,8 @@ const SendEmail = () => {
   const [loading, setLoading] = useState(false);
   const [attachment, setAttachment] = useState(null);
 
+  console.log(attachment);
+
   const { data } = useGetProfilesQuery();
   const allProfiles = data?.data;
 
@@ -55,14 +57,46 @@ const SendEmail = () => {
   const handleFileChange = (event) => {
     setAttachment(event.target.files[0]);
   };
+  // const sendEmail = () => {
+  //   setLoading(true);
+  //   fetch(`${import.meta.env.VITE_BASE_URL}send-email`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ recipients, subject, message }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then(({ status }) => {
+  //       if (status === true) {
+  //         toast.success("Email sent successfully", { id: "send-email" });
+  //         setLoading(false);
+  //         navigate("/dashboard");
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error sending email:", err);
+  //       toast.error("Error sending email", { id: "send-email" });
+  //     });
+  // };
+
   const sendEmail = () => {
     setLoading(true);
+
+    const formData = new FormData();
+    formData.append("recipients", recipients.join(","));
+    formData.append("subject", subject);
+    formData.append("message", message);
+
+    if (attachment) {
+      formData.append("attachment", attachment);
+    }
+
+    console.log(formData);
+
     fetch(`${import.meta.env.VITE_BASE_URL}send-email`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ recipients, subject, message }),
+      body: formData,
     })
       .then((response) => response.json())
       .then(({ status }) => {
@@ -73,7 +107,6 @@ const SendEmail = () => {
         }
       })
       .catch((err) => {
-        console.error("Error sending email:", err);
         toast.error("Error sending email", { id: "send-email" });
       });
   };
@@ -144,6 +177,11 @@ const SendEmail = () => {
                   onChange={(e) => setSubject(e.target.value)}
                 />
               </div>
+              <div className="col-lg-12">
+                <label>Attachment</label>
+                <input type="file" onChange={handleFileChange} />
+              </div>
+
               <div className="col-lg-12">
                 <label>Message</label>
                 <textarea

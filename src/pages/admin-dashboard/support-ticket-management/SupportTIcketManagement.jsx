@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
@@ -7,6 +7,7 @@ import {
   useGetAllTicketsQuery,
 } from "../../../features/support-ticket/SupportTicket";
 import { AuthContext } from "../../../providers/AuthProviders";
+import "./support-ticket-management.scss";
 
 const SupportTIcketManagement = () => {
   //User
@@ -17,6 +18,28 @@ const SupportTIcketManagement = () => {
   //Set ticket data
   const allTickets = data?.data;
   console.log(allTickets);
+
+  const [selectedTab, setSelectedTab] = useState("all");
+  const [filteredTickets, setFilteredTickets] = useState([]);
+
+  useEffect(() => {
+    // Filter tickets based on the selected tab
+    if (selectedTab === "all") {
+      setFilteredTickets(allTickets);
+    } else if (selectedTab === "active") {
+      setFilteredTickets(
+        allTickets.filter((ticket) => ticket.status === "active")
+      );
+    } else if (selectedTab === "close") {
+      setFilteredTickets(
+        allTickets.filter((ticket) => ticket.status === "close")
+      );
+    }
+  }, [selectedTab, allTickets]);
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
 
   //handle Delete
   const handleDelete = (id) => {
@@ -46,9 +69,29 @@ const SupportTIcketManagement = () => {
               <i class="fa-solid fa-headset"></i>
             </h2>
           </div>
+          <div className="tab-container">
+            <div
+              className={`tab ${selectedTab === "all" ? "active" : ""}`}
+              onClick={() => handleTabChange("all")}
+            >
+              All
+            </div>
+            <div
+              className={`tab ${selectedTab === "active" ? "active" : ""}`}
+              onClick={() => handleTabChange("active")}
+            >
+              Active
+            </div>
+            <div
+              className={`tab ${selectedTab === "closed" ? "active" : ""}`}
+              onClick={() => handleTabChange("closed")}
+            >
+              Close
+            </div>
+          </div>
 
           <div className="row g-4 mb-3">
-            {allTickets?.length > 0 ? (
+            {filteredTickets?.length > 0 ? (
               <>
                 <div className="table-responsive">
                   <table class="table-modify table table-striped">
@@ -63,7 +106,7 @@ const SupportTIcketManagement = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {allTickets?.map((ticket) => (
+                      {filteredTickets?.map((ticket) => (
                         <tr key={ticket?._id}>
                           <td>
                             <img
@@ -80,14 +123,22 @@ const SupportTIcketManagement = () => {
                             <Link
                               to={`/dashboard/support-tickets/${ticket?._id}`}
                             >
-                              <button className="update-btn">Reply</button>
+                              <button className="update-btn bg-primary">
+                                Reply
+                              </button>
                             </Link>
+
                             <button
-                              onClick={() => handleDelete(ticket?._id)}
-                              className="delete-btn"
+                              onClick={() =>
+                                handleStatusChange(ticket?._id, ticket?.status)
+                              }
+                              className="update-btn bg-danger text-white"
                             >
-                              Close Ticket
+                              {ticket?.status == "active"
+                                ? "Close Ticket"
+                                : "Active Ticket"}
                             </button>
+
                             <button
                               onClick={() => handleDelete(ticket?._id)}
                               className="delete-btn"

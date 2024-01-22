@@ -120,7 +120,7 @@ const SupportTickets = () => {
                               onClick={() =>
                                 handleStatusChange(ticket?._id, ticket?.status)
                               }
-                              className="update-btn text-white"
+                              className="update-btn bg-danger text-white"
                             >
                               {ticket?.status == "active"
                                 ? "Close Ticket"
