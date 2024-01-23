@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { DateRangePicker } from "react-date-range";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import {
+  useAddAttendenceMutation,
   useDeleteAttendenceMutation,
   useGetAllAttendenceQuery,
 } from "../../../features/attendence/attendenceApi";
@@ -19,6 +21,21 @@ const AttendenceReport = () => {
   //Delete API
   const [deleteAttendence, { isSuccess, isLoading }] =
     useDeleteAttendenceMutation();
+
+  // Attendence
+
+  const [
+    addAttendence,
+    { isLoading: attendenceLoading, isSuccess: attendenceSuccess },
+  ] = useAddAttendenceMutation();
+
+  // Form
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   //States
   const [startDate, setStartDate] = useState(new Date());
@@ -93,6 +110,31 @@ const AttendenceReport = () => {
     }
   };
 
+  // Add work status handler
+  const handleSubmitAttendence = ({ date, status }) => {
+    const attendance = {
+      // Attendance data
+      date,
+      status,
+      time: new Date().toLocaleTimeString(),
+      // User info
+      employeeEmail: profile?.email,
+      employeeImg: profile?.img,
+      employeeName: profile?.name,
+    };
+    // Call the function to add attendence
+    addAttendence(attendance);
+  };
+  // Attendence added effects
+  useEffect(() => {
+    if (attendenceSuccess) {
+      toast.success("Record Submitted", { id: "add-attendence" });
+    }
+    if (attendenceLoading) {
+      toast.loading("Loading", { id: "add-attendence" });
+    }
+  }, [attendenceLoading, attendenceSuccess]);
+
   //Delete Effects
   useEffect(() => {
     if (isSuccess) {
@@ -116,8 +158,8 @@ const AttendenceReport = () => {
 
           <div className="row mb-5">
             <div className="col-lg-12 col-md-12 col-sm-12">
-            <div className="row align-items-center">
-                <div className="col-lg-12 col-md-12 col-sm-12">
+              <div className="row mb-3">
+                <div className="col-lg-8 col-md-12 col-sm-12">
                   <div className="date-picker-wrapper mb-3">
                     <div className="table-responsive d-flex">
                       <div className="date-range">
@@ -140,6 +182,48 @@ const AttendenceReport = () => {
                       />
                     </div>
                   </div>
+                </div>
+                <div className="col-lg-4 col-md-12 col-sm-12">
+                  <>
+                    <div className="apply-attendence-wrapper">
+                      <h6>Attendence</h6>
+                      <div className="attendence-form">
+                        <div className="attendence-form">
+                          <form onSubmit={handleSubmit(handleSubmitAttendence)}>
+                            <div className="row">
+                              <div className="col-md-12">
+                                <label>Date</label>
+                                <br />
+                                <input
+                                  required
+                                  type="date"
+                                  // defaultValue={new Date()
+                                  //   .toJSON()
+                                  //   .slice(0, 10)}
+                                  // min={new Date().toISOString().slice(0, 10)}
+                                  // max={new Date().toISOString().slice(0, 10)}
+                                  {...register("date")}
+                                />
+                              </div>
+                              <div className="col-md-12">
+                                <label for="status">Status</label>
+                                <br />
+                                <select required {...register("status")}>
+                                  <option value="present">Present</option>
+                                  <option value="absent">Absent</option>
+                                </select>
+                              </div>
+                              <div className="col-md-12">
+                                <button className="attendence-submit-btn">
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 </div>
               </div>
             </div>
@@ -164,9 +248,7 @@ const AttendenceReport = () => {
                             <td>
                               <img
                                 className="employee-img"
-                                src={
-                                  attendence?.employeeImg
-                                }
+                                src={attendence?.employeeImg}
                                 alt="employee"
                               />
                             </td>

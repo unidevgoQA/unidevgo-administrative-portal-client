@@ -125,7 +125,7 @@ const SupportTickets = () => {
               <>
                 <div className="table-responsive">
                   <table class="table-modify table table-striped">
-                    <thead>
+                    <thead> 
                       <tr>
                         <th>Image</th>
                         {/* <th>Name</th> */}

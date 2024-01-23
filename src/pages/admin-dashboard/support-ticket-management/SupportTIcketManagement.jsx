@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
@@ -6,12 +6,10 @@ import {
   useDeleteTicketMutation,
   useGetAllTicketsQuery,
 } from "../../../features/support-ticket/SupportTicket";
-import { AuthContext } from "../../../providers/AuthProviders";
 import "./support-ticket-management.scss";
 
 const SupportTIcketManagement = () => {
-  //User
-  const { user } = useContext(AuthContext);
+  
   const [deleteTicket, { isLoading, isSuccess }] = useDeleteTicketMutation();
   //All tickets data
   const { data } = useGetAllTicketsQuery();
