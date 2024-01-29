@@ -19,6 +19,9 @@ const SupportTicketDetails = () => {
   const [sendReply] = useReplyTicketMutation();
   const ticketDetails = ticket?.data;
 
+  console.log(ticketDetails)
+
+
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ behavior: "smooth" });
@@ -75,12 +78,12 @@ const SupportTicketDetails = () => {
           <div className="message-area mb-3 p-3">
             <div className="text-wrapper">
               <div className="left-content">
-                <img src={registerUser?.img} alt="" />
+                <img src={ticketDetails?.employeeImg} alt="" />
               </div>
               <div className="right-content">
                 <div className="name-message">
                   {" "}
-                  <h6>{registerUser?.name}</h6>
+                  <h6>{ticketDetails?.employeeName}</h6>
                   <p>{ticketDetails?.message}</p>
                 </div>
                 <div className="date-time">
