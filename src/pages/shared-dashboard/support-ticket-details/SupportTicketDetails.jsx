@@ -1,13 +1,13 @@
 import React, { useCallback, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import GoBack from "../../components/go-back/GoBack";
-import { useGetProfileByEmailQuery } from "../../features/profile/profileApi";
+import GoBack from "../../../components/go-back/GoBack";
+import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
   useGetSingleTicketsQuery,
   useReplyTicketMutation,
-} from "../../features/support-ticket/SupportTicket";
-import { AuthContext } from "../../providers/AuthProviders";
+} from "../../../features/support-ticket/SupportTicket";
+import { AuthContext } from "../../../providers/AuthProviders";
 import "./support-ticket-details.scss";
 
 const SupportTicketDetails = () => {

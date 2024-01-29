@@ -100,9 +100,14 @@ const Login = () => {
               <div className="other-action">
                 <div className="login-register-navigation">
                   <h4>Dont have account ?</h4>
+                  <div className="btn-wrapper d-flex justify-content-between">
                   <Link to={"/register"}>
-                    Register <i class="fa-solid fa-arrow-right"></i>{" "}
+                  <i class="fa-solid fa-arrow-right"></i>{" "}Register 
                   </Link>
+                  <Link to={"/update-password"}>
+                    Update Password <i class="fa-solid fa-key"></i>
+                  </Link>
+                  </div>
                 </div>
               </div>
             </div>

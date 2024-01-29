@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut
@@ -37,6 +38,11 @@ const AuthProviders = ({ children }) => {
   const logoutUser = () => {
     return signOut(auth);
   };
+  //Update
+  const UpdatePassword = (email) => {
+    console.log(email)
+    return sendPasswordResetEmail(auth,email);
+  };
 
   //Observer
   useEffect(() => {
@@ -60,6 +66,7 @@ const AuthProviders = ({ children }) => {
     loginUser,
     logoutUser,
     loginWithGoogle,
+    UpdatePassword,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
