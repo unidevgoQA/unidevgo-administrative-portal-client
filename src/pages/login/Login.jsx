@@ -104,9 +104,9 @@ const Login = () => {
                   <Link to={"/register"}>
                   <i class="fa-solid fa-arrow-right"></i>{" "}Register 
                   </Link>
-                  <Link to={"/update-password"}>
+                  {/* <Link to={"/update-password"}>
                     Update Password <i class="fa-solid fa-key"></i>
-                  </Link>
+                  </Link> */}
                   </div>
                 </div>
               </div>

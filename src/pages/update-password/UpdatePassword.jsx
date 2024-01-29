@@ -19,9 +19,9 @@ const UpdatePassword = () => {
     console.log(email)
     UpdatePassword(email)
       .then((result) => {
-        // toast.success("Email Send Successfully", {id:'update-password'});
-        // navigate("/")
-        console.log(result)
+        toast.success("Email Send Successfully", {id:'update-password'});
+        navigate("/")
+       
       })
       .catch((err) => {
         toast.error(err.message , {id:'update-password'});

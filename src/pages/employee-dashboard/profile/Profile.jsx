@@ -11,7 +11,6 @@ import "./profile.scss";
 const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
