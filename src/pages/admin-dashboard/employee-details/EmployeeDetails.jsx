@@ -55,13 +55,13 @@ const EmployeeDetails = () => {
             <div className="row g-4">
               <div className="col-lg-7 col-md-12">
                 <div className="profile-content-wrapper">
-                  <div className="row align-items-center">
-                    <div className="col-lg-5 col-md-4 col-sm-12">
+                  <div className="row">
+                    <div className="col-lg-4 col-md-4 col-sm-12">
                       <div className="user-img">
                         <img src={profile?.img} alt="employee" />
                       </div>
                     </div>
-                    <div className="col-lg-7 col-md-8 col-sm-12">
+                    <div className="col-lg-8 col-md-8 col-sm-12">
                       <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">

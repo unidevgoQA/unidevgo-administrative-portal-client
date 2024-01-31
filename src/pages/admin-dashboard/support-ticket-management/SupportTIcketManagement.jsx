@@ -5,17 +5,20 @@ import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteTicketMutation,
   useGetAllTicketsQuery,
+  useUpdateTicketMutation,
 } from "../../../features/support-ticket/SupportTicket";
 import "./support-ticket-management.scss";
 
 const SupportTIcketManagement = () => {
-  
   const [deleteTicket, { isLoading, isSuccess }] = useDeleteTicketMutation();
+  const [
+    updateTicketStatus,
+    { isLoading: updateTicketLoading, isSuccess: updateTicketSuccess },
+  ] = useUpdateTicketMutation();
   //All tickets data
   const { data } = useGetAllTicketsQuery();
   //Set ticket data
   const allTickets = data?.data;
-
 
   const [selectedTab, setSelectedTab] = useState("all");
   const [filteredTickets, setFilteredTickets] = useState([]);
@@ -26,17 +29,26 @@ const SupportTIcketManagement = () => {
       setFilteredTickets(allTickets);
     } else if (selectedTab === "active") {
       setFilteredTickets(
-        allTickets.filter((ticket) => ticket.status === "active")
+        allTickets?.filter((ticket) => ticket.status === "active")
       );
     } else if (selectedTab === "close") {
       setFilteredTickets(
-        allTickets.filter((ticket) => ticket.status === "close")
+        allTickets?.filter((ticket) => ticket.status === "close")
       );
     }
   }, [selectedTab, allTickets]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
+  };
+
+  //handle Update
+  const handleStatusChange = (id, ticketStatus) => {
+    const updatedStatus = ticketStatus === "active" ? "close" : "active";
+    const updateTicket = {
+      status: updatedStatus,
+    };
+    updateTicketStatus({ id: id, data: updateTicket });
   };
 
   //handle Delete
@@ -46,6 +58,16 @@ const SupportTIcketManagement = () => {
       deleteTicket(id);
     }
   };
+
+  // Update effects
+  useEffect(() => {
+    if (updateTicketSuccess) {
+      toast.success("Update Successfully", { id: "update-ticket" });
+    }
+    if (updateTicketLoading) {
+      toast.loading("Loading", { id: "update-ticket" });
+    }
+  }, [updateTicketSuccess, updateTicketLoading]);
 
   // Delete effects
   useEffect(() => {
@@ -130,7 +152,11 @@ const SupportTIcketManagement = () => {
                               onClick={() =>
                                 handleStatusChange(ticket?._id, ticket?.status)
                               }
-                              className={ticket?.status === 'active' ? `update-btn bg-danger text-white` : `update-btn bg-success text-white`}
+                              className={
+                                ticket?.status === "active"
+                                  ? `update-btn bg-danger text-white`
+                                  : `update-btn bg-success text-white`
+                              }
                             >
                               {ticket?.status == "active"
                                 ? "Close Ticket"

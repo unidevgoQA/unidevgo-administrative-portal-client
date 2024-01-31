@@ -102,11 +102,11 @@ const Login = () => {
                   <h4>Dont have account ?</h4>
                   <div className="btn-wrapper d-flex justify-content-between">
                   <Link to={"/register"}>
-                  <i class="fa-solid fa-arrow-right"></i>{" "}Register 
+                  Register <i class="fa-solid fa-arrow-right"></i>{" "}
                   </Link>
-                  {/* <Link to={"/update-password"}>
-                    Update Password <i class="fa-solid fa-key"></i>
-                  </Link> */}
+                  <Link to={"/update-password"}>
+                     <i class="fa-solid fa-key"></i> Update Password
+                  </Link>
                   </div>
                 </div>
               </div>

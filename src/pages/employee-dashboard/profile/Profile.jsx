@@ -50,8 +50,8 @@ const Profile = () => {
             <div className="row g-4">
               <div className="col-lg-12 col-md-12">
                 <div className="profile-content-wrapper">
-                  <div className="row align-items-center">
-                    <div className="col-lg-3 col-md-4 col-sm-12">
+                  <div className="row">
+                    <div className="col-lg-2 col-md-4 col-sm-12">
                       <div className="user-img">
                         <img
                           src={
@@ -61,7 +61,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-9 col-md-8 col-sm-12">
+                    <div className="col-lg-10 col-md-8 col-sm-12">
                       <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">

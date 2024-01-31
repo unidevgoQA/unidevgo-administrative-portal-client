@@ -38,11 +38,11 @@ const AttendenceReport = () => {
   } = useForm();
 
   //States
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [profile, setProfile] = useState({});
   const [filteredAttendenceData, setFilteredAttendenceData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const [filteredAttendenceDataByEmail, setFilteredAttendenceDataByEmail] =
     useState([]);
 

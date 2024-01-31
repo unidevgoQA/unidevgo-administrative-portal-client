@@ -16,7 +16,7 @@ const UpdatePassword = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email }) => {
-    console.log(email)
+
     UpdatePassword(email)
       .then((result) => {
         toast.success("Email Send Successfully", {id:'update-password'});
