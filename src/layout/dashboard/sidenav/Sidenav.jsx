@@ -403,7 +403,7 @@ export default function Sidenav() {
                   <SupportAgentOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary={"Support tickets"}
+                  primary={"Support Tickets"}
                   sx={{ opacity: open ? 1 : 0, fontWeight: 600 }}
                 />
               </ListItemButton>

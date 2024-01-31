@@ -31,20 +31,20 @@ const CreateTicket = () => {
     const suportTicket = {
       //ticket data
       date: currentDate,
-      time : new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString(),
       message,
       //user info
       employeeEmail: registerUser?.email,
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
-      status: 'active'
+      status: "active",
     };
-    if (message.trim().length === 0) {
-      toast.error("Provide valid input", { id: "support-ticket" });
+    if (message.trim().length === 0 || message.trim().length === 0) {
+      toast.error("Provide valid input", { id: "create-ticket" });
     } else {
       addTickets(suportTicket);
       reset();
-      navigate('/dashboard/support-tickets')
+      navigate("/dashboard/support-tickets");
     }
   };
 
@@ -76,8 +76,14 @@ const CreateTicket = () => {
                     type="text"
                     {...register("message", {
                       required: true,
+                      maxLength: 80,
                     })}
                   />
+                  {errors.message && errors.message.type === "maxLength" && (
+                    <div style={{ color: "red" }}>
+                      Max length of 80 exceeded
+                    </div>
+                  )}
                 </div>
 
                 {/* <div className="attach-file-area">
@@ -98,7 +104,7 @@ const CreateTicket = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

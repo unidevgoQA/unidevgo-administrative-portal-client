@@ -17,7 +17,8 @@ const AddNewEvent = () => {
   } = useForm();
 
   const navigate = useNavigate();
-
+  //Current year
+  const currentYear = new Date().getFullYear();
   //Add event handler
   const handleAddEvent = ({ start, end, title }) => {
     const calenderEvent = {
@@ -57,14 +58,26 @@ const AddNewEvent = () => {
                   <label>
                     Start Date <span>*</span>
                   </label>
-                  <input required type="date" {...register("start")} />
+                  <input
+                    required
+                    type="date"
+                    {...register("start")}
+                    min={`${currentYear}-01-01`}
+                    max={`${currentYear + 1}-12-31`}
+                  />
                 </div>
 
                 <div className="col-md-6">
                   <label>
                     End Date <span>*</span>
                   </label>
-                  <input required type="date" {...register("end")} />
+                  <input
+                    required
+                    type="date"
+                    {...register("end")}
+                    min={`${currentYear}-01-01`}
+                    max={`${currentYear + 1}-12-31`}
+                  />
                 </div>
 
                 <div className="col-md-6">

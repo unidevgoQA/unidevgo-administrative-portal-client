@@ -25,6 +25,8 @@ const LeaveApply = () => {
   const registerUser = data?.data;
   //Current date
   let currentDate = new Date().toJSON().slice(0, 10);
+  //Current year
+  const currentYear = new Date().getFullYear();
 
   //Add work status handler
   const handleLeaveApply = ({ leaveFrom, leaveTo, type }) => {
@@ -60,7 +62,7 @@ const LeaveApply = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-work-task" });
-      navigate('/dashboard/leave-status')
+      navigate("/dashboard/leave-status");
     }
     if (isLoading) {
       toast.loading("Loading", { id: "add-work-task" });
@@ -81,12 +83,24 @@ const LeaveApply = () => {
               <div className="row">
                 <div className="col-md-6">
                   <label>Leave From Date</label>
-                  <input required type="date" {...register("leaveFrom")} />
+                  <input
+                    required
+                    type="date"
+                    {...register("leaveFrom")}
+                    min={`${currentYear}-01-01`}
+                    max={`${currentYear + 1}-12-31`}
+                  />
                 </div>
 
                 <div className="col-md-6">
                   <label>Leave To Date</label>
-                  <input required type="date" {...register("leaveTo")} />
+                  <input
+                    required
+                    type="date"
+                    {...register("leaveTo")}
+                    min={`${currentYear}-01-01`}
+                    max={`${currentYear + 1}-12-31`}
+                  />
                 </div>
 
                 <div className="col-md-6">
@@ -96,12 +110,12 @@ const LeaveApply = () => {
                     type="text"
                     {...register("type", {
                       required: true,
-                      maxLength: 100,
+                      maxLength: 80,
                     })}
                   />
                   {errors.type && errors.type.type === "maxLength" && (
                     <div style={{ color: "red" }}>
-                      Max length of 100 exceeded
+                      Max length of 80 exceeded
                     </div>
                   )}
                 </div>
