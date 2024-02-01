@@ -157,8 +157,8 @@ const EmployeeDetails = () => {
             <Link to={`/dashboard/employee-work-status/${profile?._id}`}>
               <button className="common-btn">Show Work Status</button>
             </Link>
-            <Link to={`/dashboard/attendence-report/${profile?._id}`}>
-              <button className="common-btn">Show Attendence Report</button>
+            <Link to={`/dashboard/attendance-report/${profile?._id}`}>
+              <button className="common-btn">Show Attendance Report</button>
             </Link>
           </div>
         </div>

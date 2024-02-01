@@ -10,7 +10,7 @@ const Register = () => {
   //State
   const [showPassword, setShowPassword] = useState(false);
   //Context
-  const { createUser } = useContext(AuthContext);
+  const { createUser, verifyEmail } = useContext(AuthContext);
   //Api
   const [addProfile] = useAddProfileMutation();
   //
@@ -38,10 +38,11 @@ const Register = () => {
     if (data.name.trim().length === 0 || data.desgination.trim().length === 0) {
       toast.error("Provide valid input", { id: "register-user" });
     } else {
-      if (data.email.endsWith("@unidevgo.com")) {
+      if (data.email.endsWith("@gmail.com")) {
         createUser(data.email, data.password)
           .then((result) => {
             if (result.user) {
+              verifyEmail();
               const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
               fetch(url, {
                 method: "POST",

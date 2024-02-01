@@ -6,7 +6,7 @@ import { AuthContext } from "../../providers/AuthProviders";
 // import './login.scss';
 
 const UpdatePassword = () => {
-  const { UpdatePassword } = useContext(AuthContext);
+  const { resetPassword } = useContext(AuthContext);
   const [loading ,setLoading] = useState(false);
 
   const [showError, setShowError] = useState("");
@@ -17,17 +17,7 @@ const UpdatePassword = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email }) => {
-    setLoading(true);
-    UpdatePassword(email)
-      .then((result) => {
-        toast.success('Update password link successfully sent to your email account', { id: "update-password" })
-        setLoading(false)
-        reset()
-        navigate('/')
-      })
-      .catch((err) => {
-        toast.error(err.message, { id: "update-password" });
-      });
+    resetPassword(email)
   };
 
   useEffect(() => {

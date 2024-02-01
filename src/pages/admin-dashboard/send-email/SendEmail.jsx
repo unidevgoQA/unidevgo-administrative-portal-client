@@ -235,7 +235,7 @@ const SendEmail = () => {
               </div>
             </div>
             <button
-             className={`${isButtonDisabled() ? 'send-email-btn-disable' : 'send-email-btn'}`}
+             className='send-email-btn'
               onClick={sendEmail}
               disabled={isButtonDisabled()}
             >

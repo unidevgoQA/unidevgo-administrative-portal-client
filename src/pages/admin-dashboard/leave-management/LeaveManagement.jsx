@@ -238,47 +238,45 @@ const LeaveManagement = () => {
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td> */}
-                        {registerUser?.role === "admin" ||
-                          (registerUser?.role === "super admin" && (
-                            <td>
-                              <button
-                                className="leave-accept-btn"
-                                onClick={() =>
-                                  handleAcceptLeave(
-                                    leave?._id,
-                                    leave?.employeeEmail,
-                                    leave?.totalDays,
-                                    leave?.employeeName,
-                                    leave?.leaveApply,
-                                    leave?.type
-                                  )
-                                }
-                              >
-                                Accept
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleRejectLeave(
-                                    leave?._id,
-                                    leave?.employeeEmail,
-                                    leave?.totalDays,
-                                    leave?.employeeName,
-                                    leave?.leaveApply,
-                                    leave?.type
-                                  )
-                                }
-                                className="leave-reject-btn"
-                              >
-                                Reject
-                              </button>
-                              <button
-                                onClick={() => handleDelete(leave?._id)}
-                                className="delete-btn"
-                              >
-                                <i className="fas fa-trash-alt"></i>
-                              </button>
-                            </td>
-                          ))}
+
+                        <td>
+                          <button
+                            className="leave-accept-btn"
+                            onClick={() =>
+                              handleAcceptLeave(
+                                leave?._id,
+                                leave?.employeeEmail,
+                                leave?.totalDays,
+                                leave?.employeeName,
+                                leave?.leaveApply,
+                                leave?.type
+                              )
+                            }
+                          >
+                            Accept
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleRejectLeave(
+                                leave?._id,
+                                leave?.employeeEmail,
+                                leave?.totalDays,
+                                leave?.employeeName,
+                                leave?.leaveApply,
+                                leave?.type
+                              )
+                            }
+                            className="leave-reject-btn"
+                          >
+                            Reject
+                          </button>
+                          <button
+                            onClick={() => handleDelete(leave?._id)}
+                            className="delete-btn"
+                          >
+                            <i className="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

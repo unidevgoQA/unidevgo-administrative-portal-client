@@ -83,7 +83,7 @@ const Topbar = () => {
                 </li>
                 <li>
                   <i class="fa-solid fa-clipboard-user"></i>
-                  <Link to={"attendence"}>Attendence</Link>
+                  <Link to={"attendence"}>Attendance</Link>
                 </li>
                 <li>
                   <i class="fa-regular fa-square-plus"></i>

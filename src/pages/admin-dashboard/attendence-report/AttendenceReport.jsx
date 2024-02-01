@@ -151,7 +151,7 @@ const AttendenceReport = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Attendence Report</span>{" "}
+              <span>Attendance Report</span>{" "}
               <i class="fa-solid fa-clipboard-user"></i>
             </h2>
           </div>

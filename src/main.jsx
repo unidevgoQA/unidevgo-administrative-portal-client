@@ -111,11 +111,11 @@ const router = createBrowserRouter([
         element: <AddNewEvent />,
       },
       {
-        path: "attendence",
+        path: "attendance",
         element: <Attendence />,
       },
       {
-        path: "attendence-report/:id",
+        path: "attendance-report/:id",
         element: <AttendenceReport />,
       },
       {

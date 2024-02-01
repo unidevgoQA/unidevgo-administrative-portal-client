@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -39,9 +40,26 @@ const AuthProviders = ({ children }) => {
     return signOut(auth);
   };
   //Update
-  const UpdatePassword = (email) => {
-    return sendPasswordResetEmail(auth,email);
+  const resetPassword = (email) => {
+    console.log(email)
+    sendPasswordResetEmail(auth, email)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    
+      console.log(errorMessage)
+    });
   };
+
+  const verifyEmail = () =>{
+    sendEmailVerification(auth.currentUser)
+    .then(result => {
+      console.log(result);
+    })
+  }
 
   //Observer
   useEffect(() => {
@@ -65,7 +83,8 @@ const AuthProviders = ({ children }) => {
     loginUser,
     logoutUser,
     loginWithGoogle,
-    UpdatePassword,
+    resetPassword,
+    verifyEmail,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

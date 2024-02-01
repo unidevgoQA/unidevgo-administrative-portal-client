@@ -325,7 +325,7 @@ export default function Sidenav() {
             <ListItem
               disablePadding
               sx={{ display: "block" }}
-              onClick={() => navigate("attendence")}
+              onClick={() => navigate("attendance")}
             >
               <ListItemButton
                 sx={{
@@ -345,7 +345,7 @@ export default function Sidenav() {
                   <ChecklistOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary={"Attendence"}
+                  primary={"Attendance"}
                   sx={{ opacity: open ? 1 : 0, fontWeight: 600 }}
                 />
               </ListItemButton>
