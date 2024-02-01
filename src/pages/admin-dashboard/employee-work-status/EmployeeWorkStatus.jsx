@@ -38,8 +38,8 @@ const WorkStatus = () => {
     useDeleteWorkTaskMutation();
 
   //States
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [profile, setProfile] = useState({});
   const [filteredStatusData, setFilteredStatusData] = useState([]);

@@ -42,7 +42,7 @@ const AttendenceReport = () => {
   const [endDate, setEndDate] = useState(null);
   const [profile, setProfile] = useState({});
   const [filteredAttendenceData, setFilteredAttendenceData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredAttendenceDataByEmail, setFilteredAttendenceDataByEmail] =
     useState([]);
 
