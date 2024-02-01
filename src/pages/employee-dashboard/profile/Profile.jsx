@@ -26,6 +26,9 @@ const Profile = () => {
     (leave) => leave.employeeEmail === user.email
   );
 
+  const pendingLeaves = filterLeaves?.filter(leave => leave.status === 'pending')
+
+
   //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
     (leave) => leave.status === "accepted"
@@ -48,10 +51,10 @@ const Profile = () => {
           </div>
           <div className="profile-current-task-wrapper">
             <div className="row g-4">
-              <div className="col-lg-12 col-md-12">
+              <div className="col-lg-6 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row">
-                    <div className="col-lg-2 col-md-4 col-sm-12">
+                    <div className="col-lg-4 col-md-12 col-sm-12">
                       <div className="user-img">
                         <img
                           src={
@@ -61,7 +64,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-10 col-md-8 col-sm-12">
+                    <div className="col-lg-8 col-md-12 col-sm-12">
                       <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">
@@ -116,7 +119,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="col-lg-12 col-md-12">
+              <div className="col-lg-6 col-md-12">
                 {registerUser?.role === "employee" && (
                   <div className="employee-vailability">
                     <div className="row gy-3">
@@ -131,7 +134,7 @@ const Profile = () => {
                         <div className="leave-apply employee-card">
                           <i class="fa-solid fa-person-walking-arrow-right"></i>
                           <h6>Leave Apply</h6>
-                          <span>{filterLeaves?.length} Leave Apply</span>
+                          <span>{pendingLeaves?.length} Leave Apply</span>
                         </div>
                       </div>
                       <div className="col-md-6">

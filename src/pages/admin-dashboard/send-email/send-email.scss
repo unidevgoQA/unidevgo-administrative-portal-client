@@ -13,6 +13,17 @@ $secondary: #0ad028;
     font-weight: 600;
     font-size: 14px;
   }
+  .send-email-btn-disable {
+    background: $primary;
+    color: red;
+    padding: 5px 10px;
+    border: 1px solid red;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 red;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 14px;
+  }
   label {
     width: 100%;
     margin-bottom: 20px;

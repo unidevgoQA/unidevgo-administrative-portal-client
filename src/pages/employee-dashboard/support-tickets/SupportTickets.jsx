@@ -125,7 +125,7 @@ const SupportTickets = () => {
               <>
                 <div className="table-responsive">
                   <table class="table-modify table table-striped">
-                    <thead> 
+                    <thead>
                       <tr>
                         <th>Image</th>
                         {/* <th>Name</th> */}
@@ -162,7 +162,11 @@ const SupportTickets = () => {
                               onClick={() =>
                                 handleStatusChange(ticket?._id, ticket?.status)
                               }
-                              className={ticket?.status === 'active' ? `update-btn bg-danger text-white` : `update-btn bg-success text-white`}
+                              className={
+                                ticket?.status === "active"
+                                  ? `update-btn bg-danger text-white`
+                                  : `update-btn bg-success text-white`
+                              }
                             >
                               {ticket?.status == "active"
                                 ? "Close Ticket"

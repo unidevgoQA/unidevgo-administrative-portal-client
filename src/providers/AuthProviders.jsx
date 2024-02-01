@@ -40,7 +40,6 @@ const AuthProviders = ({ children }) => {
   };
   //Update
   const UpdatePassword = (email) => {
-    console.log(email)
     return sendPasswordResetEmail(auth,email);
   };
 

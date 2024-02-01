@@ -30,6 +30,8 @@ const EmployeeDetails = () => {
     (leave) => leave.employeeEmail === profile.email
   );
 
+  const pendingLeaves = filterLeaves?.filter(leave => leave.status === 'pending')
+
   //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
     (leave) => leave.status === "accepted"
@@ -128,7 +130,7 @@ const EmployeeDetails = () => {
                       <div className="leave-apply employee-card">
                         <i class="fa-solid fa-person-walking-arrow-right"></i>
                         <h6>Leave Apply</h6>
-                        <span>{filterLeaves?.length} Leave Apply</span>
+                        <span>{pendingLeaves?.length} Leave Apply</span>
                       </div>
                     </div>
                     <div className="col-md-6">

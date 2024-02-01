@@ -91,7 +91,7 @@ const Topbar = () => {
                 </li>
                 <li>
                   <i class="fa-solid fa-headset"></i>
-                  <Link to={"support-tickets"}>Support tickets</Link>
+                  <Link to={"support-tickets"}>Support Tickets</Link>
                 </li>
                 {/* <li>
               <i class="fa-solid fa-check-double"></i>

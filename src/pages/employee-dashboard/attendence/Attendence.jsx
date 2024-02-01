@@ -13,7 +13,10 @@ import {
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./attendence.scss";
+
+
 const Attendence = () => {
+
   const { data } = useGetAllAttendenceQuery();
   const allAttendence = data?.data;
   //Delete API
@@ -34,7 +37,7 @@ const Attendence = () => {
   const [filteredAttendenceData, setFilteredAttendenceData] = useState([]);
   const [filteredAttendenceDataByEmail, setFilteredAttendenceDataByEmail] =
     useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     const filterAttendence = allAttendence?.filter(
@@ -100,23 +103,6 @@ const Attendence = () => {
     formState: { errors },
   } = useForm();
 
-  // Function to submit absent status
-  const submitAbsentStatus = () => {
-    const attendance = {
-      // Attendance data
-      date: new Date().toISOString().slice(0, 10),
-      status: "absent",
-      time: new Date().toLocaleTimeString(),
-      // User info
-      employeeEmail: registerUser?.email,
-      employeeImg: registerUser?.img,
-      employeeName: registerUser?.name,
-    };
-
-    // Call the function to add attendence
-    addAttendence(attendance);
-  };
-
   // Add work status handler
   const handleSubmitAttendence = ({ date, status }) => {
     // Check if the function has been called today
@@ -146,17 +132,6 @@ const Attendence = () => {
     }
   };
 
-  // // Check if attendance is submitted for today, if not, submit absent status
-  // useEffect(() => {
-  //   const lastDate = localStorage.getItem("lastAttendanceDate");
-  //   const currentDate = new Date().toISOString().slice(0, 10);
-
-  //   if (lastDate !== currentDate) {
-  //     submitAbsentStatus();
-  //     localStorage.setItem("lastAttendanceDate", currentDate);
-  //   }
-  // }, []);
-
   // Attendence added effects
   useEffect(() => {
     if (attendenceSuccess) {
@@ -183,8 +158,7 @@ const Attendence = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Attendence Report</span>{" "}
-              <i class="fa-solid fa-clipboard-user"></i>
+              <span>Attendence</span> <i class="fa-solid fa-clipboard-user"></i>
             </h2>
           </div>
 

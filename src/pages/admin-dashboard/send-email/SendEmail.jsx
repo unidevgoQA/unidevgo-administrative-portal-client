@@ -21,6 +21,20 @@ const SendEmail = () => {
     (employee) => employee?.role === "employee"
   );
 
+  const handleSubjectChange = (e) => {
+    const inputValue = e.target.value;
+    // Check if the input exceeds 60 characters
+    if (inputValue.length > 80) {
+      // Display an alert or handle it in your preferred way
+      toast.error("Subject should not exceed 80 characters", {
+        id: "send-email-subject",
+      });
+    } else {
+      // Update the state if within the limit
+      setSubject(inputValue);
+    }
+  };
+
   const handleSelectAll = () => {
     const allEmails = allEmployees.map((employee) => employee.email);
     if (recipients?.length === allEmails?.length) {
@@ -40,26 +54,68 @@ const SendEmail = () => {
     }
   };
 
-  //Files handler
+  // Set the maximum file size limit (15 MB)
+  const maxFileSizeInBytes = 15 * 1024 * 1024; // 15 MB in bytes
+
+  // Files handler
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const maxFiles = 5;
 
-    if (files.length > maxFiles) {
-      toast.error(`You can only upload a maximum of ${maxFiles} files.`, {
-        id: "email-attachments",
+    // Calculate the total size of all selected files
+    const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+
+    // Check if the total size exceeds the limit
+    if (totalSize > maxFileSizeInBytes) {
+      toast.error("Total file size should not exceed 15 MB.", {
+        id: "file-size-error",
       });
+
+      // Reset the file input
+      event.target.value = "";
+    } else if (files.length > maxFiles) {
+      toast.error(`You can only upload a maximum of ${maxFiles} files.`, {
+        id: "file-count-error",
+      });
+
       // Reset the file input
       event.target.value = "";
     } else {
       setAttachments(files);
     }
   };
-
-  //Send email handler
   const sendEmail = () => {
     setLoading(true);
 
+    // Validate entered email addresses
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const areAllValidEmails = recipients.every((email) =>
+      emailRegex.test(email.trim())
+    );
+
+    // Check if subject, message, and recipients are empty
+    if (
+      subject.trim() === "" ||
+      message.trim() === "" ||
+      recipients.length === 0
+    ) {
+      toast.error("Please fill in all required fields.", {
+        id: "empty-fields",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Check if all entered emails are valid
+    if (!areAllValidEmails) {
+      toast.error("Please enter valid email addresses (comma-separated).", {
+        id: "invalid-emails",
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Continue with the email sending logic
     const formData = new FormData();
     formData.append("recipients", recipients.join(","));
     formData.append("subject", subject);
@@ -89,6 +145,14 @@ const SendEmail = () => {
         toast.error("Error sending email", { id: "send-email" });
       });
   };
+
+  const isButtonDisabled = () => {
+    // Add any additional conditions as needed
+    return (
+      recipients.length === 0 || subject.trim() === "" || message.trim() === ""
+    );
+  };
+
   //Send email effects
   useEffect(() => {
     if (loading === true) {
@@ -153,7 +217,8 @@ const SendEmail = () => {
                 <input
                   required
                   type="text"
-                  onChange={(e) => setSubject(e.target.value)}
+                  value={subject}
+                  onChange={handleSubjectChange}
                 />
               </div>
               <div className="col-lg-6">
@@ -169,7 +234,11 @@ const SendEmail = () => {
                 />
               </div>
             </div>
-            <button className="send-email-btn" onClick={sendEmail}>
+            <button
+             className={`${isButtonDisabled() ? 'send-email-btn-disable' : 'send-email-btn'}`}
+              onClick={sendEmail}
+              disabled={isButtonDisabled()}
+            >
               Send Email
             </button>
           </div>
