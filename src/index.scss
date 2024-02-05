@@ -173,7 +173,7 @@ body {
 .date-picker-wrapper {
   display: flex;
   // border: 1px solid #d8f3dc;
-  padding: 10px 10px 2px 10px;
+  // padding: 10px 10px 2px 10px;
   border-radius: 10px;
 }
 .rdrCalendarWrapper {
@@ -490,6 +490,28 @@ span.rdrStaticRangeLabel {
   cursor: pointer;
 }
 //Login - regsiter
+
+//Show all btn
+button.show-all-data {
+  border-radius: 8px;
+  background: #d7eddd;
+  white-space: nowrap;
+  border: none;
+  /* width: 100%; */
+  font-size: 11px;
+  font-weight: 600;
+  padding: 10px 21px;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+//Show all btn
+//Show all btn
+button.show-all-data:hover {
+  border-radius: 8px;
+  background: #146d2b;
+  color: #fff;
+}
+//Show all btn
 
 //Responsive
 @media screen and (max-width: 1200px) {
