@@ -53,9 +53,10 @@ const WorkStatus = () => {
   );
 
   useEffect(() => {
-    const filterWorkStatus = workStatusData?.data.filter(
+    const filterWorkStatusByEmail = workStatusData?.data.filter(
       (status) => status?.employeeEmail === registerUser?.email
     );
+    const filterWorkStatus = filterWorkStatusByEmail?.slice().reverse();
     setFilteredStatusDataByEmail(filterWorkStatus);
     setFilteredStatusData(filterWorkStatus);
   }, [workStatusData, registerUser]);

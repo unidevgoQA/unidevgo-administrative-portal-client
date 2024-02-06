@@ -50,6 +50,10 @@ const Attendence = () => {
     indexOfLastItem
   );
 
+
+  console.log(currentItems)
+  console.log(currentItems.slice().reverse())
+
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -99,9 +103,10 @@ const Attendence = () => {
   };
 
   useEffect(() => {
-    const filterAttendence = allAttendence?.filter(
+    const filterAttendenceByEmail = allAttendence?.filter(
       (attendence) => attendence.employeeEmail === user.email
     );
+    const filterAttendence = filterAttendenceByEmail.slice().reverse();
     setFilteredAttendenceDataByEmail(filterAttendence);
     setFilteredAttendenceData(filterAttendence);
   }, [allAttendence]);

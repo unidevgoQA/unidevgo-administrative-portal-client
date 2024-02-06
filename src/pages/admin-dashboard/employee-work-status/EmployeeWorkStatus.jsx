@@ -43,7 +43,6 @@ const WorkStatus = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [profile, setProfile] = useState({});
   const [filteredStatusData, setFilteredStatusData] = useState([]);
-
   const [filteredStatusDataByEmail, setFilteredStatusDataByEmail] = useState(
     []
   );
@@ -74,12 +73,33 @@ const WorkStatus = () => {
   }, [id]);
 
   useEffect(() => {
-    const filterWorkStatus = allStatusData?.filter(
+    const filterWorkStatusByEmail = allStatusData?.filter(
       (workStatus) => workStatus.employeeEmail === profile.email
     );
+    const filterWorkStatus = filterWorkStatusByEmail?.slice().reverse();
     setFilteredStatusDataByEmail(filterWorkStatus);
     setFilteredStatusData(filterWorkStatus);
   }, [allStatusData, profile]);
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredStatusData?.length / itemsPerPage);
+
+  // Determine the range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredStatusData?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   // Date select
   const handleSelect = (date) => {
@@ -191,71 +211,71 @@ const WorkStatus = () => {
           <div className="row mb-3">
             <div className="col-lg-12 col-md-12 col-sm-12">
               <div className="row align-items-center">
-              
-                  <div className="col-lg-5 col-md-12 col-sm-12">
-                    <div className="date-picker-wrapper">
-              
-                      <div className="table-responsive d-flex">
-                        <div className="date-range">
-                          <DateRangePicker
-                            direction="horizontal"
-                            rangeColors={["blue"]}
-                            showDateDisplay={false}
-                            showMonthAndYearPickers={false}
-                            ranges={[selectionRange]}
-                            onChange={handleSelect}
-                          />
-                        </div>
-                      </div>
-                      <div className="date-select">
-                        <DatePicker
-                          inline
-                          open={true}
-                          selected={selectedDate}
-                          onChange={handleSelectSpecificDate}
+                <div className="col-lg-5 col-md-12 col-sm-12">
+                  <div className="date-picker-wrapper">
+                    <div className="table-responsive d-flex">
+                      <div className="date-range">
+                        <DateRangePicker
+                          direction="horizontal"
+                          rangeColors={["blue"]}
+                          showDateDisplay={false}
+                          showMonthAndYearPickers={false}
+                          ranges={[selectionRange]}
+                          onChange={handleSelect}
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-7 col-md-12 col-sm-12">
-                    <div className="chart-wrapper">
-                      <div style={{ width: "100%", height: "300px" }}>
-                        <ResponsiveContainer>
-                          <ComposedChart
-                            data={filteredStatusData}
-                            margin={{
-                              top: 20,
-                              right: 20,
-                              bottom: 20,
-                              left: 0,
-                            }}
-                          >
-                            <CartesianGrid stroke="#F5F5F5" />
-                            <XAxis dataKey="date" />
-                            <YAxis />
-                            <Tooltip />
-                            <Area
-                              type="monotone"
-                              dataKey="task"
-                              fill="#8884D8"
-                              stroke="#8884D8"
-                            />
-                            <Bar dataKey="hour" barSize={10} fill="#208436" />
-                            <Line
-                              type="string"
-                              dataKey="workStatus"
-                              stroke="#FF7300"
-                            />
-                          </ComposedChart>
-                        </ResponsiveContainer>
-                      </div>
+                    <div className="date-select">
+                      <DatePicker
+                        inline
+                        open={true}
+                        selected={selectedDate}
+                        onChange={handleSelectSpecificDate}
+                      />
                     </div>
                   </div>
-             
+                </div>
+                <div className="col-lg-7 col-md-12 col-sm-12">
+                  <div className="chart-wrapper">
+                    <div style={{ width: "100%", height: "300px" }}>
+                      <ResponsiveContainer>
+                        <ComposedChart
+                          data={filteredStatusData}
+                          margin={{
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 0,
+                          }}
+                        >
+                          <CartesianGrid stroke="#F5F5F5" />
+                          <XAxis dataKey="date" />
+                          <YAxis />
+                          <Tooltip />
+                          <Area
+                            type="monotone"
+                            dataKey="task"
+                            fill="#8884D8"
+                            stroke="#8884D8"
+                          />
+                          <Bar dataKey="hour" barSize={10} fill="#208436" />
+                          <Line
+                            type="string"
+                            dataKey="workStatus"
+                            stroke="#FF7300"
+                          />
+                        </ComposedChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
-              {filteredStatusData?.length > 0 ? (
+            <button className="show-all-data" onClick={showAllData}>
+                Show all
+              </button>
+              {currentItems?.length > 0 ? (
                 <>
                   <div className="table-responsive">
                     <table class="table-modify table table-striped">
@@ -271,7 +291,7 @@ const WorkStatus = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredStatusData?.map((work) => (
+                        {currentItems?.map((work) => (
                           <tr key={work?._id}>
                             <td>
                               <img
@@ -311,8 +331,41 @@ const WorkStatus = () => {
                         ))}
                       </tbody>
                     </table>
+                    {/* Pagination controls */}
+                    <div className="pagination">
+                      {/* Previous button */}
+                      <button
+                        className="pagination-btn"
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        Prev
+                      </button>
+
+                      {/* Page buttons */}
+                      {Array.from({ length: totalPages }).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => paginate(index + 1)}
+                          className={`pagination-btn ${
+                            currentPage === index + 1 ? "active" : ""
+                          }`}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+
+                      {/* Next button */}
+                      <button
+                        className="pagination-btn"
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
                   </div>
-                  <div className="row">
+                  <div className="row mt-3">
                     <div className="col-md-6 col-sm-12">
                       <div className="export-data">
                         <h6>Export data to a xls file ?</h6>
