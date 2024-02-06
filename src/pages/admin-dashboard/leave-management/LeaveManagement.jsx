@@ -180,10 +180,8 @@ const LeaveManagement = () => {
                       <th>Leave To</th>
                       <th>Leave Type</th>
                       <th>Total Days</th>
-                      {/* <th>Update Status</th> */}
-                      {registerUser?.role === "super admin" && (
-                        <th className="action-area">Action</th>
-                      )}
+
+                      <th className="action-area">Action</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -1,5 +1,5 @@
-//Attendence
-.apply-attendance-wrapper-employee {
+//Attendence-report
+.apply-attendence-wrapper-report {
   background: #d9eddc;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@
     outline: none;
     cursor: pointer;
   }
-  .attendance-submit-btn {
+  .attendence-submit-btn {
     background: green;
     color: #fff;
     margin-top: 10px;

@@ -51,9 +51,6 @@ const Attendence = () => {
   );
 
 
-  console.log(currentItems)
-  console.log(currentItems.slice().reverse())
-
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -106,14 +103,14 @@ const Attendence = () => {
     const filterAttendenceByEmail = allAttendence?.filter(
       (attendence) => attendence.employeeEmail === user.email
     );
-    const filterAttendence = filterAttendenceByEmail.slice().reverse();
+    const filterAttendence = filterAttendenceByEmail?.slice().reverse();
     setFilteredAttendenceDataByEmail(filterAttendence);
     setFilteredAttendenceData(filterAttendence);
   }, [allAttendence]);
 
   // Date select
   const handleSelect = (date) => {
-    let filtered = filteredAttendenceDataByEmail.filter((workStatus) => {
+    let filtered = filteredAttendenceDataByEmail?.filter((workStatus) => {
       let statusDate = new Date(workStatus["date"]);
       return (
         statusDate >= date.selection.startDate &&
@@ -220,7 +217,7 @@ const Attendence = () => {
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12">
                   {registerUser?.role === "employee" && (
-                    <div className="apply-attendance-wrapper">
+                    <div className="apply-attendance-wrapper-employee">
                       <h6>Attendance</h6>
                       <div className="attendance-form">
                         <form onSubmit={handleSubmit(handleSubmitAttendence)}>

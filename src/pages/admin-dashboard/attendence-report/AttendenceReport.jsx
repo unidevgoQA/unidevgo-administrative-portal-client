@@ -11,6 +11,8 @@ import {
   useDeleteAttendenceMutation,
   useGetAllAttendenceQuery,
 } from "../../../features/attendence/attendenceApi";
+import './attendence-report.scss';
+
 
 const AttendenceReport = () => {
   //APIs
@@ -62,9 +64,10 @@ const AttendenceReport = () => {
   }, [id]);
 
   useEffect(() => {
-    const filterAttendence = allAttendenceData?.filter(
+    const filterAttendenceByEmail = allAttendenceData?.filter(
       (attendence) => attendence.employeeEmail === profile.email
     );
+    const filterAttendence = filterAttendenceByEmail?.slice().reverse();
     setFilteredAttendenceDataByEmail(filterAttendence);
     setFilteredAttendenceData(filterAttendence);
   }, [allAttendenceData, profile]);
@@ -125,6 +128,31 @@ const AttendenceReport = () => {
     // Call the function to add attendence
     addAttendence(attendance);
   };
+
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredAttendenceData?.length / itemsPerPage);
+
+  // Determine the range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredAttendenceData?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+
+
   // Attendence added effects
   useEffect(() => {
     if (attendenceSuccess) {
@@ -185,7 +213,7 @@ const AttendenceReport = () => {
                 </div>
                 <div className="col-lg-4 col-md-12 col-sm-12">
                   <>
-                    <div className="apply-attendence-wrapper">
+                    <div className="apply-attendence-wrapper-report">
                       <h6>Attendence</h6>
                       <div className="attendence-form">
                         <div className="attendence-form">
@@ -228,7 +256,7 @@ const AttendenceReport = () => {
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
-              {filteredAttendenceData?.length > 0 ? (
+              {currentItems?.length > 0 ? (
                 <>
                   <div className="table-responsive">
                     <table class="table-modify table table-striped">
@@ -243,7 +271,7 @@ const AttendenceReport = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredAttendenceData?.map((attendence) => (
+                        {currentItems?.map((attendence) => (
                           <tr key={attendence?._id}>
                             <td>
                               <img
@@ -279,6 +307,39 @@ const AttendenceReport = () => {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                   {/* Pagination controls */}
+                   <div className="pagination">
+                    {/* Previous button */}
+                    <button
+                      className="pagination-btn"
+                      onClick={() => paginate(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      Prev
+                    </button>
+
+                    {/* Page buttons */}
+                    {Array.from({ length: totalPages }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => paginate(index + 1)}
+                        className={`pagination-btn ${
+                          currentPage === index + 1 ? "active" : ""
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    {/* Next button */}
+                    <button
+                      className="pagination-btn"
+                      onClick={() => paginate(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
                   </div>
                 </>
               ) : (
