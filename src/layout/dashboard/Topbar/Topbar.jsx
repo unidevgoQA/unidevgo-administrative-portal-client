@@ -69,7 +69,7 @@ const Topbar = () => {
                   <Link to={"leave-management"}>Leave Management</Link>
                 </li>
                 <li>
-                  <i class="fa-solid fa-list-check"></i>
+                  <i class="fa-solid fa-headset"></i>
                   <Link to={"support-tickets-management"}>
                     Tickets Management
                   </Link>
@@ -83,7 +83,7 @@ const Topbar = () => {
                 </li>
                 <li>
                   <i class="fa-solid fa-clipboard-user"></i>
-                  <Link to={"attendence"}>Attendance</Link>
+                  <Link to={"attendance"}>Attendance</Link>
                 </li>
                 <li>
                   <i class="fa-regular fa-square-plus"></i>

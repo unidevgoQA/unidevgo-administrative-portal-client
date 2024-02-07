@@ -94,6 +94,8 @@ const WorkStatus = () => {
   const showAllData = () => {
     setFilteredStatusData(filteredStatusDataByEmail);
     setCurrentPage(1);
+    setStartDate(null);
+    setEndDate(null);
   };
   // Date select
   const handleSelect = (date) => {

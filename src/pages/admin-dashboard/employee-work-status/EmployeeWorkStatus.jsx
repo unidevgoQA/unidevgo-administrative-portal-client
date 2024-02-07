@@ -128,6 +128,9 @@ const WorkStatus = () => {
   //Show all data handler
   const showAllData = () => {
     setFilteredStatusData(filteredStatusDataByEmail);
+    setStartDate(null);
+    setEndDate(null);
+    setCurrentPage(1);
   };
   //Select date range
   const selectionRange = {

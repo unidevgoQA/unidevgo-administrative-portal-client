@@ -151,6 +151,13 @@ const AttendenceReport = () => {
     setCurrentPage(pageNumber);
   };
 
+  //Show all data handler
+  const showAllData = () => {
+    setFilteredAttendenceData(filteredAttendenceDataByEmail);
+    setCurrentPage(1);
+    setStartDate(null);
+    setEndDate(null);
+  };
 
 
   // Attendence added effects
@@ -256,6 +263,9 @@ const AttendenceReport = () => {
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
+            <button className="show-all-data" onClick={showAllData}>
+                Show all
+              </button>
               {currentItems?.length > 0 ? (
                 <>
                   <div className="table-responsive">

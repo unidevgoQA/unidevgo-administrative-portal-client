@@ -155,6 +155,8 @@ const Attendence = () => {
   const showAllData = () => {
     setFilteredAttendenceData(filteredAttendenceDataByEmail);
     setCurrentPage(1);
+    setStartDate(null);
+    setEndDate(null);
   };
 
   // Attendence added effects
