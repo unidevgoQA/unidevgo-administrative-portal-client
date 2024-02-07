@@ -9,6 +9,7 @@ import { AuthContext } from "../../providers/AuthProviders";
 const Register = () => {
   //State
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   //Context
   const { createUser, verifyEmail } = useContext(AuthContext);
   //Api
@@ -31,14 +32,15 @@ const Register = () => {
 
   //Register Handler
   const onSubmit = (data) => {
+    setLoading(true);
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
 
     if (data.name.trim().length === 0 || data.desgination.trim().length === 0) {
-      toast.error("Provide valid input", { id: "register-user" });
+      toast.error("Provide valid input", { id: "register-profile" });
     } else {
-      if (data.email.endsWith("@gmail.com")) {
+      if (data.email.endsWith("@unidevgo.com")) {
         createUser(data.email, data.password)
           .then((result) => {
             if (result.user) {
@@ -63,9 +65,11 @@ const Register = () => {
                       role: "employee",
                     };
                     addProfile(profile);
+                    setLoading(false);
                     toast.success("Register Successfully", {
-                      id: "add-profile",
+                      id: "register-profile",
                     });
+
                     reset();
                     navigate("/");
                   }
@@ -87,6 +91,12 @@ const Register = () => {
       toast.error(showError);
     }
   }, [showError]);
+
+  useEffect(() => {
+    if (loading) {
+      toast.loading("Loading", { id: "register-profile" });
+    }
+  }, [loading]);
 
   return (
     <div className="login-register">
