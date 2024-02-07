@@ -118,10 +118,10 @@ const LeaveStatus = () => {
                           alt="employee"
                         />
                       </td>
-                      <td>{leave?.leaveApply}</td>
+                      <td>{leave?.leaveApply?.split('-').reverse().join('-')}</td>
                       <td>{leave?.status}</td>
-                      <td>{leave?.leaveFrom}</td>
-                      <td>{leave?.leaveTo}</td>
+                      <td>{leave?.leaveFrom?.split('-').reverse().join('-')}</td>
+                      <td>{leave?.leaveTo?.split('-').reverse().join('-')}</td>
                       <td>{leave?.totalDays}</td>
                       <td>{leave?.type}</td>
 

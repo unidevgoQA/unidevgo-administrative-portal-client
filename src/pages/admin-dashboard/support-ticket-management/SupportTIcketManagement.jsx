@@ -18,7 +18,9 @@ const SupportTIcketManagement = () => {
   //All tickets data
   const { data } = useGetAllTicketsQuery();
   //Set ticket data
-  const allTickets = data?.data;
+
+  const supportTickets = data?.data;
+  const allTickets = supportTickets?.slice().reverse();
 
   const [selectedTab, setSelectedTab] = useState("all");
   const [filteredTickets, setFilteredTickets] = useState([]);
@@ -136,7 +138,7 @@ const SupportTIcketManagement = () => {
                             />
                           </td>
                           <td>{ticket?.employeeName}</td>
-                          <td>{ticket?.date}</td>
+                          <td>{ticket?.date?.split('-').reverse().join('-')}</td>
                           <td>{ticket?.status}</td>
                           <td>{ticket?.message}</td>
                           <td>

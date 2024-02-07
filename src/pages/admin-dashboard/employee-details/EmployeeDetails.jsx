@@ -87,7 +87,7 @@ const EmployeeDetails = () => {
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
-                              <span>Joining Date : {profile?.joiningDate}</span>
+                              <span>Joining Date : {profile?.joiningDate?.split('-').reverse().join('-')}</span>
                             </h3>
                           </div>
                           <div className="col-md-12">

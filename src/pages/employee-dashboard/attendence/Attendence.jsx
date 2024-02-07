@@ -177,6 +177,8 @@ const Attendence = () => {
     }
   }, [isSuccess, isLoading]);
 
+  console.log(currentItems)
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -274,6 +276,7 @@ const Attendence = () => {
                       </thead>
                       <tbody>
                         {currentItems?.map((attendance) => (
+                          
                           <tr key={attendance?._id}>
                             <td>
                               <img
@@ -286,8 +289,8 @@ const Attendence = () => {
                                 alt="employee"
                               />
                             </td>
-                            <td>{attendance?.date}</td>
-                            <td>{attendance?.time}</td>
+                            <td>{attendance?.date?.split('-').reverse().join('-')}</td>
+                            <td>{attendance?.time?.replace(/:\d{2}\s/, ' ')}</td>
                             <td>
                               <span
                                 className={`border p-1 rounded ${

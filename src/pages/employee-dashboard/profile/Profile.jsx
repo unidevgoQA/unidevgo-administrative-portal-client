@@ -89,7 +89,7 @@ const Profile = () => {
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
                               <span>
-                                Joining Date : {registerUser?.joiningDate}
+                                Joining Date : {registerUser?.joiningDate?.split('-').reverse().join('-')}
                               </span>
                             </h3>
                           </div>

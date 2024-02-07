@@ -88,7 +88,7 @@ const AllEmployee = () => {
                       {employee?.email}
                     </td>
                     <td>{employee?.address}</td>
-                    <td>{employee?.joiningDate}</td>
+                    <td>{employee?.joiningDate?.split('-').reverse().join('-')}</td>
 
                     <td>
                       <Link to={`/dashboard/employee-details/${employee?._id}`}>

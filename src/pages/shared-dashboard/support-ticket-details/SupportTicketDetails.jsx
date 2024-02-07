@@ -88,7 +88,7 @@ const SupportTicketDetails = () => {
                 </div>
                 <div className="date-time">
                   <p>
-                    {ticketDetails?.date} - {ticketDetails?.time}
+                    {ticketDetails?.date?.split('-').reverse().join('-')} | {ticketDetails?.time?.replace(/:\d{2}\s/, ' ')}
                   </p>
                 </div>
               </div>
@@ -112,7 +112,7 @@ const SupportTicketDetails = () => {
                     </div>
                     <div className="date-time">
                       <p>
-                        {chat?.date} | {chat?.time}
+                        {chat?.date?.split('-').reverse().join('-')} | {chat?.time?.replace(/:\d{2}\s/, ' ')}
                       </p>
                     </div>
                   </div>

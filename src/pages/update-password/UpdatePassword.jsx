@@ -7,7 +7,7 @@ import { AuthContext } from "../../providers/AuthProviders";
 
 const UpdatePassword = () => {
   const { resetPassword } = useContext(AuthContext);
-  const [loading ,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [showError, setShowError] = useState("");
 
@@ -17,7 +17,23 @@ const UpdatePassword = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email }) => {
-    resetPassword(email)
+    const updateConfirm = window.confirm("Want to update your password?");
+    if (updateConfirm) {
+      setLoading(true);
+      resetPassword(email)
+        .then((res) => {
+          toast.success("Link send to your email", { id: "update-password" });
+          setLoading(false);
+          reset();
+          navigate('/')
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          console.log(errorMessage);
+        });
+    }
   };
 
   useEffect(() => {
@@ -28,7 +44,7 @@ const UpdatePassword = () => {
 
   useEffect(() => {
     if (loading) {
-      toast.loading('Loading', { id: "update-password" });
+      toast.loading("Loading", { id: "update-password" });
     }
   }, [loading]);
 

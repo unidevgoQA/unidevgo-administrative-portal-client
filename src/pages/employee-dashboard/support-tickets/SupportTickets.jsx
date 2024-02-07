@@ -23,9 +23,13 @@ const SupportTickets = () => {
   //Set ticket data
   const allTickets = data?.data;
 
-  const filterTickets = allTickets?.filter(
+  const filterTicketsByEmail = allTickets?.filter(
     (ticket) => ticket?.employeeEmail === user?.email
   );
+
+  //Get last entry in the top
+  const filterTickets = filterTicketsByEmail?.slice().reverse();
+
   //Tab
   const [selectedTab, setSelectedTab] = useState("all");
   const [filteredTickets, setFilteredTickets] = useState([]);
@@ -146,7 +150,7 @@ const SupportTickets = () => {
                             />
                           </td>
                           {/* <td>{ticket?.employeeName}</td> */}
-                          <td>{ticket?.date}</td>
+                          <td>{ticket?.date?.split('-').reverse().join('-')}</td>
                           <td>{ticket?.status}</td>
                           <td>{ticket?.message}</td>
                           <td>

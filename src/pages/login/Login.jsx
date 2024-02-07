@@ -12,14 +12,17 @@ const Login = () => {
   const [showError, setShowError] = useState("");
   //State
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = ({ email, password }) => {
+    setLoading(true);
     loginUser(email, password)
       .then((result) => {
         if (result.user) {
+          setLoading(false);
           toast.success("Login Successfully", { id: "login" });
           navigate("/dashboard/profile");
           reset();
@@ -32,9 +35,15 @@ const Login = () => {
 
   useEffect(() => {
     if (showError) {
-      toast.error(showError);
+      toast.error("Wrong Credential", { id: "login" });
     }
   }, [showError]);
+
+  useEffect(() => {
+    if (loading) {
+      toast.loading("Loading", { id: "login" });
+    }
+  }, [loading]);
 
   return (
     <div className="login-register login-wrapper-main">
@@ -101,12 +110,12 @@ const Login = () => {
                 <div className="login-register-navigation">
                   <h4>Dont have account ?</h4>
                   <div className="btn-wrapper d-flex justify-content-between">
-                  <Link to={"/register"}>
-                  Register <i class="fa-solid fa-arrow-right"></i>{" "}
-                  </Link>
-                  <Link to={"/update-password"}>
-                     <i class="fa-solid fa-key"></i> Update Password
-                  </Link>
+                    <Link to={"/register"}>
+                      Register <i class="fa-solid fa-arrow-right"></i>{" "}
+                    </Link>
+                    <Link to={"/update-password"}>
+                      Update Password <i class="fa-solid fa-lock"></i>
+                    </Link>
                   </div>
                 </div>
               </div>

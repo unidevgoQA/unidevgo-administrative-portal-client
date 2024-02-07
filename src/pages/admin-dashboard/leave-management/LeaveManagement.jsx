@@ -37,18 +37,44 @@ const LeaveManagement = () => {
   //set data
   const allLeaveManagements = data?.data;
 
+
+  
+
   //Tab
   const [activeTab, setActiveTab] = useState("All");
 
   const filterItems = (status) => {
     setActiveTab(status);
+    setCurrentPage(1);
   };
 
   const getFilteredItems = () => {
-    if (activeTab === "All") return allLeaveManagements;
-    return allLeaveManagements.filter((item) => item.status === activeTab);
+    if (activeTab === "All") return allLeaveManagements?.slice().reverse();
+    return allLeaveManagements?.slice().reverse().filter((item) => item.status === activeTab);
   };
   //Tab
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 7;
+  
+    // Calculate total pages
+    const totalPages = Math.ceil(getFilteredItems()?.length / itemsPerPage);
+  
+    // Determine the range of items to display for the current page
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = getFilteredItems()?.slice(
+      indexOfFirstItem,
+      indexOfLastItem
+    );
+  
+  
+    // Change page
+    const paginate = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    };
+  
 
   //Accept leave handler
   const handleAcceptLeave = (
@@ -180,12 +206,12 @@ const LeaveManagement = () => {
                       <th>Leave To</th>
                       <th>Leave Type</th>
                       <th>Total Days</th>
-
-                      <th className="action-area">Action</th>
+                      {activeTab === "pending"  && <th className="action-area">Action</th>}
+                      
                     </tr>
                   </thead>
                   <tbody>
-                    {getFilteredItems()?.map((leave) => (
+                    {currentItems?.map((leave) => (
                       <tr key={leave?._id}>
                         <td>
                           <img
@@ -199,10 +225,10 @@ const LeaveManagement = () => {
                           />
                         </td>
                         <td>{leave?.employeeName}</td>
-                        <td>{leave?.leaveApply}</td>
+                        <td>{leave?.leaveApply?.split('-').reverse().join('-')}</td>
                         <td>{leave?.status}</td>
-                        <td>{leave?.leaveFrom}</td>
-                        <td>{leave?.leaveTo}</td>
+                        <td>{leave?.leaveFrom?.split('-').reverse().join('-')}</td>
+                        <td>{leave?.leaveTo?.split('-').reverse().join('-')}</td>
                         <td>{leave?.type}</td>
                         <td>{leave?.totalDays}</td>
                         {/* <td className="update-status">
@@ -236,50 +262,84 @@ const LeaveManagement = () => {
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td> */}
-
-                        <td>
-                          <button
-                            className="leave-accept-btn"
-                            onClick={() =>
-                              handleAcceptLeave(
-                                leave?._id,
-                                leave?.employeeEmail,
-                                leave?.totalDays,
-                                leave?.employeeName,
-                                leave?.leaveApply,
-                                leave?.type
-                              )
-                            }
-                          >
-                            Accept
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleRejectLeave(
-                                leave?._id,
-                                leave?.employeeEmail,
-                                leave?.totalDays,
-                                leave?.employeeName,
-                                leave?.leaveApply,
-                                leave?.type
-                              )
-                            }
-                            className="leave-reject-btn"
-                          >
-                            Reject
-                          </button>
-                          <button
-                            onClick={() => handleDelete(leave?._id)}
-                            className="delete-btn"
-                          >
-                            <i className="fas fa-trash-alt"></i>
-                          </button>
-                        </td>
+                        {activeTab === "pending"  && (
+                          <td>
+                            <button
+                              className="leave-accept-btn"
+                              onClick={() =>
+                                handleAcceptLeave(
+                                  leave?._id,
+                                  leave?.employeeEmail,
+                                  leave?.totalDays,
+                                  leave?.employeeName,
+                                  leave?.leaveApply,
+                                  leave?.type
+                                )
+                              }
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleRejectLeave(
+                                  leave?._id,
+                                  leave?.employeeEmail,
+                                  leave?.totalDays,
+                                  leave?.employeeName,
+                                  leave?.leaveApply,
+                                  leave?.type
+                                )
+                              }
+                              className="leave-reject-btn"
+                            >
+                              Reject
+                            </button>
+                            <button
+                              onClick={() => handleDelete(leave?._id)}
+                              className="delete-btn"
+                            >
+                              <i className="fas fa-trash-alt"></i>
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              {/* Pagination controls */}
+              <div className="pagination">
+                    {/* Previous button */}
+                    <button
+                      className="pagination-btn"
+                      onClick={() => paginate(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      Prev
+                    </button>
+
+                    {/* Page buttons */}
+                    {Array.from({ length: totalPages }).map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => paginate(index + 1)}
+                        className={`pagination-btn ${
+                          currentPage === index + 1 ? "active" : ""
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    {/* Next button */}
+                    <button
+                      className="pagination-btn"
+                      onClick={() => paginate(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
             </>
           ) : (
             <h6 className="mt-4">No Data Found</h6>

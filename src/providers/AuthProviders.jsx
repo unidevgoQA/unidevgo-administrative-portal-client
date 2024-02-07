@@ -41,17 +41,7 @@ const AuthProviders = ({ children }) => {
   };
   //Update
   const resetPassword = (email) => {
-    console.log(email)
-    sendPasswordResetEmail(auth, email)
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    
-      console.log(errorMessage)
-    });
+    return sendPasswordResetEmail(auth, email)
   };
 
   const verifyEmail = () =>{

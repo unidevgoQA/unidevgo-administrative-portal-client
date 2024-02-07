@@ -281,7 +281,7 @@ const AttendenceReport = () => {
                               />
                             </td>
                             <td>{attendence?.employeeName}</td>
-                            <td>{attendence?.date}</td>
+                            <td>{attendence?.date?.split('-').reverse().join('-')}</td>
                             <td>{attendence?.time}</td>
                             <td>
                               <span

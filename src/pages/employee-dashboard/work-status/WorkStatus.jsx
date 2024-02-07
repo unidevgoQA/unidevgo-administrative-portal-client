@@ -329,7 +329,7 @@ const WorkStatus = () => {
                             />
                           </td>
                           <td>{work?.task}</td>
-                          <td>{work?.date}</td>
+                          <td>{work?.date.split('-').reverse().join('-')}</td>
                           <td>{work?.hour}</td>
                           <td>{work?.workStatus}</td>
                           <td>{work?.description}</td>
