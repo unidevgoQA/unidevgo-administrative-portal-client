@@ -54,7 +54,7 @@ const Profile = () => {
               <div className="col-lg-6 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row">
-                    <div className="col-lg-4 col-md-12 col-sm-12">
+                    <div className="col-lg-4 col-md-4 col-sm-12">
                       <div className="user-img">
                         <img
                           src={
@@ -64,7 +64,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-8 col-md-12 col-sm-12">
+                    <div className="col-lg-8 col-md-8 col-sm-12">
                       <div className="user-info">
                         <div className="row ">
                           <div className="col-md-12">

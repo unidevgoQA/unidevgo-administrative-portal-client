@@ -17,9 +17,11 @@ const LeaveStatus = () => {
   //User
   const { user } = useContext(AuthContext);
   //Filter leaves based on email
-  const filterLeaves = allLeaveManagements?.filter(
+  const filterLeavesByEmail = allLeaveManagements?.filter(
     (leave) => leave.employeeEmail === user.email
   );
+
+  const filterLeaves = filterLeavesByEmail?.slice().reverse();
 
   //Tab
   const [activeTab, setActiveTab] = useState("All");

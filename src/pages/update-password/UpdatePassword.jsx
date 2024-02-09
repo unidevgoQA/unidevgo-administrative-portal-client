@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import logo from '../../assets/logo.png';
 import { AuthContext } from "../../providers/AuthProviders";
-// import './login.scss';
-
 const UpdatePassword = () => {
   const { resetPassword } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
@@ -52,7 +51,13 @@ const UpdatePassword = () => {
     <div className="login-register login-wrapper-main">
       <div className="container">
         <div className="row g-0 login-regsiter-content-wrapper">
-          <div className="col-lg-12 col-md-12">
+        <div className="col-lg-6 col-md-12">
+            <div className="login-regsiter-left-content">
+              <img src={logo} alt="logo" />
+              
+            </div>
+          </div>
+          <div className="col-lg-6 col-md-12">
             <div className="login-regsiter-right-content">
               <h4>Update Password</h4>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,24 +70,6 @@ const UpdatePassword = () => {
                   />
                   <i class="fa-solid fa-envelope"></i>
                 </div>
-
-                {/* {showError && (
-                  <div
-                    className={
-                      disableErrorArea === true
-                        ? "hide-error-message"
-                        : "error-message"
-                    }
-                  >
-                    <>
-                      <span>{showError}</span>
-                      <i
-                        onClick={() => setDisableErrorArea(true)}
-                        class="fa-solid fa-xmark"
-                      ></i>
-                    </>
-                  </div>
-                )} */}
 
                 <button className="login-register-btn" type="submit">
                   <span>Send Email</span>{" "}

@@ -600,6 +600,9 @@ button.show-all-data:hover {
   }
 }
 @media screen and (max-width: 575px) {
+  .content-wrapper .heading h2 {
+    font-size: 18px;
+  }
   .sidebar {
     display: none;
   }
