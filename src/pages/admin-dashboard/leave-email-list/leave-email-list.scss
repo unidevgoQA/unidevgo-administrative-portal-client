@@ -1,0 +1,17 @@
+.leave-email {
+  background: #d7eddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  i {
+    background: red;
+    color: #fff;
+    margin: 0;
+    padding: 2px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}

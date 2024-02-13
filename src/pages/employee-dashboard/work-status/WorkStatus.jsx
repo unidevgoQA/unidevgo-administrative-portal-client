@@ -147,6 +147,7 @@ const WorkStatus = () => {
         date: "DATE",
         hour: "HOURS",
         workStatus: "STATUS",
+        description:"DESCRIPTION",
         TotalHours: "TOTAL WORK HOURS",
       },
       fileName,

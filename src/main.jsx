@@ -13,6 +13,7 @@ import AllEmployee from "./pages/admin-dashboard/all-employee/AllEmployee";
 import AttendenceReport from "./pages/admin-dashboard/attendence-report/AttendenceReport";
 import EmployeeDetails from "./pages/admin-dashboard/employee-details/EmployeeDetails";
 import EmployeeWorkStatus from "./pages/admin-dashboard/employee-work-status/EmployeeWorkStatus";
+import LeaveEmailList from "./pages/admin-dashboard/leave-email-list/LeaveEmailList";
 import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManagement";
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import SendEmail from "./pages/admin-dashboard/send-email/SendEmail";
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
       {
         path: "support-tickets-management",
         element: <SupportTIcketManagement />,
+      },
+      {
+        path: "leave-email-list",
+        element: <LeaveEmailList />,
       },
     ],
   },

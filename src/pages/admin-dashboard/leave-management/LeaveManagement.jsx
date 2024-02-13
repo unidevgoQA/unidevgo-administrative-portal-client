@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
 import {
@@ -37,9 +38,6 @@ const LeaveManagement = () => {
   //set data
   const allLeaveManagements = data?.data;
 
-
-  
-
   //Tab
   const [activeTab, setActiveTab] = useState("All");
 
@@ -50,31 +48,32 @@ const LeaveManagement = () => {
 
   const getFilteredItems = () => {
     if (activeTab === "All") return allLeaveManagements?.slice().reverse();
-    return allLeaveManagements?.slice().reverse().filter((item) => item.status === activeTab);
+    return allLeaveManagements
+      ?.slice()
+      .reverse()
+      .filter((item) => item.status === activeTab);
   };
   //Tab
 
-    // Pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
-  
-    // Calculate total pages
-    const totalPages = Math.ceil(getFilteredItems()?.length / itemsPerPage);
-  
-    // Determine the range of items to display for the current page
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = getFilteredItems()?.slice(
-      indexOfFirstItem,
-      indexOfLastItem
-    );
-  
-  
-    // Change page
-    const paginate = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
-  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  // Calculate total pages
+  const totalPages = Math.ceil(getFilteredItems()?.length / itemsPerPage);
+
+  // Determine the range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = getFilteredItems()?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   //Accept leave handler
   const handleAcceptLeave = (
@@ -87,15 +86,16 @@ const LeaveManagement = () => {
   ) => {
     const leave = {
       leaveStatus: "accepted",
-      employeeEmail,
-      employeeName,
+      recipients: [employeeEmail, "samiulahmedanik@gmail.com"],
       totalDays,
+      employeeName,
       leaveApply,
       type,
     };
+    console.log(leave);
     const acceptLeave = window.confirm("Want to Accept this leave request?");
     if (acceptLeave) {
-      updateLeave({ id: leaveId, data: { leave } });
+      // updateLeave({ id: leaveId, data: { leave } });
       leaveEmail(leave);
     }
   };
@@ -158,11 +158,20 @@ const LeaveManagement = () => {
     <div className="content-wrapper">
       <div className="row">
         <div className="col-md-12">
-          <div className="heading">
-            <h2>
-              <span>Leave Management</span>{" "}
-              <i class="fa-solid fa-list-check"></i>
-            </h2>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="heading d-flex justify-content-between">
+                <h2>
+                  <span>Leave Management</span>{" "}
+                  <i class="fa-solid fa-list-check"></i>
+                </h2>
+                <div className="add-new-area">
+                  <Link className="add-btn" to={"/dashboard/leave-email-list"}>
+                  <i class="fa-regular fa-envelope"></i> Control Leave Email
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="tab">
@@ -206,8 +215,9 @@ const LeaveManagement = () => {
                       <th>Leave To</th>
                       <th>Leave Type</th>
                       <th>Total Days</th>
-                      {activeTab === "pending"  && <th className="action-area">Action</th>}
-                      
+                      {activeTab === "pending" && (
+                        <th className="action-area">Action</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -225,10 +235,16 @@ const LeaveManagement = () => {
                           />
                         </td>
                         <td>{leave?.employeeName}</td>
-                        <td>{leave?.leaveApply?.split('-').reverse().join('-')}</td>
+                        <td>
+                          {leave?.leaveApply?.split("-").reverse().join("-")}
+                        </td>
                         <td>{leave?.status}</td>
-                        <td>{leave?.leaveFrom?.split('-').reverse().join('-')}</td>
-                        <td>{leave?.leaveTo?.split('-').reverse().join('-')}</td>
+                        <td>
+                          {leave?.leaveFrom?.split("-").reverse().join("-")}
+                        </td>
+                        <td>
+                          {leave?.leaveTo?.split("-").reverse().join("-")}
+                        </td>
                         <td>{leave?.type}</td>
                         <td>{leave?.totalDays}</td>
                         {/* <td className="update-status">
@@ -262,7 +278,7 @@ const LeaveManagement = () => {
                         <i className="fa-solid fa-pen-nib"></i>
                       </button>
                     </td> */}
-                        {activeTab === "pending"  && (
+                        {activeTab === "pending" && (
                           <td>
                             <button
                               className="leave-accept-btn"
@@ -309,37 +325,37 @@ const LeaveManagement = () => {
               </div>
               {/* Pagination controls */}
               <div className="pagination">
-                    {/* Previous button */}
-                    <button
-                      className="pagination-btn"
-                      onClick={() => paginate(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      Prev
-                    </button>
+                {/* Previous button */}
+                <button
+                  className="pagination-btn"
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
 
-                    {/* Page buttons */}
-                    {Array.from({ length: totalPages }).map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => paginate(index + 1)}
-                        className={`pagination-btn ${
-                          currentPage === index + 1 ? "active" : ""
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
+                {/* Page buttons */}
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => paginate(index + 1)}
+                    className={`pagination-btn ${
+                      currentPage === index + 1 ? "active" : ""
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
 
-                    {/* Next button */}
-                    <button
-                      className="pagination-btn"
-                      onClick={() => paginate(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </button>
-                  </div>
+                {/* Next button */}
+                <button
+                  className="pagination-btn"
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
             </>
           ) : (
             <h6 className="mt-4">No Data Found</h6>
