@@ -10,6 +10,8 @@ import {
 import './leave-email-list.scss';
 
 const LeaveEmailList = () => {
+
+
   const [addLeaveEmail, { isLoading, isSuccess }] = useAddLeaveEmailMutation();
   const [removeLeaveEmail, { isLoading : removeLoading, isSuccess : removeSuccess }] = useDeleteLeaveEmailMutation();
   const { data } = useGetAllEmailQuery();
@@ -67,14 +69,14 @@ const LeaveEmailList = () => {
           <div className="heading">
             <h2>
               <span>Leave Email List</span>{" "}
-              <i class="fa-solid fa-check-double"></i>
+              <i class="fa-regular fa-envelope"></i>
             </h2>
           </div>
 
           <div className="row">
             {data?.data.map((singleEmail) => (
               <div className="col-md-3">
-                <div className="leave-email">
+                <div key={singleEmail?._id} className="leave-email">
                   <span>{singleEmail?.email}</span>
                   <i  onClick={() => handleDelete(singleEmail?._id)} class="fa-solid fa-xmark"></i>
                 </div>

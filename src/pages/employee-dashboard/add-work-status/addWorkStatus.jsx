@@ -124,12 +124,12 @@ const addWorkStatus = () => {
                   <label for="description">Work Description</label>
                   <textarea required  {...register("description", {
                       required: true,
-                      maxLength: 100,
+                      maxLength: 1000,
                     })}
                   />
                   {errors.description && errors.description.type === "maxLength" && (
                     <div style={{ color: "red" }}>
-                      Max length of 100 exceeded
+                      Max length of 1000 exceeded
                     </div>
                   )}
                 </div>

@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
+import { useGetAllEmailQuery } from "../../../features/leave-email/leaveEmailApi";
 import {
   useDeleteLeaveMutation,
   useGetAllLeavesQuery,
@@ -75,6 +76,11 @@ const LeaveManagement = () => {
     setCurrentPage(pageNumber);
   };
 
+  //Get Emails
+  const { data: leaveEmails } = useGetAllEmailQuery();
+  const allLeaveEmails = leaveEmails?.data;
+  const getEmails = allLeaveEmails?.map((email) => email?.email);
+
   //Accept leave handler
   const handleAcceptLeave = (
     leaveId,
@@ -86,16 +92,15 @@ const LeaveManagement = () => {
   ) => {
     const leave = {
       leaveStatus: "accepted",
-      recipients: [employeeEmail, "samiulahmedanik@gmail.com"],
+      recipients: [employeeEmail, ...getEmails],
       totalDays,
       employeeName,
       leaveApply,
       type,
     };
-    console.log(leave);
     const acceptLeave = window.confirm("Want to Accept this leave request?");
     if (acceptLeave) {
-      // updateLeave({ id: leaveId, data: { leave } });
+      updateLeave({ id: leaveId, data: { leave } });
       leaveEmail(leave);
     }
   };
@@ -112,9 +117,9 @@ const LeaveManagement = () => {
   ) => {
     const leave = {
       leaveStatus: "rejected",
-      employeeEmail,
-      employeeName,
+      recipients: [employeeEmail, ...getEmails],
       totalDays,
+      employeeName,
       leaveApply,
       type,
     };
@@ -165,11 +170,16 @@ const LeaveManagement = () => {
                   <span>Leave Management</span>{" "}
                   <i class="fa-solid fa-list-check"></i>
                 </h2>
-                <div className="add-new-area">
-                  <Link className="add-btn" to={"/dashboard/leave-email-list"}>
-                  <i class="fa-regular fa-envelope"></i> Control Leave Email
-                  </Link>
-                </div>
+                {registerUser?.role === "super admin" && (
+                  <div className="add-new-area">
+                    <Link
+                      className="add-btn"
+                      to={"/dashboard/leave-email-list"}
+                    >
+                      <i class="fa-regular fa-envelope"></i> Control Leave Email
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
