@@ -518,6 +518,7 @@ button.show-all-data:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
 }
 .pagination {
   display: flex;
@@ -543,6 +544,7 @@ form.pagination-form input {
   background: #dbeddb;
   padding: 2px 5px;
   border-radius: 5px;
+  width: 150px;
 }
 
 form.pagination-form button {
@@ -618,6 +620,13 @@ form.pagination-form button {
   .content-wrapper .table-modify td .update-btn {
     font-size: 10px;
     margin-bottom: 3px;
+  }
+}
+@media screen and (max-width: 750px) {
+  .pagination-main-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
   }
 }
 @media screen and (max-width: 575px) {
