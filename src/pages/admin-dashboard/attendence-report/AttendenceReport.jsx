@@ -11,8 +11,7 @@ import {
   useDeleteAttendenceMutation,
   useGetAllAttendenceQuery,
 } from "../../../features/attendence/attendenceApi";
-import './attendence-report.scss';
-
+import "./attendence-report.scss";
 
 const AttendenceReport = () => {
   //APIs
@@ -129,10 +128,10 @@ const AttendenceReport = () => {
     addAttendence(attendance);
   };
 
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
+  const [searchedPage, setSearchedPage] = useState("");
 
   // Calculate total pages
   const totalPages = Math.ceil(filteredAttendenceData?.length / itemsPerPage);
@@ -145,10 +144,35 @@ const AttendenceReport = () => {
     indexOfLastItem
   );
 
-
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+    setSearchedPage("");
+  };
+
+  // Handle page search
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const pageNumber = parseInt(searchedPage, 10);
+    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  // Previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      setSearchedPage("");
+    }
+  };
+
+  // Next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      setSearchedPage("");
+    }
   };
 
   //Show all data handler
@@ -158,7 +182,6 @@ const AttendenceReport = () => {
     setStartDate(null);
     setEndDate(null);
   };
-
 
   // Attendence added effects
   useEffect(() => {
@@ -263,7 +286,7 @@ const AttendenceReport = () => {
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
-            <button className="show-all-data" onClick={showAllData}>
+              <button className="show-all-data" onClick={showAllData}>
                 Show all
               </button>
               {currentItems?.length > 0 ? (
@@ -291,8 +314,12 @@ const AttendenceReport = () => {
                               />
                             </td>
                             <td>{attendence?.employeeName}</td>
-                            <td>{attendence?.date?.split('-').reverse().join('-')}</td>
-                            <td>{attendence?.time?.replace(/:\d{2}\s/, ' ')}</td>
+                            <td>
+                              {attendence?.date?.split("-").reverse().join("-")}
+                            </td>
+                            <td>
+                              {attendence?.time?.replace(/:\d{2}\s/, " ")}
+                            </td>
                             <td>
                               <span
                                 className={
@@ -318,38 +345,49 @@ const AttendenceReport = () => {
                       </tbody>
                     </table>
                   </div>
-                   {/* Pagination controls */}
-                   <div className="pagination">
-                    {/* Previous button */}
-                    <button
-                      className="pagination-btn"
-                      onClick={() => paginate(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      Prev
-                    </button>
+                  {/* Pagination controls */}
+                  <div className="pagination-main-wrapper">
+                    {/* Search field for specific page */}
+                    <form className="pagination-form" onSubmit={handleSearch}>
+                      <input
+                        type="text"
+                        value={searchedPage}
+                        onChange={(e) => setSearchedPage(e.target.value)}
+                        placeholder={`Go to page (1-${totalPages})`}
+                      />
+                      <button type="submit">Go</button>
+                    </form>
 
-                    {/* Page buttons */}
-                    {Array.from({ length: totalPages }).map((_, index) => (
+                    {/* Pagination buttons 1-5 */}
+                    <div>
                       <button
-                        key={index}
-                        onClick={() => paginate(index + 1)}
-                        className={`pagination-btn ${
-                          currentPage === index + 1 ? "active" : ""
-                        }`}
+                        className="pagination-btn"
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
                       >
-                        {index + 1}
+                        Prev
                       </button>
-                    ))}
-
-                    {/* Next button */}
-                    <button
-                      className="pagination-btn"
-                      onClick={() => paginate(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </button>
+                      {Array.from({ length: Math.min(5, totalPages) }).map(
+                        (_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => paginate(index + 1)}
+                            className={`pagination-btn ${
+                              currentPage === index + 1 ? "active" : ""
+                            }`}
+                          >
+                            {index + 1}
+                          </button>
+                        )
+                      )}
+                      <button
+                        className="pagination-btn"
+                        onClick={nextPage}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (

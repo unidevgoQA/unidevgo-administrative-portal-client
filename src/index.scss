@@ -514,6 +514,11 @@ button.show-all-data:hover {
 //Show all btn
 
 //Pagination
+.pagination-main-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .pagination {
   display: flex;
   justify-content: end;
@@ -531,6 +536,22 @@ button.show-all-data:hover {
   font-weight: 600;
   outline: none;
   font-size: 10px;
+}
+
+form.pagination-form input {
+  border: none;
+  background: #dbeddb;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+form.pagination-form button {
+  border: none;
+  background: #0a1c0a;
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #5df401;
+  margin-left: 5px;
 }
 
 // .pagination-btn:hover {
