@@ -40,7 +40,7 @@ const LeaveManagement = () => {
   const allLeaveManagements = data?.data;
 
   //Tab
-  const [activeTab, setActiveTab] = useState("All");
+  const [activeTab, setActiveTab] = useState("pending");
 
   const filterItems = (status) => {
     setActiveTab(status);
@@ -57,6 +57,7 @@ const LeaveManagement = () => {
   };
   //Tab
 
+  console.log(getFilteredItems());
 
 
   // Pagination
@@ -409,7 +410,7 @@ const LeaveManagement = () => {
               </div>
             </>
           ) : (
-            <h6 className="mt-4">No Data Found</h6>
+            <h6 className="mt-4">No pending leave found.</h6>
           )}
         </div>
       </div>

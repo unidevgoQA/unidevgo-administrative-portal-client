@@ -129,14 +129,14 @@ const EmployeeDetails = () => {
                     <div className="col-md-6">
                       <div className="leave-apply employee-card">
                         <i class="fa-solid fa-person-walking-arrow-right"></i>
-                        <h6>Leave Apply</h6>
+                        <h6>Pending Leave</h6>
                         <span>{pendingLeaves?.length} Leave Apply</span>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="late-coming employee-card">
                         <i class="fa-solid fa-check"></i>
-                        <h6>Get Leave</h6>
+                        <h6>Approved Leave</h6>
                         <span>{totalGetLeaveDays} Days</span>
                       </div>
                     </div>

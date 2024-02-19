@@ -575,6 +575,17 @@ form.pagination-form button {
 }
 //Pagination
 
+//Edit btn
+button.edit-btn {
+  background: #338431;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 //Responsive
 @media screen and (max-width: 1200px) {
   // .chart-wrapper {

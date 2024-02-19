@@ -94,12 +94,12 @@ const addWorkStatus = () => {
                     type="text"
                     {...register("task", {
                       required: true,
-                      maxLength: 50,
+                      maxLength: 80,
                     })}
                   />
                   {errors.task && errors.task.type === "maxLength" && (
                     <div style={{ color: "red" }}>
-                      Max length of 50 exceeded
+                      Max length of 80 exceeded
                     </div>
                   )}
                 </div>
@@ -138,12 +138,6 @@ const addWorkStatus = () => {
                       // maxLength: 1000,
                     })}
                   />
-                  {/* {errors.description &&
-                    errors.description.type === "maxLength" && (
-                      <div style={{ color: "red" }}>
-                        Max length of 1000 exceeded
-                      </div>
-                    )} */}
                 </div>
                 <div className="col-md-6">
                   <button className="submit-btn">Add Work Status </button>

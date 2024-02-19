@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import exportFromJSON from "export-from-json";
 import { DateRangePicker } from "react-date-range";
@@ -6,7 +7,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { Link } from "react-router-dom";
 import {
   Area,
   Bar,
@@ -60,7 +60,6 @@ const WorkStatus = () => {
     setFilteredStatusDataByEmail(filterWorkStatus);
     setFilteredStatusData(filterWorkStatus);
   }, [workStatusData, registerUser]);
-
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -175,7 +174,7 @@ const WorkStatus = () => {
         date: "DATE",
         hour: "HOURS",
         workStatus: "STATUS",
-        description:"DESCRIPTION",
+        description: "DESCRIPTION",
         TotalHours: "TOTAL WORK HOURS",
       },
       fileName,
@@ -236,15 +235,7 @@ const WorkStatus = () => {
       toast.loading("Loading", { id: "delete-work-task" });
     }
   }, [isSuccess, isLoading]);
-  //Update Effects
-  useEffect(() => {
-    if (workStatusSuccess) {
-      toast.success("Update Successfully", { id: "update-work-task" });
-    }
-    if (worksStatusLoading) {
-      toast.loading("Loading", { id: "update-work-task" });
-    }
-  }, [workStatusSuccess, worksStatusLoading]);
+
 
   return (
     <div className="content-wrapper">
@@ -360,12 +351,12 @@ const WorkStatus = () => {
                             />
                           </td>
                           <td>{work?.task}</td>
-                          <td>{work?.date.split('-').reverse().join('-')}</td>
+                          <td>{work?.date.split("-").reverse().join("-")}</td>
                           <td>{work?.hour}</td>
                           <td>{work?.workStatus}</td>
                           <td>{work?.description}</td>
                           <td>
-                            <button
+                            {/* <button
                               onClick={() =>
                                 handleStatusChange(work?._id, work?.workStatus)
                               }
@@ -374,7 +365,19 @@ const WorkStatus = () => {
                               {work?.workStatus == "in progress"
                                 ? "Mark as Complete"
                                 : "Mark as in Progress"}
-                            </button>
+                            </button> */}
+
+                            <Link
+                              to={`/dashboard/update-work-status/${
+                                work._id
+                              }`}
+                            >
+                              <button
+                                className="edit-btn"
+                              >
+                                <i className="fas fa-edit"></i>
+                              </button>
+                            </Link>
 
                             <button
                               onClick={() => handleDelete(work?._id)}
@@ -387,8 +390,8 @@ const WorkStatus = () => {
                       ))}
                     </tbody>
                   </table>
-                   {/* Pagination controls */}
-                   <div className="pagination-main-wrapper">
+                  {/* Pagination controls */}
+                  <div className="pagination-main-wrapper">
                     {/* Search field for specific page */}
                     <form className="pagination-form" onSubmit={handleSearch}>
                       <input

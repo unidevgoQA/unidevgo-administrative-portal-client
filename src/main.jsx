@@ -32,6 +32,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Calender from "./pages/shared-dashboard/calender/Calender";
 import SupportTicketDetails from "./pages/shared-dashboard/support-ticket-details/SupportTicketDetails";
+import UpdateWorkStatus from "./pages/shared-dashboard/update-work-status/UpdateWorkStatus";
 import UpdatePassword from "./pages/update-password/UpdatePassword";
 import AuthProviders from "./providers/AuthProviders";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: "update-profile/:id",
         element: <UpdateProfile />,
+      },
+      {
+        path: "update-work-status/:id",
+        element: <UpdateWorkStatus />,
       },
       {
         path: "profile",
