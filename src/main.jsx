@@ -18,6 +18,7 @@ import LeaveManagement from "./pages/admin-dashboard/leave-management/LeaveManag
 import Projects from "./pages/admin-dashboard/projects/Projects";
 import SendEmail from "./pages/admin-dashboard/send-email/SendEmail";
 import SupportTIcketManagement from "./pages/admin-dashboard/support-ticket-management/SupportTIcketManagement";
+import BookAnAppointment from "./pages/book-an-appointment/BookAnAppointment";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
 import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import CreateTicket from "./pages/employee-dashboard/create-ticket/CreateTicket";
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: "/update-password",
     element: <UpdatePassword />,
+  },
+  {
+    path: "/book-an-appointment",
+    element: <BookAnAppointment />,
   },
   {
     path: "/dashboard",

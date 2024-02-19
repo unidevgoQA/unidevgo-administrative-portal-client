@@ -35,6 +35,10 @@ const addWorkStatus = () => {
   }) => {
     const convertHour = parseFloat(hour);
 
+    // Count words in the description
+    const words = description.split(/\s+/).filter((word) => word.length > 0);
+    const descriptionWordLength = words.length;
+
     const workTask = {
       //task data
       task,
@@ -48,7 +52,12 @@ const addWorkStatus = () => {
       employeeName: registerUser?.name,
     };
 
-    if (task.trim().length === 0 || description.trim().length === 0) {
+    // Check if the word count exceeds 1000
+    if (descriptionWordLength > 1000) {
+      toast.error("Description should not exceed 1000 words", {
+        id: "add-work-status",
+      });
+    } else if (task.trim().length === 0 || description.trim().length === 0) {
       toast.error("Provide valid input", { id: "add-work-status" });
     } else {
       addWorkTask(workTask);
@@ -58,7 +67,7 @@ const addWorkStatus = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Added Successfully", { id: "add-work-task" });
-      navigate('/dashboard/work-status')
+      navigate("/dashboard/work-status");
     }
     if (isLoading) {
       toast.loading("Loading", { id: "add-work-task" });
@@ -122,16 +131,19 @@ const addWorkStatus = () => {
 
                 <div className="col-md-12">
                   <label for="description">Work Description</label>
-                  <textarea required  {...register("description", {
+                  <textarea
+                    required
+                    {...register("description", {
                       required: true,
-                      maxLength: 1000,
+                      // maxLength: 1000,
                     })}
                   />
-                  {errors.description && errors.description.type === "maxLength" && (
-                    <div style={{ color: "red" }}>
-                      Max length of 1000 exceeded
-                    </div>
-                  )}
+                  {/* {errors.description &&
+                    errors.description.type === "maxLength" && (
+                      <div style={{ color: "red" }}>
+                        Max length of 1000 exceeded
+                      </div>
+                    )} */}
                 </div>
                 <div className="col-md-6">
                   <button className="submit-btn">Add Work Status </button>
