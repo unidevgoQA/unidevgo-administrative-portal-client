@@ -130,7 +130,7 @@ const UpdateWorkStatus = () => {
           <div className="heading">
             <h2>
               <span>Update Work Status</span>{" "}
-              <i class="fa-regular fa-square-plus"></i>
+              <i class="fa-solid fa-pen-to-square"></i>
             </h2>
           </div>
           <div className="add-form">

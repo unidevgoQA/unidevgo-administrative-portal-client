@@ -20,12 +20,10 @@ import {
 } from "recharts";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
-import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
 import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
 import {
   useDeleteWorkTaskMutation,
-  useGetWorkTasksQuery,
-  useUpdateWorkTaskMutation,
+  useGetWorkTasksQuery
 } from "../../../features/work-status/workStatusApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 
@@ -182,41 +180,8 @@ const WorkStatus = () => {
     });
   };
 
-  //Update API
-  const [
-    handleUpdateWorkStatus,
-    { isLoading: worksStatusLoading, isSuccess: workStatusSuccess },
-  ] = useUpdateWorkTaskMutation();
+  
 
-  //Leave management data
-  const { data } = useGetAllLeavesQuery();
-  const allLeaveManagements = data?.data;
-
-  //Filter leaves based on email
-  const filterLeaves = allLeaveManagements?.filter(
-    (leave) => leave.employeeEmail === user.email
-  );
-
-  //filter accepted leave
-  const filerGetLeave = filterLeaves?.filter(
-    (leave) => leave.status === "accepted"
-  );
-
-  //calculate total get leave days
-  const totalGetLeaveDays = filerGetLeave?.reduce(
-    (sum, leave) => sum + leave.totalDays,
-    0
-  );
-
-  //handle Update
-  const handleStatusChange = (id, workStatus) => {
-    const updatedStatus =
-      workStatus === "complete" ? "in progress" : "complete";
-    const updateWorkTask = {
-      workStatus: updatedStatus,
-    };
-    handleUpdateWorkStatus({ id: id, data: updateWorkTask });
-  };
 
   //handle Delete
   const handleDelete = (id) => {
@@ -243,7 +208,7 @@ const WorkStatus = () => {
         <div className="col-md-12">
           <div className="heading d-flex justify-content-between">
             <h2>
-              <span>Work Status</span> <i class="fa-solid fa-user-tie"></i>
+              <span>Work Status</span> <i class="fa-solid fa-chart-column"></i>
             </h2>
             <div className="add-new-area">
               <Link className="add-btn" to={"/dashboard/add-work-status"}>
@@ -356,16 +321,6 @@ const WorkStatus = () => {
                           <td>{work?.workStatus}</td>
                           <td>{work?.description}</td>
                           <td>
-                            {/* <button
-                              onClick={() =>
-                                handleStatusChange(work?._id, work?.workStatus)
-                              }
-                              className="update-btn text-white"
-                            >
-                              {work?.workStatus == "in progress"
-                                ? "Mark as Complete"
-                                : "Mark as in Progress"}
-                            </button> */}
 
                             <Link
                               to={`/dashboard/update-work-status/${

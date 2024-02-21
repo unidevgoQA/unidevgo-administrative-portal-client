@@ -43,6 +43,11 @@ const AllEmployee = () => {
     }
   }, [isSuccess, isLoading]);
 
+  //handle Update
+  const handleEditProfilePermissionChange = (id, editPermisson) => {
+    console.log(id, editPermisson);
+  };
+
   return (
     <div className="content-wrapper">
       <div className="row">
@@ -64,10 +69,9 @@ const AllEmployee = () => {
                   <th>Email</th>
                   <th>Address</th>
                   <th>Joining Date</th>
+                  <th>Profile Edit</th>
                   <th>Details</th>
-                  {registerUser?.role === "super admin" && (
-                    <th className="action-area">Action</th>
-                  )}
+                  <th className="action-area">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -88,31 +92,43 @@ const AllEmployee = () => {
                       {employee?.email}
                     </td>
                     <td>{employee?.address}</td>
-                    <td>{employee?.joiningDate?.split('-').reverse().join('-')}</td>
-
+                    <td>
+                      {employee?.joiningDate?.split("-").reverse().join("-")}
+                    </td>
+                    <td>
+                      <button
+                        title="Profile Edit Permission"
+                        onClick={() =>
+                          handleEditProfilePermissionChange(
+                            employee?._id,
+                            employee?.profileEditPermission
+                          )
+                        }
+                        className={
+                          employee?.profileEditPermission == "true"
+                            ? "update-btn text-white bg-success"
+                            : "update-btn text-white bg-danger"
+                        }
+                      >
+                        {employee?.profileEditPermission == "true"
+                          ? "Yes"
+                          : "No"}
+                      </button>
+                    </td>
                     <td>
                       <Link to={`/dashboard/employee-details/${employee?._id}`}>
-                        <button className="update-btn">Show Details</button>
+                        <button className="update-btn">Details</button>
                       </Link>
                     </td>
 
-              
-                      <td>
-                        {/* <Link to={`/dashboard/update-profile/${employee?._id}`}>
-                          <button className="update-btn">
-                            {" "}
-                            <i className="far fa-edit"></i>
-                          </button>
-                        </Link> */}
-
-                        <button
-                          onClick={() => handleDelete(employee?._id)}
-                          className="delete-btn"
-                        >
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                      </td>
-                
+                    <td>
+                      <button
+                        onClick={() => handleDelete(employee?._id)}
+                        className="delete-btn"
+                      >
+                        <i className="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -120,7 +136,7 @@ const AllEmployee = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

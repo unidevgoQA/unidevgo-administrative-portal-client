@@ -4,7 +4,7 @@ import { DateRangePicker } from "react-date-range";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Area,
   Bar,
@@ -81,53 +81,53 @@ const WorkStatus = () => {
     setFilteredStatusData(filterWorkStatus);
   }, [allStatusData, profile]);
 
-    // Pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
-    const [searchedPage, setSearchedPage] = useState("");
-  
-    // Calculate total pages
-    const totalPages = Math.ceil(filteredStatusData?.length / itemsPerPage);
-  
-    // Determine the range of items to display for the current page
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredStatusData?.slice(
-      indexOfFirstItem,
-      indexOfLastItem
-    );
-  
-    // Change page
-    const paginate = (pageNumber) => {
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const [searchedPage, setSearchedPage] = useState("");
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredStatusData?.length / itemsPerPage);
+
+  // Determine the range of items to display for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredStatusData?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    setSearchedPage("");
+  };
+
+  // Handle page search
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const pageNumber = parseInt(searchedPage, 10);
+    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
+    }
+  };
+
+  // Previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
       setSearchedPage("");
-    };
-  
-    // Handle page search
-    const handleSearch = (e) => {
-      e.preventDefault();
-      const pageNumber = parseInt(searchedPage, 10);
-      if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
-        setCurrentPage(pageNumber);
-      }
-    };
-  
-    // Previous page
-    const prevPage = () => {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-        setSearchedPage("");
-      }
-    };
-  
-    // Next page
-    const nextPage = () => {
-      if (currentPage < totalPages) {
-        setCurrentPage(currentPage + 1);
-        setSearchedPage("");
-      }
-    };
-  
+    }
+  };
+
+  // Next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      setSearchedPage("");
+    }
+  };
+
   // Date select
   const handleSelect = (date) => {
     let filtered = filteredStatusDataByEmail.filter((workStatus) => {
@@ -183,7 +183,7 @@ const WorkStatus = () => {
         date: "DATE",
         hour: "HOURS",
         workStatus: "STATUS",
-        description:"DESCRIPTION",
+        description: "DESCRIPTION",
         TotalHours: "TOTAL WORK HOURS",
       },
       fileName,
@@ -235,7 +235,7 @@ const WorkStatus = () => {
         <div className="col-md-12">
           <div className="heading">
             <h2>
-              <span>Work Status</span> <i class="fa-solid fa-battery-half"></i>{" "}
+              <span>Work Status</span> <i class="fa-solid fa-chart-column"></i>
             </h2>
           </div>
 
@@ -303,7 +303,7 @@ const WorkStatus = () => {
               </div>
             </div>
             <div className="col-lg-12 col-md-12 col-sm-12">
-            <button className="show-all-data" onClick={showAllData}>
+              <button className="show-all-data" onClick={showAllData}>
                 Show all
               </button>
               {currentItems?.length > 0 ? (
@@ -332,24 +332,20 @@ const WorkStatus = () => {
                               />
                             </td>
                             <td>{work?.task}</td>
-                            <td>{work?.date?.split('-').reverse().join('-')}</td>
+                            <td>
+                              {work?.date?.split("-").reverse().join("-")}
+                            </td>
                             <td>{work?.hour}</td>
                             <td>{work?.workStatus}</td>
                             <td>{work?.description}</td>
                             <td>
-                              <button
-                                onClick={() =>
-                                  handleStatusChange(
-                                    work?._id,
-                                    work?.workStatus
-                                  )
-                                }
-                                className="update-btn text-white"
+                              <Link
+                                to={`/dashboard/update-work-status/${work._id}`}
                               >
-                                {work?.workStatus == "in progress"
-                                  ? "Mark as Complete"
-                                  : "Mark as in Progress"}
-                              </button>
+                                <button className="edit-btn">
+                                  <i className="fas fa-edit"></i>
+                                </button>
+                              </Link>
 
                               <button
                                 onClick={() => handleDelete(work?._id)}
@@ -364,48 +360,48 @@ const WorkStatus = () => {
                     </table>
                     {/* Pagination controls */}
                     <div className="pagination-main-wrapper">
-                    {/* Search field for specific page */}
-                    <form className="pagination-form" onSubmit={handleSearch}>
-                      <input
-                        type="text"
-                        value={searchedPage}
-                        onChange={(e) => setSearchedPage(e.target.value)}
-                        placeholder={`Go to page (1-${totalPages})`}
-                      />
-                      <button type="submit">Go</button>
-                    </form>
+                      {/* Search field for specific page */}
+                      <form className="pagination-form" onSubmit={handleSearch}>
+                        <input
+                          type="text"
+                          value={searchedPage}
+                          onChange={(e) => setSearchedPage(e.target.value)}
+                          placeholder={`Go to page (1-${totalPages})`}
+                        />
+                        <button type="submit">Go</button>
+                      </form>
 
-                    {/* Pagination buttons 1-5 */}
-                    <div>
-                      <button
-                        className="pagination-btn"
-                        onClick={prevPage}
-                        disabled={currentPage === 1}
-                      >
-                        Prev
-                      </button>
-                      {Array.from({ length: Math.min(5, totalPages) }).map(
-                        (_, index) => (
-                          <button
-                            key={index}
-                            onClick={() => paginate(index + 1)}
-                            className={`pagination-btn ${
-                              currentPage === index + 1 ? "active" : ""
-                            }`}
-                          >
-                            {index + 1}
-                          </button>
-                        )
-                      )}
-                      <button
-                        className="pagination-btn"
-                        onClick={nextPage}
-                        disabled={currentPage === totalPages}
-                      >
-                        Next
-                      </button>
+                      {/* Pagination buttons 1-5 */}
+                      <div>
+                        <button
+                          className="pagination-btn"
+                          onClick={prevPage}
+                          disabled={currentPage === 1}
+                        >
+                          Prev
+                        </button>
+                        {Array.from({ length: Math.min(5, totalPages) }).map(
+                          (_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => paginate(index + 1)}
+                              className={`pagination-btn ${
+                                currentPage === index + 1 ? "active" : ""
+                              }`}
+                            >
+                              {index + 1}
+                            </button>
+                          )
+                        )}
+                        <button
+                          className="pagination-btn"
+                          onClick={nextPage}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   </div>
                   <div className="row mt-3">
                     <div className="col-md-6 col-sm-12">

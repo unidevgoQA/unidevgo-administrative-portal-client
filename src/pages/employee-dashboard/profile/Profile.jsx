@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
 // import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Link } from "react-router-dom";
 import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
@@ -16,6 +17,8 @@ const Profile = () => {
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
   const registerUser = userData?.data;
+
+  console.log(registerUser)
 
   //Leave management data
   const { data } = useGetAllLeavesQuery();
@@ -100,7 +103,8 @@ const Profile = () => {
                             </h3>
                           </div>
                         </div>
-                        {/* <div className="update-area">
+                        {
+                          registerUser?.profileEditPermission === 'true' && <div className="update-area">
                           <Link
                             to={`/dashboard/update-profile/${registerUser?._id}`}
                           >
@@ -112,7 +116,8 @@ const Profile = () => {
                               <i className="far fa-edit"></i>
                             </button>
                           </Link>
-                        </div> */}
+                        </div>
+                        }
                       </div>
                     </div>
                   </div>
