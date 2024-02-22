@@ -1,0 +1,93 @@
+.book-an-appointment {
+  background: #071c0b;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #37f42e;
+}
+.book-an-appointment-form-wrapper label {
+  display: block;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.book-an-appointment-form-wrapper input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+}
+.select-img {
+  width: 30px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.select-wrapper {
+  display: flex;
+  align-items: center;
+}
+.select-wrapper span {
+  color: #071c0b;
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+}
+button.submit-btn {
+  margin-top: 15px;
+  background: #0a1c0a;
+  color: #5df404;
+  padding: 10px 25px;
+  border-radius: 5px 15px 5px 15px;
+  font-weight: 600;
+  border: 2px solid #5df401;
+  font-size: 18px;
+  transition: 0.3s;
+}
+button.submit-btn:hover {
+  background-color: #37f42e;
+  color: #0a1c0a;
+}
+.logo-heading-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border: 2px solid white;
+  padding: 20px;
+  border-radius: 7px;
+  .logo-img {
+    width: 250px;
+  }
+  h2 {
+    font-weight: 600;
+    color: #fff;
+  }
+}
+
+//Responsive
+@media screen and (max-width: 767px) {
+  .book-an-appointment {
+    height: 100%;
+    padding: 20px 10px;
+  }
+  .logo-heading-wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+//Responsive
+@media screen and (max-width: 380px) {
+  .logo-heading-wrapper {
+    h2 {
+      font-weight: 600;
+      color: #fff;
+      font-size: 18px;
+    }
+  }
+}

@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import Select from "react-select";
+import logo from "../../assets/logo.png";
+import { useGetProfilesQuery } from "../../features/profile/profileApi";
 import "./book-an-appoinment.scss";
 
 const BookAnAppointment = () => {
-
   const currentYear = new Date().getFullYear();
+  //Api
+  const { data } = useGetProfilesQuery();
+  //set data
+  const employees = data?.data;
 
   const {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -35,15 +42,46 @@ const BookAnAppointment = () => {
 
     console.log(appointment);
   };
+
+  const [selectedMember, setSelectedMember] = useState(null);
+
+  const options = employees?.map((employee) => ({
+    value: employee?.email,
+    label: (
+      <div className="select-wrapper">
+        {employee?.img && (
+          <img
+            className="select-img"
+            src={employee?.img}
+            alt={`Avatar of ${employee?.name}`}
+          />
+        )}
+        <div className="name-designation-wrapper">
+          <span>{employee?.name}</span>
+          <span>{employee?.desgination}</span>
+        </div>
+      </div>
+    ),
+  }));
+
+  const handleMemberChange = (selectedOption) => {
+    setValue("member", selectedOption?.value);
+    setSelectedMember(selectedOption);
+  };
+
   return (
     <div className="book-an-appointment">
       <div className="container">
         <div className="row">
-          <div className="col-lg-8 offset-lg-2 col-md-12 col-sm-12">
+          <div className="col-lg-10 offset-lg-1 col-md-12 col-sm-12">
             <div className="book-an-appointment-form-wrapper">
+              <div className="logo-heading-wrapper">
+                <img className="logo-img" src={logo} alt="logo" />
+                <h2>Book An Appointment</h2>
+              </div>
               <form onSubmit={handleSubmit(handleSubmitAppointment)}>
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col-lg-6 col-md-12">
                     <label>Name</label>
                     <input
                       required
@@ -86,9 +124,13 @@ const BookAnAppointment = () => {
 
                   <div className="col-md-6">
                     <label for="member">Available Members</label>
-                    <select required {...register("member")}>
-                      <option value="x">X</option>
-                    </select>
+                    <Select
+                      required
+                      {...register("member")}
+                      onChange={handleMemberChange}
+                      value={selectedMember}
+                      options={options}
+                    />
                   </div>
 
                   <div className="col-md-6">

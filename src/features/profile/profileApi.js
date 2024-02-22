@@ -44,6 +44,14 @@ const profileApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["profile"],
     }),
+    updateAllProfileEditPermission: builder.mutation({
+      query: ({data}) => ({
+        method: "PUT",
+        url: `/profile-edit/all`,
+        body: data,
+      }),
+      invalidatesTags: ["profile"],
+    }),
   }),
 });
 
@@ -53,5 +61,6 @@ export const {
   useGetProfilesQuery,
   useDeleteProfileMutation,
   useUpdateProfileMutation,
-  useUpdateProfileEditPermissionMutation
+  useUpdateProfileEditPermissionMutation,
+  useUpdateAllProfileEditPermissionMutation
 } = profileApi;
