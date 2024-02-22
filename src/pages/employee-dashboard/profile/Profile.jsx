@@ -18,7 +18,6 @@ const Profile = () => {
 
   const registerUser = userData?.data;
 
-  console.log(registerUser)
 
   //Leave management data
   const { data } = useGetAllLeavesQuery();

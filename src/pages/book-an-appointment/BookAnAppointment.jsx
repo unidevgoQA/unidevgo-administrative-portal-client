@@ -1,16 +1,26 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import Select from "react-select";
 import logo from "../../assets/logo.png";
+import { useAppointmentConfirmationEmailMutation } from "../../features/appointment/appointment";
 import { useGetProfilesQuery } from "../../features/profile/profileApi";
 import "./book-an-appoinment.scss";
 
 const BookAnAppointment = () => {
+  //
+  const [appointmentConfirmationEmail, { isLoading, isSuccess }] =
+    useAppointmentConfirmationEmailMutation();
+
   const currentYear = new Date().getFullYear();
   //Api
   const { data } = useGetProfilesQuery();
   //set data
   const employees = data?.data;
+  //Filter appointment permission members
+  const appointmentPermissionMembers = employees?.filter(
+    (employee) => employee?.appointmentPermission == "true"
+  );
 
   const {
     handleSubmit,
@@ -34,18 +44,25 @@ const BookAnAppointment = () => {
       name,
       mobile,
       email,
+      recipients: [member],
       member,
       date,
       time,
       message,
     };
-
-    console.log(appointment);
+    const confirmSubmit = window.confirm("Would you like to schedule this appointment?");
+    if (confirmSubmit) {
+      appointmentConfirmationEmail(appointment);
+      reset();
+      toast.success("Appointment Successfully Booked", { id: "appointment" });
+      setValue(null)
+    }
+  
   };
 
   const [selectedMember, setSelectedMember] = useState(null);
 
-  const options = employees?.map((employee) => ({
+  const options = appointmentPermissionMembers?.map((employee) => ({
     value: employee?.email,
     label: (
       <div className="select-wrapper">
@@ -68,6 +85,16 @@ const BookAnAppointment = () => {
     setValue("member", selectedOption?.value);
     setSelectedMember(selectedOption);
   };
+
+  // Appointment effects
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     toast.success("Appointment Successfully Booked", { id: "appointment" });
+  //   }
+  //   if (isLoading) {
+  //     toast.loading("Loading", { id: "appointment" });
+  //   }
+  // }, [isSuccess, isLoading]);
 
   return (
     <div className="book-an-appointment">
@@ -117,7 +144,6 @@ const BookAnAppointment = () => {
                       name="email"
                       required
                       type="email"
-                      placeholder="Your Email"
                       {...register("email")}
                     />
                   </div>

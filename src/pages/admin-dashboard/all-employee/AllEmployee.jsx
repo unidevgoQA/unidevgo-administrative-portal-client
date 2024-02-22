@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import defaultImg from "../../../assets/default.png";
@@ -6,23 +6,44 @@ import GoBack from "../../../components/go-back/GoBack";
 import SwitchButton from "../../../components/switch-button/SwitchButton";
 import {
   useDeleteProfileMutation,
+  useGetProfileByEmailQuery,
   useGetProfilesQuery,
+  useUpdateAppointmentPermissionMutation,
   useUpdateProfileEditPermissionMutation,
 } from "../../../features/profile/profileApi";
+import { AuthContext } from "../../../providers/AuthProviders";
 
 const AllEmployee = () => {
+  //User
+  const { user } = useContext(AuthContext);
+
+  //Get user by email Api
+  const { data: userData } = useGetProfileByEmailQuery(user.email);
+
+  const registerUser = userData?.data;
+
   const [
     updateProfileEditPermission,
     { isSuccess: permissionUpdateSuccess, isLoading: permissionUpdateLoading },
   ] = useUpdateProfileEditPermissionMutation();
+  const [
+    updateAppointmentPermission,
+    {
+      isSuccess: AppointmentPermissionUpdateSuccess,
+      isLoading: AppointmentPermissionUpdateLoading,
+    },
+  ] = useUpdateAppointmentPermissionMutation();
 
   //Api
   const { data } = useGetProfilesQuery();
   const [deleteProfile, { isSuccess, isLoading }] = useDeleteProfileMutation();
 
   //set data
-  const employees = data?.data;
-
+  const allProfiles = data?.data;
+  //Filter Employees
+  const employees = allProfiles?.filter(
+    (profile) => profile?.role === "employee"
+  );
   //handle Delete
   const handleDelete = (id) => {
     const deleteConfirm = window.confirm("Want to delete?");
@@ -41,7 +62,6 @@ const AllEmployee = () => {
 
   //handle update profile edit permission
   const handleEditProfilePermissionChange = (id, editPermisson) => {
-    console.log(id, editPermisson);
     const updatedPermission = editPermisson === "true" ? "false" : "true";
     const updateProfileEdit = {
       profileEditPermission: updatedPermission,
@@ -50,9 +70,19 @@ const AllEmployee = () => {
   };
 
   //update profile edit permission effects
+  //handle update profile edit permission
+  const handleAppointmentPermissionChange = (id, editPermisson) => {
+    const updatedPermission = editPermisson === "true" ? "false" : "true";
+    const updatedAppointment = {
+      appointmentPermission: updatedPermission,
+    };
+    updateAppointmentPermission({ id: id, data: updatedAppointment });
+  };
+
+  //update profile edit permission effects
   useEffect(() => {
     if (permissionUpdateSuccess) {
-      toast.success("Permission update successfully", {
+      toast.success("Permission updated", {
         id: "update-edit-profile-permission",
       });
     }
@@ -60,6 +90,18 @@ const AllEmployee = () => {
       toast.loading("Loading", { id: "update-edit-profile-permission" });
     }
   }, [permissionUpdateSuccess, permissionUpdateLoading]);
+
+  //update appointment permission effects
+  useEffect(() => {
+    if (AppointmentPermissionUpdateSuccess) {
+      toast.success("Permission updated", {
+        id: "update-appointment-permission",
+      });
+    }
+    if (AppointmentPermissionUpdateLoading) {
+      toast.loading("Loading", { id: "update-appointment-permission" });
+    }
+  }, [AppointmentPermissionUpdateSuccess, AppointmentPermissionUpdateLoading]);
 
   return (
     <div className="content-wrapper">
@@ -82,7 +124,13 @@ const AllEmployee = () => {
                   <th>Email</th>
                   <th>Address</th>
                   <th>Joining Date</th>
-                  <th>Profile Edit</th>
+                  {registerUser?.role === "super admin" && (
+                    <>
+                      {" "}
+                      <th>Appointment Permission</th>
+                      <th>Profile Edit</th>
+                    </>
+                  )}
                   <th>Details</th>
                   <th className="action-area">Action</th>
                 </tr>
@@ -108,36 +156,56 @@ const AllEmployee = () => {
                     <td>
                       {employee?.joiningDate?.split("-").reverse().join("-")}
                     </td>
-                    <td>
-                      {/* <button
-                        title="Profile Edit Permission"
-                        onClick={() =>
-                          handleEditProfilePermissionChange(
-                            employee?._id,
-                            employee?.profileEditPermission
-                          )
-                        }
-                        className={
-                          employee?.profileEditPermission == "true"
-                            ? "update-btn text-white bg-success"
-                            : "update-btn text-white bg-danger"
-                        }
-                      >
-                        {employee?.profileEditPermission == "true"
-                          ? "Yes"
-                          : "No"}
-                      </button> */}
+                    {registerUser?.role === "super admin" && (
+                      <>
+                        {" "}
+                        <td>
+                          <SwitchButton
+                            isChecked={
+                              employee?.appointmentPermission === "true"
+                            }
+                            onChange={() =>
+                              handleAppointmentPermissionChange(
+                                employee?._id,
+                                employee?.appointmentPermission
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          {/* <button
+                    title="Profile Edit Permission"
+                    onClick={() =>
+                      handleEditProfilePermissionChange(
+                        employee?._id,
+                        employee?.profileEditPermission
+                      )
+                    }
+                    className={
+                      employee?.profileEditPermission == "true"
+                        ? "update-btn text-white bg-success"
+                        : "update-btn text-white bg-danger"
+                    }
+                  >
+                    {employee?.profileEditPermission == "true"
+                      ? "Yes"
+                      : "No"}
+                  </button> */}
 
-                      <SwitchButton
-                        isChecked={employee?.profileEditPermission === "true"}
-                        onChange={() =>
-                          handleEditProfilePermissionChange(
-                            employee?._id,
-                            employee?.profileEditPermission
-                          )
-                        }
-                      />
-                    </td>
+                          <SwitchButton
+                            isChecked={
+                              employee?.profileEditPermission === "true"
+                            }
+                            onChange={() =>
+                              handleEditProfilePermissionChange(
+                                employee?._id,
+                                employee?.profileEditPermission
+                              )
+                            }
+                          />
+                        </td>
+                      </>
+                    )}
                     <td>
                       <Link to={`/dashboard/employee-details/${employee?._id}`}>
                         <button className="update-btn">Details</button>

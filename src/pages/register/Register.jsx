@@ -63,6 +63,8 @@ const Register = () => {
                       address: data.address,
                       email: data.email,
                       role: "employee",
+                      profileEditPermission:"false",
+                      appointmentPermission:"false",
                     };
                     addProfile(profile);
                     setLoading(false);
