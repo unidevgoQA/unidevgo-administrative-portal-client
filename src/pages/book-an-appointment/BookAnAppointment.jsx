@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Select from "react-select";
@@ -8,9 +8,24 @@ import { useGetProfilesQuery } from "../../features/profile/profileApi";
 import "./book-an-appoinment.scss";
 
 const BookAnAppointment = () => {
-  //
+   const [selectedMember, setSelectedMember] = useState(null);
+
   const [appointmentConfirmationEmail, { isLoading, isSuccess }] =
     useAppointmentConfirmationEmailMutation();
+
+  const [baseUrl, setBaseUrl] = useState('');
+
+  useEffect(() => {
+    const getBaseUrl = () => {
+      const { protocol, host } = window.location;
+      setBaseUrl(`${protocol}//${host}`);
+    };
+
+    getBaseUrl();
+  }, []);
+
+  const meetingUrl = `${baseUrl}/meeting`;
+  
 
   const currentYear = new Date().getFullYear();
   //Api
@@ -45,25 +60,33 @@ const BookAnAppointment = () => {
       mobile,
       email,
       recipients: [member],
-      member,
+      selectMemberName : selectedMember?.value?.name,
+      selectMemberDesignation : selectedMember?.value?.desgination,
+      meetingUrl,
       date,
       time,
       message,
     };
+    
     const confirmSubmit = window.confirm("Would you like to schedule this appointment?");
     if (confirmSubmit) {
       appointmentConfirmationEmail(appointment);
       reset();
       toast.success("Appointment Successfully Booked", { id: "appointment" });
       setValue(null)
+      setSelectedMember(null)
     }
   
   };
 
-  const [selectedMember, setSelectedMember] = useState(null);
+
 
   const options = appointmentPermissionMembers?.map((employee) => ({
-    value: employee?.email,
+    value: {
+      email : employee?.email,
+      name : employee?.name,
+      desgination : employee?.desgination
+    },
     label: (
       <div className="select-wrapper">
         {employee?.img && (
@@ -82,7 +105,7 @@ const BookAnAppointment = () => {
   }));
 
   const handleMemberChange = (selectedOption) => {
-    setValue("member", selectedOption?.value);
+    setValue("member", selectedOption?.value.email);
     setSelectedMember(selectedOption);
   };
 
@@ -132,8 +155,7 @@ const BookAnAppointment = () => {
                       required
                       type="tel"
                       id="mobile"
-                      pattern="[0-9]{11}"
-                      placeholder="01XXXXXXXXX"
+                      // pattern="[0-9]"
                       {...register("mobile")}
                     />
                     {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}

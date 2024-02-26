@@ -29,6 +29,7 @@ import SupportTickets from "./pages/employee-dashboard/support-tickets/SupportTi
 import UpdateProfile from "./pages/employee-dashboard/update-profile/UpdateProfile";
 import WorkStatus from "./pages/employee-dashboard/work-status/WorkStatus";
 import Login from "./pages/login/Login";
+import Meeting from "./pages/meeting/Meeting";
 import Register from "./pages/register/Register";
 import Calender from "./pages/shared-dashboard/calender/Calender";
 import SupportTicketDetails from "./pages/shared-dashboard/support-ticket-details/SupportTicketDetails";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/meeting",
+    element: <Meeting />,
   },
   {
     path: "/update-password",
