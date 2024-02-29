@@ -8,12 +8,12 @@ import { useGetProfilesQuery } from "../../features/profile/profileApi";
 import "./book-an-appoinment.scss";
 
 const BookAnAppointment = () => {
-   const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const [appointmentConfirmationEmail, { isLoading, isSuccess }] =
     useAppointmentConfirmationEmailMutation();
 
-  const [baseUrl, setBaseUrl] = useState('');
+  const [baseUrl, setBaseUrl] = useState("");
 
   useEffect(() => {
     const getBaseUrl = () => {
@@ -25,7 +25,6 @@ const BookAnAppointment = () => {
   }, []);
 
   const meetingUrl = `${baseUrl}/meeting`;
-  
 
   const currentYear = new Date().getFullYear();
   //Api
@@ -37,6 +36,22 @@ const BookAnAppointment = () => {
     (employee) => employee?.appointmentPermission == "true"
   );
 
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (event) => {
+    const inputValue = event.target.value;
+
+    // Check if the input matches the allowed pattern
+    if (/^[0-9+]{0,15}$/.test(inputValue)) {
+      setPhoneNumber(inputValue);
+    } else {
+      // Display an alert for invalid input
+      toast.error(
+        "Invalid input. Please enter only numbers and the plus symbol (+), up to 15 characters.",{id:'book-appointment'}
+      );
+    }
+  };
+
   const {
     handleSubmit,
     register,
@@ -47,7 +62,6 @@ const BookAnAppointment = () => {
 
   const handleSubmitAppointment = ({
     name,
-    mobile,
     email,
     member,
     date,
@@ -57,35 +71,41 @@ const BookAnAppointment = () => {
     const appointment = {
       //Appoitment data
       name,
-      mobile,
+      mobile : phoneNumber,
       email,
       recipients: [member],
-      selectMemberName : selectedMember?.value?.name,
-      selectMemberDesignation : selectedMember?.value?.desgination,
+      selectMemberName: selectedMember?.value?.name,
+      selectMemberDesignation: selectedMember?.value?.desgination,
       meetingUrl,
       date,
       time,
       message,
     };
-    
-    const confirmSubmit = window.confirm("Would you like to schedule this appointment?");
-    if (confirmSubmit) {
-      appointmentConfirmationEmail(appointment);
-      reset();
-      toast.success("Appointment Successfully Booked", { id: "appointment" });
-      setValue(null)
-      setSelectedMember(null)
+
+    if (name.trim().length === 0 || name.trim().length === 0) {
+      toast.error("Provide valid input", { id: "book-appointment" });
+    } else if (message.trim().length === 0 || message.trim().length === 0) {
+      toast.error("Provide valid input", { id: "book-appointment" });
+    } else {
+      const confirmSubmit = window.confirm(
+        "Would you like to schedule this appointment?"
+      );
+      if (confirmSubmit) {
+        appointmentConfirmationEmail(appointment);
+        reset();
+        toast.success("Appointment Successfully Booked", { id: "appointment" });
+        setValue(null);
+        setSelectedMember(null);
+        setPhoneNumber("");
+      }
     }
-  
   };
-
-
 
   const options = appointmentPermissionMembers?.map((employee) => ({
     value: {
-      email : employee?.email,
-      name : employee?.name,
-      desgination : employee?.desgination
+      email: employee?.email,
+      name: employee?.name,
+      desgination: employee?.desgination,
     },
     label: (
       <div className="select-wrapper">
@@ -149,16 +169,18 @@ const BookAnAppointment = () => {
                   </div>
 
                   <div className="col-lg-6 col-md-12">
-                    <label for="mobile">Mobile</label>
+                    <label htmlFor="mobile">Mobile</label>
                     <input
                       name="phoneNumber"
                       required
                       type="tel"
                       id="mobile"
-                      // pattern="[0-9]"
-                      {...register("mobile")}
+                      pattern="[0-9+]*"
+                      title="Please enter only numbers and the plus symbol (+)"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChange}
                     />
-                    {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
+                    {/* You can still display other error messages if needed */}
                   </div>
                   <div className="col-md-6">
                     <label>Email</label>
@@ -202,7 +224,7 @@ const BookAnAppointment = () => {
                       required
                       {...register("message", {
                         required: true,
-                        maxLength: 1000,
+                        maxLength:1000,
                       })}
                     />
                     {errors.message && errors.message.type === "maxLength" && (
