@@ -5,7 +5,7 @@ const appointmentApi = apiSlice.injectEndpoints({
     appointmentConfirmationEmail: builder.mutation({
       query: (data) => ({
         method: "POST",
-        url: "/appointment-confirmation-email",
+        url: "/send-email/appointment-confirmation-email",
         body: data,
       }),
       // invalidatesTags : ['']

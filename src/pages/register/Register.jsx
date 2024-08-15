@@ -1,91 +1,95 @@
-import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useAddProfileMutation } from "../../features/profile/profileApi";
-import { AuthContext } from "../../providers/AuthProviders";
 
 const Register = () => {
   //State
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  //Context
-  const { createUser, verifyEmail } = useContext(AuthContext);
-  //Api
-  const [addProfile] = useAddProfileMutation();
-  //
+
+  //React Hook Form
   const {
     handleSubmit,
     register,
     reset,
-    control,
     formState: { errors },
   } = useForm();
   //Error state
   const [showError, setShowError] = useState("");
-  // const [disableErrorArea, setDisableErrorArea] = useState(false);
+
   //Imgbb key
   const imgBBkey = import.meta.env.VITE_IMGBB_API_KEY;
 
   const navigate = useNavigate();
 
   //Register Handler
-  const onSubmit = (data) => {
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
     setLoading(true);
-    const image = data.image[0];
-    const formData = new FormData();
-    formData.append("image", image);
-
-    if (data.name.trim().length === 0 || data.desgination.trim().length === 0) {
+  
+    if (data.name.trim().length === 0 || data.designation.trim().length === 0) {
       toast.error("Provide valid input", { id: "register-profile" });
-    } else {
-      if (data.email.endsWith("@unidevgo.com")) {
-        createUser(data.email, data.password)
-          .then((result) => {
-            if (result.user) {
-              verifyEmail();
-              const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
-              fetch(url, {
-                method: "POST",
-                body: formData,
-              })
-                .then((res) => res.json())
-                .then((imgData) => {
-                  if (imgData.success) {
-                    const profile = {
-                      name: data.name,
-                      desgination: data.desgination,
-                      gender: data.gender,
-                      img: imgData.data.url,
-                      joiningDate: data.joiningDate,
-                      mobile: data.mobile,
-                      address: data.address,
-                      email: data.email,
-                      role: "employee",
-                      profileEditPermission:"false",
-                      appointmentPermission:"false",
-                    };
-                    addProfile(profile);
-                    setLoading(false);
-                    toast.success("Register Successfully", {
-                      id: "register-profile",
-                    });
-
-                    reset();
-                    navigate("/");
-                  }
-                });
-            }
-          })
-          .catch((err) => setShowError(err.message));
-      } else {
-        toast.error(
-          "Invalid email domain. Registration failed. Must be use unidevgo email"
-        );
-      }
+      setLoading(false);
+      return;
     }
+  
+    if (!data.email.endsWith("@unidevgo.com")) {
+      toast.error("Invalid email domain. Registration failed. Must use unidevgo email", { id: "register-profile" });
+      setLoading(false);
+      return;
+    }
+  
+    try {
+      const image = data.image[0];
+      const formData = new FormData();
+      formData.append("image", image);
+  
+      const url = `https://api.imgbb.com/1/upload?key=${imgBBkey}`;
+      const imgRes = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+  
+      const imgData = await imgRes.json();
+  
+      if (imgData.success) {
+        const profile = {
+          name: data.name,
+          designation: data.designation,
+          gender: data.gender,
+          img: imgData.data.url,
+          joiningDate: data.joiningDate,
+          mobile: data.mobile,
+          address: data.address,
+          email: data.email,
+          password : data.password,
+          role: "employee",
+          profileEditPermission: "false",
+          appointmentPermission: "false",
+        };
+
+        console.log(profile)
+  
+        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}auth/register`, profile);
+        console.log('Registration Successful', res.data);
+  
+        toast.success("Register Successfully", { id: "register-profile" });
+        reset();
+        navigate("/");
+      } else {
+        throw new Error("Image upload failed");
+      }
+    } catch (err) {
+      console.error('Registration Failed', err.message || err.response.data);
+      toast.error('Registration failed', { id: "register-profile" });
+    }
+  
+    setLoading(false);
   };
+  
 
   //
   useEffect(() => {
@@ -164,7 +168,7 @@ const Register = () => {
                     <select
                       required
                       className="gender-selection"
-                      {...register("desgination")}
+                      {...register("designation")}
                     >
                       <option value="Software QA Engineer">
                         Software QA Engineer

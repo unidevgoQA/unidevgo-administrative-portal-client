@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./app/store";
+import { SocketProvider } from "./context/SocketContext";
 import "./index.scss";
 import Dashboard from "./layout/dashboard/dashboard/Dashboard";
 import AddNewEvent from "./pages/admin-dashboard/add-new-event/AddNewEvent";
@@ -19,6 +20,7 @@ import Projects from "./pages/admin-dashboard/projects/Projects";
 import SendEmail from "./pages/admin-dashboard/send-email/SendEmail";
 import SupportTIcketManagement from "./pages/admin-dashboard/support-ticket-management/SupportTIcketManagement";
 import BookAnAppointment from "./pages/book-an-appointment/BookAnAppointment";
+import Chat from "./pages/chat/chat/Chat";
 import AddWorkStatus from "./pages/employee-dashboard/add-work-status/AddWorkStatus";
 import Attendence from "./pages/employee-dashboard/attendence/Attendence";
 import CreateTicket from "./pages/employee-dashboard/create-ticket/CreateTicket";
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
   {
     path: "/book-an-appointment",
     element: <BookAnAppointment />,
+  },
+  {
+    path: "/chat",
+    element: (
+      <PrivateRoute>
+        <Chat />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/dashboard",
@@ -168,8 +178,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProviders>
-        <Toaster position="top-center" reverseOrder={false} />
-        <RouterProvider router={router} />
+        <SocketProvider>
+          <Toaster position="top-center" reverseOrder={false} />
+          <RouterProvider router={router} />
+        </SocketProvider>
       </AuthProviders>
     </Provider>
   </React.StrictMode>

@@ -1,0 +1,23 @@
+.empty-chat-container-wrapper {
+  flex: 1;
+  @media (min-width: 768px) {
+    background-color: #071c0b;
+    display: flex;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  transition: all;
+  transition-duration: 300ms;
+  .welcome-wrapper {
+    h3 {
+      color: #fff;
+      font-weight: 600;
+      span {
+        color: #37f42e;
+      }
+    }
+  }
+}

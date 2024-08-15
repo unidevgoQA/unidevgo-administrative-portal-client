@@ -127,6 +127,8 @@ const SendEmail = () => {
       });
     }
 
+    console.log(formData)
+
     fetch(`${import.meta.env.VITE_BASE_URL}send-email`, {
       method: "POST",
       headers: {},

@@ -9,25 +9,46 @@ import { Link } from "react-router-dom";
 import GoBack from "../../../components/go-back/GoBack";
 import {
   useDeleteCalenderEventMutation,
+  useEventEmailMutation,
   useGetAllEventsQuery,
 } from "../../../features/calender-events/calenderEvents";
-import { useGetProfileByEmailQuery } from "../../../features/profile/profileApi";
+import {
+  useGetProfileByEmailQuery,
+  useGetProfilesQuery,
+} from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
-import './calender.scss';
+import "./calender.scss";
 
 const Calender = () => {
   //User
   const { user } = useContext(AuthContext);
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
-  //Register User
-  const registerUser = userData?.data;
-
+  //Send event mail
+  const [sendEventEmail] = useEventEmailMutation();
   //Get all events
-  const { data } = useGetAllEventsQuery();
   //Delete event api
   const [deleteEvent, { isLoading, isSuccess }] =
     useDeleteCalenderEventMutation();
+  const { data } = useGetAllEventsQuery();
+  //Register User
+  const registerUser = userData?.data;
+  //All users
+  const { data: profilesData } = useGetProfilesQuery();
+  //set data
+  const allProfiles = profilesData?.data;
+  //Filter Employees
+  const employees = allProfiles?.filter(
+    (profile) => profile?.role === "employee"
+  );
+  // const employeesEmail = employees?.map(employee => employee?.email);
+
+  const employeesEmail = [
+    "samiulahmedanik@gmail.com",
+    "samiulanikahmed@gmail.com",
+    "samiul.ahmed@unidevgo.com",
+  ];
+
   //set all events
   const allEvents = data?.data;
   //Handle delete event
@@ -64,6 +85,29 @@ const Calender = () => {
     }
   };
 
+  //Check Event
+  useEffect(() => {
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+
+    const matchedEvent = allEvents?.find(
+      (event) => event.start === formattedCurrentDate
+    );
+
+    if (matchedEvent) {
+      greetFunction(matchedEvent.title);
+    }
+  }, []);
+
+  //Greet Function
+  const greetFunction = (eventTitle) => {
+    const event = {
+      eventTitle,
+      employeesEmail,
+    };
+    sendEventEmail(event);
+  };
+
   //Delete efftects
   useEffect(() => {
     if (isSuccess) {
@@ -85,11 +129,8 @@ const Calender = () => {
             {registerUser?.role === "admin" ||
             registerUser?.role === "super admin" ? (
               <div className="add-event-wrapper">
-                <Link
-                  className="add-btn"
-                  to={"/dashboard/add-new-event"}
-                >
-                <i class="fa-regular fa-square-plus"></i>  Add New Event 
+                <Link className="add-btn" to={"/dashboard/add-new-event"}>
+                  <i class="fa-regular fa-square-plus"></i> Add New Event
                 </Link>
               </div>
             ) : (
@@ -128,7 +169,7 @@ const Calender = () => {
           </div>
         </div>
       </div>
-      <GoBack/>
+      <GoBack />
     </div>
   );
 };

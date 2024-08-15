@@ -10,12 +10,18 @@ const profileApi = apiSlice.injectEndpoints({
     }),
     getProfileByEmail: builder.query({
       query: (email) => ({
-        url: `/register-user/${email}`,
+        url: `/profile/register-user/${email}`,
       }),
     }),
     deleteProfile: builder.mutation({
       query: (id) => ({
         method: "DELETE",
+        url: `/profile/${id}`,
+      }),
+      invalidatesTags : ['profile']
+    }),
+    getProfileById: builder.query({
+      query: (id) => ({
         url: `/profile/${id}`,
       }),
       invalidatesTags : ['profile']
@@ -39,7 +45,7 @@ const profileApi = apiSlice.injectEndpoints({
     updateProfileEditPermission: builder.mutation({
       query: ({id,data}) => ({
         method: "PUT",
-        url: `/profile-edit/${id}`,
+        url: `/profile/profile-edit/${id}`,
         body: data,
       }),
       invalidatesTags: ["profile"],
@@ -47,7 +53,7 @@ const profileApi = apiSlice.injectEndpoints({
     updateAppointmentPermission: builder.mutation({
       query: ({id,data}) => ({
         method: "PUT",
-        url: `/appointment-permission/${id}`,
+        url: `/profile/appointment-permission/${id}`,
         body: data,
       }),
       invalidatesTags: ["profile"],
@@ -61,6 +67,7 @@ export const {
   useGetProfileByEmailQuery,
   useGetProfilesQuery,
   useDeleteProfileMutation,
+  useGetProfileByIdQuery,
   useUpdateProfileMutation,
   useUpdateProfileEditPermissionMutation,
   useUpdateAppointmentPermissionMutation

@@ -21,12 +21,12 @@ const Login = () => {
     setLoading(true);
     loginUser(email, password)
       .then((result) => {
-        if (result.user) {
-          setLoading(false);
-          toast.success("Login Successfully", { id: "login" });
-          navigate("/dashboard/profile");
-          reset();
-        }
+       if(result.data.token){
+        setLoading(false);
+        toast.success("Login Successfully", { id: "login" });
+        navigate("/dashboard/profile");
+        reset();
+       }
       })
       .catch((err) => {
         setShowError(err.message);

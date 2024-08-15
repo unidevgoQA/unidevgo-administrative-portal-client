@@ -112,6 +112,8 @@ const LeaveManagement = () => {
   const allLeaveEmails = leaveEmails?.data;
   const getEmails = allLeaveEmails?.map((email) => email?.email);
 
+  console.log(getEmails)
+
   //Accept leave handler
   const handleAcceptLeave = (
     leaveId,

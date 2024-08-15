@@ -20,11 +20,19 @@ const calenderEventsApi = apiSlice.injectEndpoints({
       query: (data) => ({
         method: "POST",
         url: "/calender-events",
-        body: data,
+        body: data, 
       }),
       invalidatesTags: ["calender-event"],
+    }),
+    eventEmail: builder.mutation({
+      query: (data) => ({
+        method: "POST",
+        url: "/event-email",
+        body: data,
+      }),
+      // invalidatesTags : ['']
     }),
   }),
 });
 
-export const {useAddCalenderEventMutation,useDeleteCalenderEventMutation,useGetAllEventsQuery} = calenderEventsApi;
+export const {useAddCalenderEventMutation,useDeleteCalenderEventMutation,useGetAllEventsQuery,useEventEmailMutation} = calenderEventsApi;

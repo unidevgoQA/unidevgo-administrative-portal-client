@@ -4,6 +4,7 @@ import { AuthContext } from "../providers/AuthProviders";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
+  console.log(user)
   if (loading) {
     return (
       <div className="loading-area">

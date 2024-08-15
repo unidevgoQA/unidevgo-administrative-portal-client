@@ -13,6 +13,7 @@ const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
 
+  console.log(user.email)
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
@@ -73,7 +74,7 @@ const Profile = () => {
                             <h2>{registerUser?.name}</h2>
                           </div>
                           <div className="col-md-12">
-                            <h3>{registerUser?.desgination}</h3>
+                            <h3>{registerUser?.designation}</h3>
                           </div>
                           <div className="col-md-12">
                             <h3>

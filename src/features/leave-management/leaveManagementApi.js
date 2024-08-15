@@ -26,7 +26,7 @@ const leaveManagementApi = apiSlice.injectEndpoints({
     leaveEmail: builder.mutation({
       query: (data) => ({
         method: "POST",
-        url: "/leave-email",
+        url: "/send-email/leave-email",
         body: data,
       }),
         invalidatesTags : ['leaveManagement']

@@ -70,7 +70,7 @@ const EmployeeDetails = () => {
                             <h2>{profile?.name}</h2>
                           </div>
                           <div className="col-md-12">
-                            <h3>{profile?.desgination}</h3>
+                            <h3>{profile?.designation}</h3>
                           </div>
                           <div className="col-md-12">
                             <h3>

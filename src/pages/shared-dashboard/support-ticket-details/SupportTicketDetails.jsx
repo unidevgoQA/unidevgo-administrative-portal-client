@@ -57,6 +57,8 @@ const SupportTicketDetails = () => {
       employeeImg: registerUser?.img,
       employeeName: registerUser?.name,
     };
+
+    console.log(suportTicket);
     if (reply.trim().length === 0) {
       toast.error("Provide valid input", { id: "reply-support-ticket" });
     } else {
@@ -93,7 +95,7 @@ const SupportTicketDetails = () => {
                 </div>
               </div>
             </div>
-            {ticketDetails?.replies.map((chat, index) => {
+            {ticketDetails?.replies?.map((chat, index) => {
               const lastMessage = ticketDetails?.replies.length - 1 === index;
               return (
                 <div

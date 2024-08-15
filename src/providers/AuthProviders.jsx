@@ -1,83 +1,53 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut
-} from "firebase/auth";
+import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
-import app from "../firebase/firebase.config";
 
 export const AuthContext = createContext(null);
 
-const auth = getAuth(app);
 
 const AuthProviders = ({ children }) => {
-  //User
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null); 
   const [registerUser, setRegisterUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
   
-  //User with google
-
-  //Create user google
-  const loginWithGoogle = () => {
-    return signInWithPopup(auth, googleProvider);
-  };
-  const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-  //Login
-  const loginUser = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-  //logout
-  const logoutUser = () => {
-    return signOut(auth);
-  };
-  //Update
-  const resetPassword = (email) => {
-    return sendPasswordResetEmail(auth, email)
-  };
-
-  const verifyEmail = () =>{
-    sendEmailVerification(auth.currentUser)
-    .then(result => {
-      console.log(result);
-    })
-  }
-
-  //Observer
+  //User persistance 
   useEffect(() => {
-    const unsubsribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-
-    return () => {
-      unsubsribe();
-    };
+    const storedUser = localStorage.getItem('profile');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
   }, []);
+  //Login profile handler
+  const loginUser = async (email, password) => {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}auth/login`,{ email, password });
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('profile', JSON.stringify(response.data.profile));
+    setUser(response.data.profile);
+    setRegisterUser(response.data.profile);
+    return response;
+  };
+  //Logout profile
+  const logoutUser = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('profile');
+    setUser(null);
+  };
 
   const authInfo = {
     user,
     registerUser,
     loading,
-    createUser,
     isOpen,
     setIsOpen,
-    loginUser,
     logoutUser,
-    loginWithGoogle,
-    resetPassword,
-    verifyEmail,
+    loginUser,
   };
+
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

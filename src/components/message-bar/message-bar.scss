@@ -1,0 +1,35 @@
+.messagebar-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0px;
+  input {
+    background: transparent;
+    border: 1px solid #37f42e;
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #fff;
+    width: 50%;
+  }
+  .button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    button {
+      background: transparent;
+      border: 1px solid #37f42e;
+      padding: 5px 20px;
+      border-radius: 5px;
+      transition: 0.3s;
+      &:hover {
+        background: #37f42e;
+        i {
+          color: #071c0b;
+        }
+      }
+      i {
+        color: #37f42e;
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { People } from "@mui/icons-material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
@@ -95,8 +96,6 @@ export default function Sidenav() {
   //Logout
   const handleLogout = () => {
     logoutUser()
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
   };
 
   return (
@@ -141,6 +140,35 @@ export default function Sidenav() {
                 </ListItemIcon>
                 <ListItemText
                   primary={"Profile"}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => navigate("/chat")}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "#37F42E",
+                  }}
+                >
+                  <People />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Chat"}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
@@ -322,6 +350,35 @@ export default function Sidenav() {
               </ListItemButton>
             </ListItem>
             <Divider />
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => navigate("/chat")}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "#37F42E",
+                  }}
+                >
+                  <People />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Chat"}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider/>
             <ListItem
               disablePadding
               sx={{ display: "block" }}

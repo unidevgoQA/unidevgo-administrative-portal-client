@@ -1,0 +1,35 @@
+.chat-header {
+  height: 5vh;
+  border-bottom: 2px solid #198754;
+  border-top: 2px solid #198754;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  .audio-video-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    button {
+      background: #37f42e;
+      border-radius: 5px;
+      border: none;
+    }
+  }
+  .user {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    h6 {
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+}
