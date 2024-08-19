@@ -2,12 +2,15 @@ import React, { useContext, useRef, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 import { AuthContext } from "../../providers/AuthProviders";
 import "./message-bar.scss";
+import "./modal.scss";
 
 const MessageBar = ({ recipientId }) => {
   const { sendMessage } = useSocket();
   const { user } = useContext(AuthContext);
   const [messageText, setMessageText] = useState("");
   const [filePreview, setFilePreview] = useState(null);
+  const [fileType, setFileType] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleSendMessage = async () => {
@@ -50,9 +53,10 @@ const MessageBar = ({ recipientId }) => {
 
         if (response.ok) {
           const savedMessage = await response.json();
-          console.log(savedMessage)
           sendMessage(savedMessage);
           setFilePreview(null); // Clear the preview after sending
+          setFileType(null);
+          setIsModalOpen(false); // Close the modal after sending
         } else {
           console.error("File upload failed");
         }
@@ -65,7 +69,10 @@ const MessageBar = ({ recipientId }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const fileType = file.type.split("/")[0];
       setFilePreview(URL.createObjectURL(file));
+      setFileType(fileType);
+      setIsModalOpen(true); // Open the modal when a file is selected
     }
   };
 
@@ -75,17 +82,42 @@ const MessageBar = ({ recipientId }) => {
 
   const handleRemoveFile = () => {
     setFilePreview(null);
+    setFileType(null);
+    setIsModalOpen(false); // Close the modal if the file is removed
     fileInputRef.current.value = null;
+  };
+
+  const renderFilePreview = () => {
+    switch (fileType) {
+      case "image":
+        return <img src={filePreview} alt="Preview" />;
+      case "video":
+        return <video controls src={filePreview} />;
+      case "audio":
+        return <audio controls src={filePreview} />;
+      case "application":
+        if (filePreview.endsWith(".pdf")) {
+          return <embed src={filePreview} type="application/pdf" width="100%" height="500px" />;
+        } else {
+          return (
+            <div className="file-preview-document">
+              <i className="fa-solid fa-file"></i>
+              <span>{fileInputRef.current.files[0].name}</span>
+            </div>
+          );
+        }
+      default:
+        return (
+          <div className="file-preview-document">
+            <i className="fa-solid fa-file"></i>
+            <span>{fileInputRef.current.files[0].name}</span>
+          </div>
+        );
+    }
   };
 
   return (
     <div className="messagebar-wrapper">
-      {filePreview && (
-        <div className="file-preview">
-          <img width={"20px"} src={filePreview} alt="Preview" />
-          <button onClick={handleRemoveFile}>Remove</button>
-        </div>
-      )}
       <input
         type="text"
         value={messageText}
@@ -94,9 +126,6 @@ const MessageBar = ({ recipientId }) => {
       />
 
       <div className="button-wrapper">
-        {/* <button>
-          <i className="fa-regular fa-face-smile"></i>
-        </button> */}
         <button onClick={handleFileUploadClick}>
           <i className="fa-solid fa-paperclip"></i>
         </button>
@@ -111,6 +140,18 @@ const MessageBar = ({ recipientId }) => {
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
+
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleRemoveFile}><i class="fa-solid fa-trash-can"></i></span>
+            {renderFilePreview()}
+            <button onClick={handleSendFile} className="send-button">
+            <i className="fa-regular fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,78 +3,79 @@ import { useSocket } from "../../context/SocketContext";
 import { AuthContext } from "../../providers/AuthProviders";
 import "./message-container.scss";
 
-// Function to format the timestamp without seconds
 const formatTimestamp = (timestamp) => {
   const dateString = typeof timestamp === 'string' ? timestamp : timestamp?.$date;
   const date = new Date(dateString);
-  
+
   if (isNaN(date.getTime())) {
-    return "Invalid Date"; // Handle invalid dates
+    return "Invalid Date";
   }
-  
-  // Format the date as 'MM/DD/YYYY, HH:MM AM/PM'
+
   return date.toLocaleString(undefined, {
     hour12: true,
-    hour: 'numeric',
-    minute: 'numeric',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+    hour: "numeric",
+    minute: "numeric",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
   });
 };
 
 const MessageContainer = ({ recipientId }) => {
   const { user } = useContext(AuthContext);
-  const { messages: socketMessages } = useSocket();
+  const { socket, messages: socketMessages } = useSocket();
   const [messages, setMessages] = useState([]);
-  const messageEndRef = useRef(null); // Reference to the end of the message list
-
-  async function fetchMessages(senderId, recipientId) {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}chat/messages?sender=${senderId}&recipient=${recipientId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch messages: ${response.statusText}`);
-      }
-
-      const messages = await response.json();
-      return messages;
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-      return [];
-    }
-  }
+  const messageEndRef = useRef(null);
 
   useEffect(() => {
     async function loadMessages() {
       if (user?.id && recipientId) {
-        const fetchedMessages = await fetchMessages(user.id, recipientId);
-        setMessages(fetchedMessages);
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}chat/messages?sender=${user.id}&recipient=${recipientId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        if (response.ok) {
+          const fetchedMessages = await response.json();
+          setMessages(fetchedMessages);
+        } else {
+          console.error("Failed to fetch messages:", response.statusText);
+        }
       }
     }
 
     loadMessages();
   }, [recipientId, user?.id]);
 
-  // Combine initial fetched messages with real-time socket messages
-  const allMessages = [...messages, ...socketMessages];
 
-  // Scroll to the latest message whenever messages update
+  //Getting realtime messages
+  useEffect(() => {
+    if (socket) {
+      const handleReceiveMessage = (updatedMessages) => {
+        setMessages(updatedMessages); // Replace the entire message list with the updated one
+      };
+
+      socket.on("receiveMessage", handleReceiveMessage);
+
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+      };
+    }
+  }, [socket]);
+
+  
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [allMessages]);
+  }, [messages]);
 
   const renderMessageContent = (msg) => {
-    const isImage = /\.(jpg|jpeg|png|gif)$/i.test(msg.fileUrl);
+    const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(msg.fileUrl);
     const isAudio = /\.(mp3|wav|ogg)$/i.test(msg.fileUrl);
     const isVideo = /\.(mp4|avi|mov|mkv)$/i.test(msg.fileUrl);
 
@@ -104,7 +105,7 @@ const MessageContainer = ({ recipientId }) => {
           <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer">
             {msg.content}
           </a>
-        ); // Fallback for other file types
+        );
       }
     } else {
       return <p>Unsupported message type</p>;
@@ -113,8 +114,8 @@ const MessageContainer = ({ recipientId }) => {
 
   return (
     <div className="message-container">
-      {allMessages.length > 0 ? (
-        allMessages.map((msg) => (
+      {messages.length > 0 ? (
+        messages.map((msg) => (
           <div
             key={msg._id}
             className={`message ${
@@ -126,9 +127,9 @@ const MessageContainer = ({ recipientId }) => {
           </div>
         ))
       ) : (
-        <p>No messages to display.</p>
+        <p className="text-white">No messages to display.</p>
       )}
-      <div ref={messageEndRef} /> {/* Dummy div to scroll into view */}
+      <div ref={messageEndRef} />
     </div>
   );
 };

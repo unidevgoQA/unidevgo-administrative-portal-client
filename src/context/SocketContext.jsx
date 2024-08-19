@@ -17,19 +17,20 @@ export const SocketProvider = ({ children }) => {
         query: { userId: user?.id },
         withCredentials: true,
       });
-
+  
       socket.current.on("connect", () => {
         console.log(`Connected with ID: ${socket.current.id}`);
       });
-
-      socket.current.on("receiveMessage", (message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+  
+      socket.current.on("receiveMessage", (updatedMessages) => {
+        console.log(updatedMessages)
+        setMessages(updatedMessages); // Replace old messages with the updated list
       });
-
+  
       socket.current.on("disconnect", () => {
         console.log("Disconnected from the socket server");
       });
-
+  
       return () => {
         socket.current.disconnect();
       };
