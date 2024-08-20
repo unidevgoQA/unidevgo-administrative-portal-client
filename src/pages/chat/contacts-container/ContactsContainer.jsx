@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import logo from "../../../assets/logo.png";
+import { useSocket } from "../../../context/SocketContext";
 import { useGetProfilesQuery } from "../../../features/profile/profileApi";
 import { AuthContext } from "../../../providers/AuthProviders";
 import "./contact-container.scss";
@@ -8,6 +9,7 @@ const ContactsContainer = ({ setRecipientId }) => {
   // Fetch profiles data using the custom hook
   const { data } = useGetProfilesQuery();
   const { user, logoutUser } = useContext(AuthContext);
+  const {onlineUsers} = useSocket();
 
   // Extract all profiles from the response
   const allProfiles = data?.data;
@@ -29,7 +31,7 @@ const ContactsContainer = ({ setRecipientId }) => {
           <img src={logo} alt="logo" />
         </div>
         <div className="contacts-wrapper">
-          {employees?.map((employee) => (
+        {employees?.map((employee) => (
             <div
               key={employee?._id}
               className="user"
@@ -37,6 +39,9 @@ const ContactsContainer = ({ setRecipientId }) => {
             >
               <img src={employee?.img} alt="Employee" />
               <h6>{employee?.name}</h6>
+              <span
+                className={`status ${onlineUsers[employee?._id] === 'online' ? 'online' : 'offline'}`}
+              ></span>
             </div>
           ))}
         </div>

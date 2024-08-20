@@ -10,6 +10,9 @@ export const SocketProvider = ({ children }) => {
   const socket = useRef(null);
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState({});
+
+
 
   useEffect(() => {
     if (user) {
@@ -17,26 +20,31 @@ export const SocketProvider = ({ children }) => {
         query: { userId: user?.id },
         withCredentials: true,
       });
-  
+
+      //Connect user with socket
       socket.current.on("connect", () => {
         console.log(`Connected with ID: ${socket.current.id}`);
       });
-  
+      //Get socket messages from DB
       socket.current.on("receiveMessage", (updatedMessages) => {
-        console.log(updatedMessages)
-        setMessages(updatedMessages); // Replace old messages with the updated list
+        setMessages(updatedMessages);
       });
-  
+      //User online / offline status
+      socket.current.on("userStatus", ({ userId, status }) => {
+        setOnlineUsers((prev) => ({ ...prev, [userId]: status }));
+      });
+      //Disconnect
       socket.current.on("disconnect", () => {
         console.log("Disconnected from the socket server");
       });
-  
+
       return () => {
         socket.current.disconnect();
       };
     }
   }, [user]);
 
+  //Socket send message functions
   const sendMessage = (message, isFile = false) => {
     if (isFile) {
       fetch(`${import.meta.env.VITE_BASE_URL}/chat/upload`, {
@@ -58,7 +66,7 @@ export const SocketProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{ socket: socket.current, messages, sendMessage }}
+      value={{ socket: socket.current, messages, sendMessage,onlineUsers }}
     >
       {children}
     </SocketContext.Provider>
