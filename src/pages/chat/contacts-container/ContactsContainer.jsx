@@ -9,7 +9,10 @@ const ContactsContainer = ({ setRecipientId }) => {
   // Fetch profiles data using the custom hook
   const { data } = useGetProfilesQuery();
   const { user, logoutUser } = useContext(AuthContext);
-  const {onlineUsers} = useSocket();
+  const { onlineUsers } = useSocket(); // onlineUsers is expected to be an array of user IDs
+
+  // Ensure onlineUsers is an array or an empty array if undefined
+  const onlineUsersList = Array.isArray(onlineUsers) ? onlineUsers : [];
 
   // Extract all profiles from the response
   const allProfiles = data?.data;
@@ -19,7 +22,7 @@ const ContactsContainer = ({ setRecipientId }) => {
     (profile) => profile?._id !== user?.id && profile?.role === "employee"
   );
 
-  //Logout
+  // Logout
   const handleLogout = () => {
     logoutUser();
   };
@@ -31,7 +34,7 @@ const ContactsContainer = ({ setRecipientId }) => {
           <img src={logo} alt="logo" />
         </div>
         <div className="contacts-wrapper">
-        {employees?.map((employee) => (
+          {employees?.map((employee) => (
             <div
               key={employee?._id}
               className="user"
@@ -40,7 +43,9 @@ const ContactsContainer = ({ setRecipientId }) => {
               <img src={employee?.img} alt="Employee" />
               <h6>{employee?.name}</h6>
               <span
-                className={`status ${onlineUsers[employee?._id] === 'online' ? 'online' : 'offline'}`}
+                className={`status ${
+                  onlineUsersList.includes(employee?._id) ? "online" : "offline"
+                }`}
               ></span>
             </div>
           ))}
@@ -51,7 +56,9 @@ const ContactsContainer = ({ setRecipientId }) => {
           <img src={user?.img} alt="" />
           <h6>{user?.name}</h6>
         </div>
-        <button onClick={handleLogout}><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        <button onClick={handleLogout}>
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
       </div>
     </div>
   );
