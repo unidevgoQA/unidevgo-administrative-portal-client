@@ -8,12 +8,9 @@ const ChatHeader = ({ recipientId }) => {
   const recipient = recipientData?.data;
   const { callUser } = useSocket();
 
-  const handleVideoCall = () => {
-    if (callUser) {
-      callUser(recipientId);
-    } else {
-      console.error("callUser function is not defined in SocketContext");
-    }
+  const handleCallClick = () => {
+    console.log('hitt')
+    callUser(recipientId);
   };
 
   return (
@@ -26,7 +23,7 @@ const ChatHeader = ({ recipientId }) => {
         <button>
           <i className="fa-solid fa-phone"></i>
         </button>
-        <button onClick={handleVideoCall}>
+        <button onClick={handleCallClick}>
           <i className="fa-solid fa-video"></i>
         </button>
       </div>

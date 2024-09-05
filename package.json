@@ -40,8 +40,9 @@
     "react-select": "^5.8.0",
     "recharts": "^2.9.2",
     "sass": "^1.69.5",
-    "simple-peer": "^9.10.0",
-    "socket.io-client": "^4.7.5"
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.7.5",
+    "vite-plugin-node-polyfills": "^0.22.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

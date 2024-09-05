@@ -5,7 +5,6 @@ const EmptyChatContainer = () => {
   return (
     <>
       <div className="empty-chat-container-wrapper">
-
         <div className="welcome-wrapper">
           <h3>
             Hi<span>!</span> Welcome to <span>unidevGO</span> Chat
