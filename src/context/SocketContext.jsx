@@ -1,16 +1,15 @@
+import Peer from "peerjs";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import SimplePeer from "simple-peer";
 import { io } from "socket.io-client";
 import { AuthContext } from "../providers/AuthProviders";
 
-// Create a context for managing socket and peer connections
 const SocketContext = createContext(null);
 
-// Custom hook to use the SocketContext
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
   const socket = useRef(null);
+  const peer = useRef(null);
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState({});
@@ -18,66 +17,42 @@ export const SocketProvider = ({ children }) => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   const [incomingCall, setIncomingCall] = useState(null);
-  const peer = useRef(null);
+  const [callInProgress, setCallInProgress] = useState(false);
 
-  console.log("Peeer",peer)
-  console.log("Incoming Call",incomingCall)
-
-  // console.log("localStream", localStream);
-  // console.log("remoteStream", remoteStream);
 
   useEffect(() => {
     if (user) {
-      // Initialize socket connection
       socket.current = io(import.meta.env.VITE_BASE_URL, {
         query: { userId: user?.id },
         withCredentials: true,
       });
 
-      // Handle socket connection
       socket.current.on("connect", () => {
         console.log(`Connected with ID: ${socket.current.id}`);
         socket.current.emit("getConnectedUsers");
       });
 
-      // Update online users
       socket.current.on("onlineUsers", (onlineUsers) => {
         setOnlineUsers(onlineUsers);
       });
 
-      // Update connected users
       socket.current.on("connectedUsers", (users) => {
         setConnectedUsers(users);
       });
 
-      // Handle received messages
       socket.current.on("receiveMessage", (updatedMessages) => {
         setMessages(updatedMessages);
       });
 
-      // Update user status (online/offline)
       socket.current.on("userStatus", ({ userId, status }) => {
         setOnlineUsers((prev) => ({ ...prev, [userId]: status }));
       });
 
-      // Handle incoming call
-      socket.current.on("receiveCall", ({ signal, from }) => {
-        setIncomingCall({ signal, from });
-      });
-
-      // Handle accepted call
-      socket.current.on("callAccepted", (signal) => {
-        if (peer.current) {
-          peer.current.signal(signal);
-        }
-      });
-
-      // Clean up on socket disconnect
+     
       socket.current.on("disconnect", () => {
         console.log("Disconnected from the socket server");
       });
 
-      // Clean up socket connection on unmount
       return () => {
         socket.current.disconnect();
       };
@@ -85,7 +60,6 @@ export const SocketProvider = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    // Get local webcam stream
     const getWebcam = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -100,101 +74,76 @@ export const SocketProvider = ({ children }) => {
     getWebcam();
   }, []);
 
-  // Initiate a call to a user
+  useEffect(() => {
+    if (user && localStream) {
+      peer.current = new Peer(user.id, {
+        host: import.meta.env.VITE_PEER_HOST,
+        port: import.meta.env.VITE_PEER_PORT || 9000,
+        path: "/",
+        secure: false,
+      });
+
+      peer.current.on("open", (id) => {
+        console.log(`PeerJS connection opened with ID: ${id}`);
+      });
+
+      peer.current.on("call", (call) => {
+        // Save the call, but don't automatically answer
+        setIncomingCall(call);
+      });
+
+      peer.current.on("error", (err) => {
+        console.error("PeerJS error:", err);
+      });
+
+      return () => {
+        if (peer.current) {
+          peer.current.destroy();
+        }
+      };
+    }
+  }, [user, localStream]);
+
+
+  console.log("PEEEEEER",peer)
+
   const callUser = (recipientId) => {
-    if (localStream) {
-      console.log("Initializing peer...");
-      const peer = new SimplePeer({
-        initiator: true,
-        trickle: false,
-        stream: localStream,
-      });
+    
+    if (localStream && peer.current) {
 
-      peer.on("signal", (signal) => {
-        console.log("Outgoing signal:", signal);
-        socket.current.emit("callUser", {
-          recipientId,
-          signalData: signal,
-          from: user.id,
-        });
-      });
+      const call = peer.current.call(recipientId, localStream);
 
-      peer.on("connect", () => {
-        console.log("Peer connection established");
-      });
-
-      peer.on("stream", (stream) => {
-        console.log("Received remote stream:", stream);
+      call.on("stream", (stream) => {
         setRemoteStream(stream);
       });
 
-      peer.on("error", (err) => {
-        console.error("Peer error:", err);
+      call.on("error", (err) => {
+        console.error("Call error:", err);
       });
 
-      peer.on("close", () => {
-        console.log("Peer connection closed");
-        setRemoteStream(null);
-      });
-
-      peer.current = peer; // Store the peer instance
-    } else {
-      console.error("Local stream is not available");
+      setCallInProgress(true);
     }
   };
 
-  // Answer an incoming call
   const answerCall = () => {
     if (incomingCall && localStream) {
-      console.log('Answering call...');
-  
-      peer.current = new SimplePeer({
-        initiator: false,
-        trickle: false,
-        stream: localStream,
+      incomingCall.answer(localStream);
+
+      incomingCall.on("stream", (remoteStream) => {
+        setRemoteStream(remoteStream);
       });
-  
-      peer.current.on('signal', (signal) => {
-        console.log('Answering with signal:', signal);
-        socket.current.emit('answerCall', {
-          to: incomingCall.from,
-          signal,
-        });
-      });
-  
-      peer.current.on('connect', () => {
-        console.log('Peer connection established (answering)');
-      });
-  
-      peer.current.on('stream', (stream) => {
-        console.log('Received remote stream after answering:', stream);
-        setRemoteStream(stream);
-      });
-  
-      peer.current.on('error', (err) => {
-        console.error('Peer error:', err);
-      });
-  
-      peer.current.on('close', () => {
-        console.log('Peer connection closed');
-        setRemoteStream(null);
-      });
-  
-      // Signal the incoming call's signal to establish the connection
-      peer.current.signal(incomingCall.signal);
-      
-      setIncomingCall(null); // Clear incoming call notification
-    } else {
-      console.error('Incoming call or local stream is not available');
+
+      setIncomingCall(null);
+      setCallInProgress(true);
+
     }
   };
-  
 
-  // End the current call
   const endCall = () => {
     if (peer.current) {
       peer.current.destroy();
       setRemoteStream(null);
+      setCallInProgress(false);
     }
   };
 
@@ -216,7 +165,7 @@ export const SocketProvider = ({ children }) => {
       socket.current.emit("sendMessage", message);
     }
   };
-
+  
   return (
     <SocketContext.Provider
       value={{
@@ -231,6 +180,7 @@ export const SocketProvider = ({ children }) => {
         answerCall,
         endCall,
         incomingCall,
+        callInProgress,
       }}
     >
       {children}

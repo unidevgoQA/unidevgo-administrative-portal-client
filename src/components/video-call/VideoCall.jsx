@@ -1,21 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useSocket } from '../../context/SocketContext';
-import './video-call.scss'; // Import the CSS file
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useSocket } from "../../context/SocketContext";
+import { AuthContext } from "../../providers/AuthProviders";
+import "./video-call.scss";
 
 const VideoCall = () => {
   const {
     localStream,
     remoteStream,
     answerCall,
+    declineCall,
     endCall,
     incomingCall,
   } = useSocket();
-  
 
+  const { user } = useContext(AuthContext);
+
+  console.log(remoteStream);
 
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
-  
+
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
 
   useEffect(() => {
@@ -41,33 +45,33 @@ const VideoCall = () => {
     setIsCallModalOpen(false);
   };
 
-  const handleEndCall = () => {
-    endCall();
+  const handleDeclineCall = () => {
+    declineCall();
     setIsCallModalOpen(false);
   };
-
-  // console.log(remoteStream,localStream)
 
   return (
     <div className="video-call-container">
       {isCallModalOpen && incomingCall && (
         <div className="call-notification">
           <h2>Incoming Call</h2>
-          <p>From: {incomingCall.from}</p>
           <button onClick={handleAnswerCall}>Accept Call</button>
-          <button onClick={handleEndCall}>Decline Call</button>
+          <button onClick={handleDeclineCall}>Decline Call</button>
         </div>
       )}
 
-      <div className="video-wrapper">
-        <div className="video-container">
-          <h5>My Video</h5>
-          <video ref={localVideoRef} autoPlay muted className="local-video" />
+      <div className="stream-wrapper">
+        <div className="video-wrapper">
+          <div className="video-container">
+            <h6>My Video</h6>
+            <video ref={localVideoRef} autoPlay muted className="local-video" />
+          </div>
+          <div className="video-container">
+            <h5>Partner's Video</h5>
+            <video ref={remoteVideoRef} autoPlay className="remote-video" />
+          </div>
         </div>
-        <div className="video-container">
-          <h5>Partner's Video</h5>
-          <video ref={remoteVideoRef} autoPlay className="remote-video" />
-        </div>
+        {remoteStream && <button onClick={endCall}>End</button>}
       </div>
     </div>
   );

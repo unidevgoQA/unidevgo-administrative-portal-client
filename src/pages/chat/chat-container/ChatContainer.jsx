@@ -7,6 +7,8 @@ import VideoCall from "../../../components/video-call/VideoCall";
 import "./chat-container.scss";
 
 const ChatContainer = ({ recipientId }) => {
+
+  
   return (
     <div className="chat-container-wrapper">
       <ChatHeader recipientId={recipientId} />

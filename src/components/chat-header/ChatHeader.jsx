@@ -9,10 +9,12 @@ const ChatHeader = ({ recipientId }) => {
   const { callUser } = useSocket();
 
   const handleCallClick = () => {
-    console.log('hitt')
     callUser(recipientId);
+    
   };
-
+  const sendMessage =() =>{
+    
+  }
   return (
     <div className="chat-header">
       <div className="user text-white">

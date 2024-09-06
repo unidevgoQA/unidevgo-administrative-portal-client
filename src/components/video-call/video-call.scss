@@ -59,3 +59,20 @@
 .remote-video {
   border-color: #f44336;
 }
+
+.stream-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  button {
+    width: 60px;
+    border: none;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    background: red;
+    text-align: center;
+  }
+}
