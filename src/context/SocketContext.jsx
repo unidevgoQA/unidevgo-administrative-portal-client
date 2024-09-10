@@ -18,12 +18,17 @@ export const SocketProvider = ({ children }) => {
   const [remoteStream, setRemoteStream] = useState(null);
   const [incomingCall, setIncomingCall] = useState(null);
   const [callInProgress, setCallInProgress] = useState(false);
+  const [callerName, setCallerName] = useState(null);
+  const [reloadWindow, setReloadWindow] = useState(false);
+
+   // Sound for incoming call
+   const callSound = new Audio("/public/calling-audio.mp3");
 
 
   useEffect(() => {
     if (user) {
       socket.current = io(import.meta.env.VITE_BASE_URL, {
-        query: { userId: user?.id },
+        query: { userId: user?.id, userName: user?.name },
         withCredentials: true,
       });
 
@@ -48,7 +53,23 @@ export const SocketProvider = ({ children }) => {
         setOnlineUsers((prev) => ({ ...prev, [userId]: status }));
       });
 
-     
+      socket.current.on("caller", ({ from }) => {
+        // Set the incoming call state and the caller's name
+        setCallerName(from)
+      });
+
+      socket.current.on("callEnded", ({ userId }) => {
+        console.log(`Call ended by user with ID: ${userId}`);
+        setRemoteStream(null);
+        setReloadWindow(true);
+      });
+
+      socket.current.on("callAccepted", (signal) => {
+        if (peer.current) {
+          peer.current.signal(signal); // Send signal to peer
+        }
+      });
+
       socket.current.on("disconnect", () => {
         console.log("Disconnected from the socket server");
       });
@@ -104,13 +125,9 @@ export const SocketProvider = ({ children }) => {
     }
   }, [user, localStream]);
 
-
-  console.log("PEEEEEER",peer)
-
   const callUser = (recipientId) => {
-    
     if (localStream && peer.current) {
-
+      console.log("Initializing call...");
       const call = peer.current.call(recipientId, localStream);
 
       call.on("stream", (stream) => {
@@ -122,10 +139,17 @@ export const SocketProvider = ({ children }) => {
       });
 
       setCallInProgress(true);
+
+      // Emit callUser event to the backend
+      socket.current.emit("callUser", {
+        userToCall: recipientId,
+        from: user?.name
+      });
     }
   };
 
   const answerCall = () => {
+
     if (incomingCall && localStream) {
       incomingCall.answer(localStream);
 
@@ -135,7 +159,12 @@ export const SocketProvider = ({ children }) => {
 
       setIncomingCall(null);
       setCallInProgress(true);
-
+      callSound.pause();
+      // Emit answerCall event to the backend
+      socket.current.emit("answerCall", {
+        to: incomingCall.from,
+        signal: peer.current.signal, // SDP answer/ICE candidates
+      });
     }
   };
 
@@ -144,9 +173,10 @@ export const SocketProvider = ({ children }) => {
       peer.current.destroy();
       setRemoteStream(null);
       setCallInProgress(false);
+      callSound.pause()
+      socket.current.emit("endCall", { userId: user.id });
     }
   };
-
   // Send a message (or file) to the server
   const sendMessage = (message, isFile = false) => {
     if (isFile) {
@@ -165,7 +195,7 @@ export const SocketProvider = ({ children }) => {
       socket.current.emit("sendMessage", message);
     }
   };
-  
+
   return (
     <SocketContext.Provider
       value={{
@@ -181,6 +211,9 @@ export const SocketProvider = ({ children }) => {
         endCall,
         incomingCall,
         callInProgress,
+        callerName,
+        reloadWindow,
+        callSound
       }}
     >
       {children}

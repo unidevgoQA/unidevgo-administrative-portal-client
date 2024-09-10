@@ -4,7 +4,8 @@ import { AuthContext } from "../../providers/AuthProviders";
 import "./message-container.scss";
 
 const formatTimestamp = (timestamp) => {
-  const dateString = typeof timestamp === 'string' ? timestamp : timestamp?.$date;
+  const dateString =
+    typeof timestamp === "string" ? timestamp : timestamp?.$date;
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
@@ -23,15 +24,18 @@ const formatTimestamp = (timestamp) => {
 
 const MessageContainer = ({ recipientId }) => {
   const { user } = useContext(AuthContext);
-  const { socket, messages: socketMessages } = useSocket();
+  const { socket } = useSocket();
   const [messages, setMessages] = useState([]);
   const messageEndRef = useRef(null);
+
 
   useEffect(() => {
     async function loadMessages() {
       if (user?.id && recipientId) {
         const response = await fetch(
-          `${import.meta.env.VITE_BASE_URL}chat/messages?sender=${user.id}&recipient=${recipientId}`,
+          `${import.meta.env.VITE_BASE_URL}chat/messages?sender=${
+            user.id
+          }&recipient=${recipientId}`,
           {
             method: "GET",
             headers: {
@@ -53,7 +57,6 @@ const MessageContainer = ({ recipientId }) => {
     loadMessages();
   }, [recipientId, user?.id]);
 
-
   //Getting realtime messages
   useEffect(() => {
     if (socket) {
@@ -69,7 +72,6 @@ const MessageContainer = ({ recipientId }) => {
     }
   }, [socket]);
 
-  
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -112,25 +114,31 @@ const MessageContainer = ({ recipientId }) => {
     }
   };
 
+
+
+
   return (
-    <div className="message-container">
-      {messages.length > 0 ? (
-        messages.map((msg) => (
-          <div
-            key={msg._id}
-            className={`message ${
-              msg.sender === user?.id ? "sent" : "received"
-            }`}
-          >
-            {renderMessageContent(msg)}
-            <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
-          </div>
-        ))
-      ) : (
-        <p className="text-white">No messages to display.</p>
-      )}
-      <div ref={messageEndRef} />
-    </div>
+    <>
+      
+      <div className="message-container">
+        {messages.length > 0 ? (
+          messages.map((msg) => (
+            <div
+              key={msg._id}
+              className={`message ${
+                msg.sender === user?.id ? "sent" : "received"
+              }`}
+            >
+              {renderMessageContent(msg)}
+              <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
+            </div>
+          ))
+        ) : (
+          <p className="text-white">No messages to display.</p>
+        )}
+        <div ref={messageEndRef} />
+      </div>
+    </>
   );
 };
 
