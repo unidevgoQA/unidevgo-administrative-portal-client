@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSocket } from '../../context/SocketContext';
+import React from "react";
+import { useSocket } from "../../context/SocketContext";
 import { useGetProfileByIdQuery } from "../../features/profile/profileApi";
 import "./chat-header.scss";
 
@@ -10,11 +10,8 @@ const ChatHeader = ({ recipientId }) => {
 
   const handleCallClick = () => {
     callUser(recipientId);
-    
   };
-  const sendMessage =() =>{
-    
-  }
+
   return (
     <div className="chat-header">
       <div className="user text-white">
@@ -22,11 +19,8 @@ const ChatHeader = ({ recipientId }) => {
         <h6>{recipient?.name}</h6>
       </div>
       <div className="audio-video-wrapper">
-        <button>
-          <i className="fa-solid fa-phone"></i>
-        </button>
-        <button onClick={handleCallClick}>
-          <i className="fa-solid fa-video"></i>
+        <button title="Start Huddle" onClick={handleCallClick}>
+          <i class="fa-solid fa-headphones-simple"></i>
         </button>
       </div>
     </div>

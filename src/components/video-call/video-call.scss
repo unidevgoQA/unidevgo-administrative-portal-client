@@ -78,13 +78,30 @@
   right: 5px;
   bottom: 0;
 }
+.audio-video-controller {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.audio-video-controller button {
+  background: none;
+  border: 2px solid #198754;
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-top: 15px;
+  i {
+    color: #37f42e;
+  }
+}
 
 .stream-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  button {
+  .end-call {
     border: none;
     margin-top: 20px;
     border-radius: 50%;

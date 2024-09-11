@@ -3,14 +3,18 @@ import { useSocket } from "../../context/SocketContext";
 import "./video-call.scss";
 
 const VideoCall = () => {
-  const { localStream, remoteStream, endCall } = useSocket();
+  const {
+    localStream,
+    remoteStream,
+    endCall,
+    toggleVideo,
+    toggleAudio,
+    isVideoEnabled,
+    isAudioEnabled,
+  } = useSocket();
 
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
-
-
-  console.log("localVideoRef",localVideoRef)
-  console.log("remoteVideoRef",remoteVideoRef)
 
   useEffect(() => {
     if (localStream && localVideoRef.current) {
@@ -40,8 +44,26 @@ const VideoCall = () => {
             </div>
           </div>
         </div>
-        <button onClick={endCall}>
-          <i class="fa-solid fa-xmark"></i>
+
+        {/* Buttons to toggle video and audio */}
+        <div className="audio-video-controller">
+          <button onClick={toggleVideo}>
+            {isVideoEnabled ? (
+              <i class="fa-solid fa-video"></i>
+            ) : (
+              <i class="fa-solid fa-video-slash"></i>
+            )}
+          </button>
+          <button onClick={toggleAudio}>
+            {isAudioEnabled ? (
+              <i class="fa-solid fa-microphone"></i>
+            ) : (
+              <i class="fa-solid fa-microphone-slash"></i>
+            )}
+          </button>
+        </div>
+        <button className="end-call" onClick={endCall}>
+          <i className="fa-solid fa-xmark"></i>
         </button>
       </div>
     </div>

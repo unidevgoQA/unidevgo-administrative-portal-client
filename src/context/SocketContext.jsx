@@ -20,10 +20,11 @@ export const SocketProvider = ({ children }) => {
   const [callInProgress, setCallInProgress] = useState(false);
   const [callerName, setCallerName] = useState(null);
   const [reloadWindow, setReloadWindow] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
 
-   // Sound for incoming call
-   const callSound = new Audio("/public/calling-audio.mp3");
-
+  // Sound for incoming call
+  const callSound = new Audio("/public/calling-audio.mp3");
 
   useEffect(() => {
     if (user) {
@@ -55,7 +56,7 @@ export const SocketProvider = ({ children }) => {
 
       socket.current.on("caller", ({ from }) => {
         // Set the incoming call state and the caller's name
-        setCallerName(from)
+        setCallerName(from);
       });
 
       socket.current.on("callEnded", ({ userId }) => {
@@ -85,15 +86,42 @@ export const SocketProvider = ({ children }) => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: "user" },
-          audio: true,
+          audio: true, // Only audio enabled at the start
         });
+
+        // Disable video track initially
+        mediaStream.getVideoTracks().forEach((track) => {
+          track.enabled = false; // Video is off by default
+        });
+
         setLocalStream(mediaStream);
+        setIsVideoEnabled(false); // Set initial video state to false
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
     };
     getWebcam();
   }, []);
+
+  // Function to toggle video on/off
+  const toggleVideo = () => {
+    if (localStream) {
+      localStream.getVideoTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      setIsVideoEnabled((prev) => !prev);
+    }
+  };
+
+  // Function to toggle audio on/off
+  const toggleAudio = () => {
+    if (localStream) {
+      localStream.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      setIsAudioEnabled((prev) => !prev);
+    }
+  };
 
   useEffect(() => {
     if (user && localStream) {
@@ -128,52 +156,53 @@ export const SocketProvider = ({ children }) => {
   const callUser = (recipientId) => {
     if (localStream && peer.current) {
       console.log("Initializing call...");
+      
       const call = peer.current.call(recipientId, localStream);
-
+  
       call.on("stream", (stream) => {
         setRemoteStream(stream);
       });
-
+  
       call.on("error", (err) => {
         console.error("Call error:", err);
       });
-
+  
       setCallInProgress(true);
-
+  
       // Emit callUser event to the backend
       socket.current.emit("callUser", {
         userToCall: recipientId,
-        from: user?.name
+        from: user?.name,
       });
     }
   };
+  
 
   const answerCall = () => {
-
     if (incomingCall && localStream) {
-      incomingCall.answer(localStream);
-
+      incomingCall.answer(localStream); // Answer with the media stream
+  
       incomingCall.on("stream", (remoteStream) => {
         setRemoteStream(remoteStream);
       });
-
+  
       setIncomingCall(null);
       setCallInProgress(true);
       callSound.pause();
-      // Emit answerCall event to the backend
       socket.current.emit("answerCall", {
         to: incomingCall.from,
         signal: peer.current.signal, // SDP answer/ICE candidates
       });
     }
   };
+  
 
   const endCall = () => {
     if (peer.current) {
       peer.current.destroy();
       setRemoteStream(null);
       setCallInProgress(false);
-      callSound.pause()
+      callSound.pause();
       socket.current.emit("endCall", { userId: user.id });
     }
   };
@@ -213,7 +242,11 @@ export const SocketProvider = ({ children }) => {
         callInProgress,
         callerName,
         reloadWindow,
-        callSound
+        callSound,
+        toggleVideo,
+        toggleAudio,
+        isVideoEnabled,
+        isAudioEnabled,
       }}
     >
       {children}
