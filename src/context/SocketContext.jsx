@@ -8,9 +8,14 @@ const SocketContext = createContext(null);
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
+  // Refs for socket and peer connections
   const socket = useRef(null);
   const peer = useRef(null);
+  
+  // Get the current user from AuthContext
   const { user } = useContext(AuthContext);
+
+  // State variables to manage messages, users, streams, and call status
   const [messages, setMessages] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState({});
   const [connectedUsers, setConnectedUsers] = useState([]);
@@ -20,12 +25,13 @@ export const SocketProvider = ({ children }) => {
   const [callInProgress, setCallInProgress] = useState(false);
   const [callerName, setCallerName] = useState(null);
   const [reloadWindow, setReloadWindow] = useState(false);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
-  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);  // Track video state
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);  // Track audio state
 
   // Sound for incoming call
   const callSound = new Audio("/public/calling-audio.mp3");
 
+  // Setup socket connection when user is available
   useEffect(() => {
     if (user) {
       socket.current = io(import.meta.env.VITE_BASE_URL, {
@@ -33,69 +39,56 @@ export const SocketProvider = ({ children }) => {
         withCredentials: true,
       });
 
+      // Handle socket events
       socket.current.on("connect", () => {
         console.log(`Connected with ID: ${socket.current.id}`);
         socket.current.emit("getConnectedUsers");
       });
 
-      socket.current.on("onlineUsers", (onlineUsers) => {
-        setOnlineUsers(onlineUsers);
-      });
+      socket.current.on("onlineUsers", (onlineUsers) => setOnlineUsers(onlineUsers));
 
-      socket.current.on("connectedUsers", (users) => {
-        setConnectedUsers(users);
-      });
+      socket.current.on("connectedUsers", (users) => setConnectedUsers(users));
 
-      socket.current.on("receiveMessage", (updatedMessages) => {
-        setMessages(updatedMessages);
-      });
+      socket.current.on("receiveMessage", (updatedMessages) => setMessages(updatedMessages));
 
       socket.current.on("userStatus", ({ userId, status }) => {
         setOnlineUsers((prev) => ({ ...prev, [userId]: status }));
       });
 
-      socket.current.on("caller", ({ from }) => {
-        // Set the incoming call state and the caller's name
-        setCallerName(from);
-      });
+      socket.current.on("caller", ({ from }) => setCallerName(from));  // Set caller name
 
       socket.current.on("callEnded", ({ userId }) => {
         console.log(`Call ended by user with ID: ${userId}`);
         setRemoteStream(null);
-        setReloadWindow(true);
+        setReloadWindow(true);  // Trigger window reload on call end
       });
 
       socket.current.on("callAccepted", (signal) => {
-        if (peer.current) {
-          peer.current.signal(signal); // Send signal to peer
-        }
+        if (peer.current) peer.current.signal(signal);  // Pass signal to peer
       });
 
-      socket.current.on("disconnect", () => {
-        console.log("Disconnected from the socket server");
-      });
+      socket.current.on("disconnect", () => console.log("Disconnected from the socket server"));
 
-      return () => {
-        socket.current.disconnect();
-      };
+      return () => socket.current.disconnect();
     }
   }, [user]);
 
+  // Get user media stream (audio enabled, video off by default)
   useEffect(() => {
     const getWebcam = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-          audio: true, // Only audio enabled at the start
+          video: { facingMode: "user" },  // Video will be disabled initially
+          audio: true,  // Audio enabled
         });
 
         // Disable video track initially
         mediaStream.getVideoTracks().forEach((track) => {
-          track.enabled = false; // Video is off by default
+          track.enabled = false;
         });
 
         setLocalStream(mediaStream);
-        setIsVideoEnabled(false); // Set initial video state to false
+        setIsVideoEnabled(false);  // Set video state to false
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
@@ -103,26 +96,27 @@ export const SocketProvider = ({ children }) => {
     getWebcam();
   }, []);
 
-  // Function to toggle video on/off
+  // Toggle video on/off
   const toggleVideo = () => {
     if (localStream) {
       localStream.getVideoTracks().forEach((track) => {
-        track.enabled = !track.enabled;
+        track.enabled = !track.enabled;  // Toggle video track
       });
-      setIsVideoEnabled((prev) => !prev);
+      setIsVideoEnabled((prev) => !prev);  // Update video state
     }
   };
 
-  // Function to toggle audio on/off
+  // Toggle audio on/off
   const toggleAudio = () => {
     if (localStream) {
       localStream.getAudioTracks().forEach((track) => {
-        track.enabled = !track.enabled;
+        track.enabled = !track.enabled;  // Toggle audio track
       });
-      setIsAudioEnabled((prev) => !prev);
+      setIsAudioEnabled((prev) => !prev);  // Update audio state
     }
   };
 
+  // Initialize PeerJS when the user and local stream are available
   useEffect(() => {
     if (user && localStream) {
       peer.current = new Peer(user.id, {
@@ -136,38 +130,26 @@ export const SocketProvider = ({ children }) => {
         console.log(`PeerJS connection opened with ID: ${id}`);
       });
 
-      peer.current.on("call", (call) => {
-        // Save the call, but don't automatically answer
-        setIncomingCall(call);
-      });
+      peer.current.on("call", (call) => setIncomingCall(call));  // Handle incoming calls
 
-      peer.current.on("error", (err) => {
-        console.error("PeerJS error:", err);
-      });
+      peer.current.on("error", (err) => console.error("PeerJS error:", err));
 
-      return () => {
-        if (peer.current) {
-          peer.current.destroy();
-        }
-      };
+      return () => peer.current && peer.current.destroy();  // Cleanup PeerJS on unmount
     }
   }, [user, localStream]);
 
+  // Function to initiate a call
   const callUser = (recipientId) => {
     if (localStream && peer.current) {
       console.log("Initializing call...");
       
-      const call = peer.current.call(recipientId, localStream);
+      const call = peer.current.call(recipientId, localStream);  // Start call with recipient
   
-      call.on("stream", (stream) => {
-        setRemoteStream(stream);
-      });
+      call.on("stream", (stream) => setRemoteStream(stream));  // Set remote stream
   
-      call.on("error", (err) => {
-        console.error("Call error:", err);
-      });
+      call.on("error", (err) => console.error("Call error:", err));
   
-      setCallInProgress(true);
+      setCallInProgress(true);  // Set call in progress state
   
       // Emit callUser event to the backend
       socket.current.emit("callUser", {
@@ -177,51 +159,51 @@ export const SocketProvider = ({ children }) => {
     }
   };
   
-
+  // Function to answer an incoming call
   const answerCall = () => {
     if (incomingCall && localStream) {
-      incomingCall.answer(localStream); // Answer with the media stream
+      incomingCall.answer(localStream);  // Answer call with local stream
   
-      incomingCall.on("stream", (remoteStream) => {
-        setRemoteStream(remoteStream);
-      });
+      incomingCall.on("stream", (remoteStream) => setRemoteStream(remoteStream));  // Set remote stream
   
       setIncomingCall(null);
       setCallInProgress(true);
-      callSound.pause();
+      callSound.pause();  // Stop the ringing sound
+  
+      // Emit answerCall event to the backend
       socket.current.emit("answerCall", {
         to: incomingCall.from,
-        signal: peer.current.signal, // SDP answer/ICE candidates
+        signal: peer.current.signal,  // Send SDP answer/ICE candidates
       });
     }
   };
   
-
+  // Function to end a call
   const endCall = () => {
     if (peer.current) {
-      peer.current.destroy();
-      setRemoteStream(null);
-      setCallInProgress(false);
-      callSound.pause();
-      socket.current.emit("endCall", { userId: user.id });
+      peer.current.destroy();  // Destroy the peer connection
+      setRemoteStream(null);  // Clear remote stream
+      setCallInProgress(false);  // Reset call status
+      callSound.pause();  // Stop any ongoing call sound
+      socket.current.emit("endCall", { userId: user.id });  // Notify the backend
     }
   };
-  // Send a message (or file) to the server
+
+  // Function to send a message or file to the server
   const sendMessage = (message, isFile = false) => {
     if (isFile) {
+      // Upload file to the server
       fetch(`${import.meta.env.VITE_BASE_URL}/chat/upload`, {
         method: "POST",
         body: message,
       })
         .then((response) => response.json())
         .then((data) => {
-          socket.current.emit("sendMessage", data);
+          socket.current.emit("sendMessage", data);  // Emit sendMessage event after upload
         })
-        .catch((error) => {
-          console.error("Error uploading file:", error);
-        });
+        .catch((error) => console.error("Error uploading file:", error));
     } else {
-      socket.current.emit("sendMessage", message);
+      socket.current.emit("sendMessage", message);  // Emit sendMessage event
     }
   };
 

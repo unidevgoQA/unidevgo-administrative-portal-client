@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../../../assets/logo.png";
 import { useSocket } from "../../../context/SocketContext";
 import { useGetProfilesQuery } from "../../../features/profile/profileApi";
@@ -22,6 +22,15 @@ const ContactsContainer = ({ setRecipientId }) => {
     (profile) => profile?._id !== user?.id && profile?.role === "employee"
   );
 
+  // State to track the selected user
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  // Handle user selection
+  const handleUserClick = (employee) => {
+    setSelectedUserId(employee?._id); // Set the selected user
+    setRecipientId(employee?._id);    // Update the recipient ID
+  };
+
   // Logout
   const handleLogout = () => {
     logoutUser();
@@ -37,8 +46,8 @@ const ContactsContainer = ({ setRecipientId }) => {
           {employees?.map((employee) => (
             <div
               key={employee?._id}
-              className="user"
-              onClick={() => setRecipientId(employee?._id)}
+              className={`user ${selectedUserId === employee?._id ? "selected" : ""}`}
+              onClick={() => handleUserClick(employee)}
             >
               <img src={employee?.img} alt="Employee" />
               <h6>{employee?.name}</h6>
@@ -56,7 +65,7 @@ const ContactsContainer = ({ setRecipientId }) => {
           <img src={user?.img} alt="" />
           <h6>{user?.name}</h6>
         </div>
-        <button onClick={handleLogout}>
+        <button title="Logout" onClick={handleLogout}>
           <i className="fa-solid fa-arrow-right-from-bracket"></i>
         </button>
       </div>

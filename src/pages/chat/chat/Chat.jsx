@@ -16,11 +16,9 @@ const Chat = () => {
     endCall,
     reloadWindow,
     callerName,
-    callSound
+    callSound,
   } = useSocket();
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
-
-
 
   useEffect(() => {
     if (incomingCall) {
@@ -31,7 +29,7 @@ const Chat = () => {
         });
       }
     }
-  }, [incomingCall,remoteStream]);
+  }, [incomingCall, remoteStream]);
 
   const handleAnswerCall = () => {
     answerCall();
