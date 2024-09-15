@@ -17,6 +17,7 @@ const MessageBar = ({ recipientId }) => {
     if (messageText.trim()) {
       const message = {
         sender: user.id,
+        senderName: user.name,
         recipient: recipientId,
         messageType: "text",
         content: messageText,
@@ -36,6 +37,7 @@ const MessageBar = ({ recipientId }) => {
       const formData = new FormData();
       const message = {
         sender: user.id,
+        senderName: user.name,
         recipient: recipientId,
         messageType: "file",
         content: file.name,
@@ -46,10 +48,13 @@ const MessageBar = ({ recipientId }) => {
       formData.append("message", JSON.stringify(message));
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}chat/upload`, {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}chat/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (response.ok) {
           const savedMessage = await response.json();
@@ -97,7 +102,14 @@ const MessageBar = ({ recipientId }) => {
         return <audio controls src={filePreview} />;
       case "application":
         if (filePreview.endsWith(".pdf")) {
-          return <embed src={filePreview} type="application/pdf" width="100%" height="500px" />;
+          return (
+            <embed
+              src={filePreview}
+              type="application/pdf"
+              width="100%"
+              height="500px"
+            />
+          );
         } else {
           return (
             <div className="file-preview-document">
@@ -144,10 +156,12 @@ const MessageBar = ({ recipientId }) => {
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={handleRemoveFile}><i class="fa-solid fa-trash-can"></i></span>
+            <span className="close" onClick={handleRemoveFile}>
+              <i class="fa-solid fa-trash-can"></i>
+            </span>
             {renderFilePreview()}
             <button onClick={handleSendFile} className="send-button">
-            <i className="fa-regular fa-paper-plane"></i>
+              <i className="fa-regular fa-paper-plane"></i>
             </button>
           </div>
         </div>

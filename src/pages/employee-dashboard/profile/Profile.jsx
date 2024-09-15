@@ -13,12 +13,11 @@ const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
 
-  console.log(user.email)
+  console.log(user.email);
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 
   const registerUser = userData?.data;
-
 
   //Leave management data
   const { data } = useGetAllLeavesQuery();
@@ -29,8 +28,9 @@ const Profile = () => {
     (leave) => leave.employeeEmail === user.email
   );
 
-  const pendingLeaves = filterLeaves?.filter(leave => leave.status === 'pending')
-
+  const pendingLeaves = filterLeaves?.filter(
+    (leave) => leave.status === "pending"
+  );
 
   //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
@@ -92,7 +92,11 @@ const Profile = () => {
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
                               <span>
-                                Joining Date : {registerUser?.joiningDate?.split('-').reverse().join('-')}
+                                Joining Date :{" "}
+                                {registerUser?.joiningDate
+                                  ?.split("-")
+                                  .reverse()
+                                  .join("-")}
                               </span>
                             </h3>
                           </div>
@@ -103,21 +107,21 @@ const Profile = () => {
                             </h3>
                           </div>
                         </div>
-                        {
-                          registerUser?.profileEditPermission === 'true' && <div className="update-area">
-                          <Link
-                            to={`/dashboard/update-profile/${registerUser?._id}`}
-                          >
-                            <button
-                              title="Update Profile"
-                              className="update-btn"
+                        {registerUser?.profileEditPermission === "true" && (
+                          <div className="update-area">
+                            <Link
+                              to={`/dashboard/update-profile/${registerUser?._id}`}
                             >
-                              {" "}
-                              <i className="far fa-edit"></i>
-                            </button>
-                          </Link>
-                        </div>
-                        }
+                              <button
+                                title="Update Profile"
+                                className="update-btn"
+                              >
+                                {" "}
+                                <i className="far fa-edit"></i>
+                              </button>
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

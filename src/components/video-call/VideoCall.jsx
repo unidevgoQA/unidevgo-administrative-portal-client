@@ -51,14 +51,14 @@ const VideoCall = () => {
             {isVideoEnabled ? (
               <i class="fa-solid fa-video"></i>
             ) : (
-              <i class="fa-solid fa-video-slash"></i>
+             <div className="div"> <i class="fa-solid fa-video-slash"></i> <span className="text-white">Camera Off</span></div>
             )}
           </button>
           <button onClick={toggleAudio}>
             {isAudioEnabled ? (
-              <i class="fa-solid fa-microphone"></i>
+              <i class="fa-solid fa-microphone"></i> 
             ) : (
-              <i class="fa-solid fa-microphone-slash"></i>
+              <div><i class="fa-solid fa-microphone-slash"></i> <span className="text-white">Mute</span> </div>
             )}
           </button>
         </div>

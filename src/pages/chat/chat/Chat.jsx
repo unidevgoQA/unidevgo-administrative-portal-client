@@ -17,8 +17,31 @@ const Chat = () => {
     reloadWindow,
     callerName,
     callSound,
+    isCalling,
   } = useSocket();
+
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+  const [userToCall, setUserToCall] = useState("");
+
+  // Fetch recipient profile data when recipientId changes
+  useEffect(() => {
+    if (recipientId) {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_BASE_URL}profile/${recipientId}`
+          ); // Replace with your actual API endpoint
+          const data = await response.json();
+          setUserToCall(data?.data?.name);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+          setUserToCall("Unknown");
+        }
+      };
+
+      fetchProfile();
+    }
+  }, [recipientId]);
 
   useEffect(() => {
     if (incomingCall) {
@@ -65,6 +88,21 @@ const Chat = () => {
             </button>
           </div>
         </div>
+      )}
+      {isCalling === true && remoteStream === null ? (
+        <div className="call-notification">
+          <h6 className="text-white">
+            Calling <span>{userToCall}</span>
+          </h6>
+          <div>
+            <button className="reject-btn" onClick={handleDeclineCall}>
+              {" "}
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <></>
       )}
       <ContactsContainer setRecipientId={setRecipientId} />
       {remoteStream !== null ? (
