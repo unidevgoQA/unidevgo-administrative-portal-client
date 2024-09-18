@@ -92,6 +92,13 @@ const MessageBar = ({ recipientId }) => {
     fileInputRef.current.value = null;
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent default form submission
+      handleSendMessage();
+    }
+  };
+
   const renderFilePreview = () => {
     switch (fileType) {
       case "image":
@@ -134,6 +141,7 @@ const MessageBar = ({ recipientId }) => {
         type="text"
         value={messageText}
         onChange={(e) => setMessageText(e.target.value)}
+        onKeyDown={handleKeyDown} // Add the onKeyDown handler
         placeholder="Type your message..."
       />
 

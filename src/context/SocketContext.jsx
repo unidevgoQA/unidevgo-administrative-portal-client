@@ -3,8 +3,10 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { AuthContext } from "../providers/AuthProviders";
 
+// Create a context for managing socket and peer connections
 const SocketContext = createContext(null);
 
+// Custom hook to use the SocketContext
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
@@ -12,11 +14,12 @@ export const SocketProvider = ({ children }) => {
   const socket = useRef(null);
   const peer = useRef(null);
 
-  // Get the current user from AuthContext
+  // Access user from AuthContext
   const { user } = useContext(AuthContext);
 
-  // State variables to manage messages, users, streams, and call status
+  // State variables
   const [messages, setMessages] = useState([]);
+  const [unreadMessages, setUnreadMessages] = useState({});
   const [onlineUsers, setOnlineUsers] = useState({});
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [localStream, setLocalStream] = useState(null);
@@ -25,15 +28,15 @@ export const SocketProvider = ({ children }) => {
   const [callInProgress, setCallInProgress] = useState(false);
   const [callerName, setCallerName] = useState(null);
   const [reloadWindow, setReloadWindow] = useState(false);
-  const [isVideoEnabled, setIsVideoEnabled] = useState(true); // Track video state
-  const [isAudioEnabled, setIsAudioEnabled] = useState(true); // Track audio state
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isCalling, setIsCalling] = useState(false);
 
-  // Sound for incoming call
-  const callSound = new Audio("/public/calling-audio.mp3");
-  const MessageTone = new Audio("/public/message-tone.mp3");
+  // Audio files for call and message notifications
+  const callSound = new Audio("/calling-audio.mp3");
+  const messageTone = new Audio("/message-tone.mp3");
 
-  // Request notification permission when the app loads
+  // Request notification permission on component mount
   useEffect(() => {
     if (Notification.permission !== "granted") {
       Notification.requestPermission().then((permission) => {
@@ -44,6 +47,7 @@ export const SocketProvider = ({ children }) => {
     }
   }, []);
 
+  // Setup socket and peer connections when user is present
   useEffect(() => {
     if (user) {
       socket.current = io(import.meta.env.VITE_BASE_URL, {
@@ -51,6 +55,7 @@ export const SocketProvider = ({ children }) => {
         withCredentials: true,
       });
 
+      // Handle socket events
       socket.current.on("connect", () => {
         console.log(`Connected with ID: ${socket.current.id}`);
         socket.current.emit("getConnectedUsers");
@@ -67,19 +72,24 @@ export const SocketProvider = ({ children }) => {
 
         const latestMessage = updatedMessages[updatedMessages.length - 1];
 
-        // If the message is from another user, play sound and show notification
         if (latestMessage.sender !== user?.id) {
-          MessageTone.play().catch((error) =>
-            console.error("Failed to play message tone:", error)
-          );
+          messageTone
+            .play()
+            .catch((error) =>
+              console.error("Failed to play message tone:", error)
+            );
 
-          // Show browser notification
           if (Notification.permission === "granted") {
             new Notification("New Message", {
               body: `${latestMessage.senderName}: ${latestMessage.content}`,
-              icon: "/public/notification-icon.png", // Optional: add an icon
+              icon: "/notification-icon.png",
             });
           }
+
+          setUnreadMessages((prev) => ({
+            ...prev,
+            [latestMessage.sender]: (prev[latestMessage.sender] || 0) + 1,
+          }));
         }
       });
 
@@ -89,7 +99,6 @@ export const SocketProvider = ({ children }) => {
 
       socket.current.on("caller", ({ from }) => {
         setCallerName(from);
-        // Display browser notification for incoming call
         if (Notification.permission === "granted") {
           new Notification("Incoming Call", {
             body: `${from} is calling you.`,
@@ -100,6 +109,7 @@ export const SocketProvider = ({ children }) => {
       socket.current.on("callEnded", ({ userId }) => {
         console.log(`Call ended by user with ID: ${userId}`);
         setRemoteStream(null);
+        setIsCalling(false);
         setReloadWindow(true);
       });
 
@@ -117,22 +127,21 @@ export const SocketProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Get user media stream (audio enabled, video off by default)
+  // Access webcam and set local stream on component mount
   useEffect(() => {
     const getWebcam = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" }, // Video will be disabled initially
-          audio: true, // Audio enabled
+          video: { facingMode: "user" },
+          audio: true,
         });
 
-        // Disable video track initially
         mediaStream.getVideoTracks().forEach((track) => {
-          track.enabled = false;
+          track.enabled = false; // Start with video off
         });
 
         setLocalStream(mediaStream);
-        setIsVideoEnabled(false); // Set video state to false
+        setIsVideoEnabled(false);
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
@@ -140,27 +149,27 @@ export const SocketProvider = ({ children }) => {
     getWebcam();
   }, []);
 
-  // Toggle video on/off
+  // Toggle video stream
   const toggleVideo = () => {
     if (localStream) {
       localStream.getVideoTracks().forEach((track) => {
-        track.enabled = !track.enabled; // Toggle video track
+        track.enabled = !track.enabled;
       });
-      setIsVideoEnabled((prev) => !prev); // Update video state
+      setIsVideoEnabled((prev) => !prev);
     }
   };
 
-  // Toggle audio on/off
+  // Toggle audio stream
   const toggleAudio = () => {
     if (localStream) {
       localStream.getAudioTracks().forEach((track) => {
-        track.enabled = !track.enabled; // Toggle audio track
+        track.enabled = !track.enabled;
       });
-      setIsAudioEnabled((prev) => !prev); // Update audio state
+      setIsAudioEnabled((prev) => !prev);
     }
   };
 
-  // Initialize PeerJS when the user and local stream are available
+  // Initialize PeerJS and handle peer events
   useEffect(() => {
     if (user && localStream) {
       peer.current = new Peer(user.id, {
@@ -174,29 +183,28 @@ export const SocketProvider = ({ children }) => {
         console.log(`PeerJS connection opened with ID: ${id}`);
       });
 
-      peer.current.on("call", (call) => setIncomingCall(call)); // Handle incoming calls
+      peer.current.on("call", (call) => setIncomingCall(call));
 
       peer.current.on("error", (err) => console.error("PeerJS error:", err));
 
-      return () => peer.current && peer.current.destroy(); // Cleanup PeerJS on unmount
+      return () => peer.current && peer.current.destroy();
     }
   }, [user, localStream]);
 
-  // Function to initiate a call
+  // Initiate a call to a user
   const callUser = (recipientId) => {
     if (localStream && peer.current) {
       console.log("Initializing call...");
 
-      const call = peer.current.call(recipientId, localStream); // Start call with recipient
+      const call = peer.current.call(recipientId, localStream);
 
-      call.on("stream", (stream) => setRemoteStream(stream)); // Set remote stream
+      call.on("stream", (stream) => setRemoteStream(stream));
 
       call.on("error", (err) => console.error("Call error:", err));
 
-      setCallInProgress(true); // Set call in progress state
+      setCallInProgress(true);
       setIsCalling(true);
 
-      // Emit callUser event to the backend
       socket.current.emit("callUser", {
         userToCall: recipientId,
         from: user?.name,
@@ -204,56 +212,63 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Function to answer an incoming call
+  // Answer an incoming call
   const answerCall = () => {
     if (incomingCall && localStream) {
-      incomingCall.answer(localStream); // Answer call with local stream
+      incomingCall.answer(localStream);
 
       incomingCall.on("stream", (remoteStream) =>
         setRemoteStream(remoteStream)
-      ); // Set remote stream
+      );
 
       setIncomingCall(null);
       setCallInProgress(true);
-      callSound.pause(); // Stop the ringing sound
+      callSound.pause();
 
-      // Emit answerCall event to the backend
       socket.current.emit("answerCall", {
         to: incomingCall.from,
-        signal: peer.current.signal, // Send SDP answer/ICE candidates
+        signal: peer.current.signal,
       });
     }
   };
 
-  // Function to end a call
+  // End an ongoing call
   const endCall = () => {
     if (peer.current) {
-      peer.current.destroy(); // Destroy the peer connection
-      setRemoteStream(null); // Clear remote stream
-      setCallInProgress(false); // Reset call status
-      callSound.pause(); // Stop any ongoing call sound
-      socket.current.emit("endCall", { userId: user.id }); // Notify the backend
+      peer.current.destroy();
+      setRemoteStream(null);
+      setCallInProgress(false);
+      callSound.pause();
+      socket.current.emit("endCall", { userId: user.id });
     }
   };
 
-  // Function to send a message or file to the server
+  // Send a message or file
   const sendMessage = (message, isFile = false) => {
     if (isFile) {
-      // Upload file to the server
       fetch(`${import.meta.env.VITE_BASE_URL}/chat/upload`, {
         method: "POST",
         body: message,
       })
         .then((response) => response.json())
         .then((data) => {
-          socket.current.emit("sendMessage", data); // Emit sendMessage event after upload
+          socket.current.emit("sendMessage", data);
         })
         .catch((error) => console.error("Error uploading file:", error));
     } else {
-      socket.current.emit("sendMessage", message); // Emit sendMessage event
+      socket.current.emit("sendMessage", message);
     }
   };
 
+  // Mark messages as read for a specific contact
+  const markMessagesAsRead = (contactId) => {
+    setUnreadMessages((prev) => {
+      const updatedMessages = { ...prev, [contactId]: 0 };
+      return updatedMessages;
+    });
+  };
+
+  // Provide the context values to children components
   return (
     <SocketContext.Provider
       value={{
@@ -272,12 +287,14 @@ export const SocketProvider = ({ children }) => {
         callerName,
         reloadWindow,
         callSound,
+        messageTone,
         toggleVideo,
         toggleAudio,
         isVideoEnabled,
         isAudioEnabled,
-        setIsCalling,
         isCalling,
+        unreadMessages,
+        markMessagesAsRead,
       }}
     >
       {children}

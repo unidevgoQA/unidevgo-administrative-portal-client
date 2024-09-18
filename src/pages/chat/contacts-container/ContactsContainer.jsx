@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import { useSocket } from "../../../context/SocketContext";
 import { useGetProfilesQuery } from "../../../features/profile/profileApi";
@@ -6,29 +7,24 @@ import { AuthContext } from "../../../providers/AuthProviders";
 import "./contact-container.scss";
 
 const ContactsContainer = ({ setRecipientId }) => {
-  // Fetch profiles data using the custom hook
   const { data } = useGetProfilesQuery();
   const { user, logoutUser } = useContext(AuthContext);
-  const { onlineUsers } = useSocket(); // onlineUsers is expected to be an array of user IDs
+  const { onlineUsers, unreadMessages, markMessagesAsRead } = useSocket(); // Get unreadMessages from socket context
 
-  // Ensure onlineUsers is an array or an empty array if undefined
   const onlineUsersList = Array.isArray(onlineUsers) ? onlineUsers : [];
-
-  // Extract all profiles from the response
   const allProfiles = data?.data;
 
-  // Filter profiles to get only employees and exclude the current user
   const employees = allProfiles?.filter(
     (profile) => profile?._id !== user?.id && profile?.role === "employee"
   );
 
-  // State to track the selected user
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   // Handle user selection
   const handleUserClick = (employee) => {
-    setSelectedUserId(employee?._id); // Set the selected user
-    setRecipientId(employee?._id);    // Update the recipient ID
+    setSelectedUserId(employee?._id);
+    setRecipientId(employee?._id);
+    markMessagesAsRead(employee?._id); // Call the function to reset the count
   };
 
   // Logout
@@ -36,17 +32,27 @@ const ContactsContainer = ({ setRecipientId }) => {
     logoutUser();
   };
 
+
+  let navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="contacts-container-wrapper">
       <div className="logo-contacts-wrapper">
         <div className="logo">
           <img src={logo} alt="logo" />
+          <button title="Go Back" onClick={goBack}><i class="fa-solid fa-chevron-left"></i></button>
         </div>
         <div className="contacts-wrapper">
           {employees?.map((employee) => (
             <div
               key={employee?._id}
-              className={`user ${selectedUserId === employee?._id ? "selected" : ""}`}
+              className={`user ${
+                selectedUserId === employee?._id ? "selected" : ""
+              }`}
               onClick={() => handleUserClick(employee)}
             >
               <img src={employee?.img} alt="Employee" />
@@ -56,6 +62,13 @@ const ContactsContainer = ({ setRecipientId }) => {
                   onlineUsersList.includes(employee?._id) ? "online" : "offline"
                 }`}
               ></span>
+
+              {/* Display unread message count if greater than 0 */}
+              {unreadMessages[employee._id] > 0 && (
+                <span className="unread-count">
+                  {unreadMessages[employee._id]}
+                </span>
+              )}
             </div>
           ))}
         </div>
