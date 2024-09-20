@@ -80,6 +80,10 @@ const Topbar = () => {
                   <Link to={"profile"}>Profile</Link>
                 </li>
                 <li>
+                <i class="fa-brands fa-rocketchat"></i>
+                  <Link to={"/chat"}>Chat</Link>
+                </li>
+                <li>
                   <i class="fa-solid fa-clipboard-user"></i>
                   <Link to={"attendance"}>Attendance</Link>
                 </li>

@@ -84,6 +84,18 @@
     font-size: 0.75rem;
   }
 }
+@media screen and (max-width: 490px) {
+  .message img,
+  .message video {
+    width: 100px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .message {
+    padding: 5px 5px;
+    font-size: 0.85rem;
+  }
+}
 
 .timestamp {
   font-size: 10px;

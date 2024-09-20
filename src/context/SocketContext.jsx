@@ -31,6 +31,8 @@ export const SocketProvider = ({ children }) => {
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isCalling, setIsCalling] = useState(false);
+   
+
 
   // Audio files for call and message notifications
   const callSound = new Audio("/calling-audio.mp3");
@@ -70,6 +72,8 @@ export const SocketProvider = ({ children }) => {
       socket.current.on("receiveMessage", (updatedMessages) => {
         setMessages(updatedMessages);
 
+        console.log("update message from socket context",updatedMessages)
+
         const latestMessage = updatedMessages[updatedMessages.length - 1];
 
         if (latestMessage.sender !== user?.id) {
@@ -82,7 +86,6 @@ export const SocketProvider = ({ children }) => {
           if (Notification.permission === "granted") {
             new Notification("New Message", {
               body: `${latestMessage.senderName}: ${latestMessage.content}`,
-              icon: "/notification-icon.png",
             });
           }
 

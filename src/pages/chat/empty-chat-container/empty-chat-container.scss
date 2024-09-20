@@ -1,23 +1,36 @@
 .empty-chat-container-wrapper {
-  flex: 1;
-  @media (min-width: 768px) {
-    background-color: #071c0b;
-    display: flex;
-  }
+  width: 85%;
+  background-color: #071c0b;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: none;
   transition: all;
   transition-duration: 300ms;
-  .welcome-wrapper {
-    h3 {
-      color: #fff;
-      font-weight: 600;
-      span {
-        color: #37f42e;
-      }
-    }
+}
+
+.empty-chat-container-wrapper .welcome-wrapper h3 {
+  color: #fff;
+  font-weight: 600;
+}
+
+.empty-chat-container-wrapper .welcome-wrapper h3 span {
+  color: #37f42e;
+}
+
+/* Media Queries */
+@media (max-width: 680px) {
+  .empty-chat-container-wrapper .welcome-wrapper h3 {
+    font-size: 18px;
+  }
+}
+@media (max-width: 490px) {
+  .empty-chat-container-wrapper .welcome-wrapper h3 {
+    font-size: 14px;
+  }
+}
+@media (max-width: 390px) {
+  .empty-chat-container-wrapper .welcome-wrapper h3 {
+    font-size: 12px;
   }
 }

@@ -50,7 +50,7 @@ const ContactsContainer = ({ setRecipientId }) => {
           {employees?.map((employee) => (
             <div
               key={employee?._id}
-              className={`user ${
+              className={`user-info ${
                 selectedUserId === employee?._id ? "selected" : ""
               }`}
               onClick={() => handleUserClick(employee)}
