@@ -212,7 +212,7 @@ const Register = () => {
                     {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
                   </div>
                   <div className="col-md-6">
-                    <label>Upload Image</label>
+                    <label>Upload Image (Maintain 3:4 Aspect Ratio)</label>
                     <input
                       {...register("image")}
                       className="file"

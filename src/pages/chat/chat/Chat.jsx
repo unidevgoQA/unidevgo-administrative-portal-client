@@ -55,11 +55,15 @@ const Chat = () => {
   }, [incomingCall, remoteStream]);
 
   const handleAnswerCall = () => {
+    callSound.pause();  // Stop the call sound when answering the call
+    callSound.currentTime = 0;  // Reset the sound playback position
     answerCall();
     setIsCallModalOpen(false);
   };
 
   const handleDeclineCall = () => {
+    callSound.pause();  // Stop the sound in case of decline
+    callSound.currentTime = 0;  // Reset the sound
     endCall();
     setIsCallModalOpen(false);
   };
@@ -104,13 +108,18 @@ const Chat = () => {
       ) : (
         <></>
       )}
-      <ContactsContainer setRecipientId={setRecipientId} />
+
       {remoteStream !== null ? (
         <VideoCall />
-      ) : recipientId ? (
-        <ChatContainer recipientId={recipientId} />
       ) : (
-        <EmptyChatContainer />
+        <>
+          <ContactsContainer setRecipientId={setRecipientId} />
+          {recipientId ? (
+            <ChatContainer recipientId={recipientId} />
+          ) : (
+            <EmptyChatContainer />
+          )}
+        </>
       )}
     </div>
   );

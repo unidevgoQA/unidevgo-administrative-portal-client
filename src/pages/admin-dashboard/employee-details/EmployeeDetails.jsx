@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import defaultImg from "../../../assets/default.png";
 import GoBack from "../../../components/go-back/GoBack";
 import { useGetAllLeavesQuery } from "../../../features/leave-management/leaveManagementApi";
+import "./employee-details.scss";
 
 const EmployeeDetails = () => {
   const [profile, setProfile] = useState({});
@@ -30,7 +32,9 @@ const EmployeeDetails = () => {
     (leave) => leave.employeeEmail === profile.email
   );
 
-  const pendingLeaves = filterLeaves?.filter(leave => leave.status === 'pending')
+  const pendingLeaves = filterLeaves?.filter(
+    (leave) => leave.status === "pending"
+  );
 
   //filter accepted leave
   const filerGetLeave = filterLeaves?.filter(
@@ -55,16 +59,19 @@ const EmployeeDetails = () => {
 
           <div className="profile-current-task-wrapper">
             <div className="row g-4">
-              <div className="col-lg-7 col-md-12">
+              <div className="col-lg-6 col-md-12">
                 <div className="profile-content-wrapper">
                   <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-12">
                       <div className="user-img">
-                        <img src={profile?.img} alt="employee" />
+                        <img
+                          src={profile?.img ? profile?.img : defaultImg}
+                          alt="employee"
+                        />
                       </div>
                     </div>
                     <div className="col-lg-8 col-md-8 col-sm-12">
-                      <div className="user-info">
+                      <div className="user-info-profile">
                         <div className="row ">
                           <div className="col-md-12">
                             <h2>{profile?.name}</h2>
@@ -87,7 +94,13 @@ const EmployeeDetails = () => {
                           <div className="col-md-12">
                             <h3>
                               <i class="fa-solid fa-calendar-days"></i>{" "}
-                              <span>Joining Date : {profile?.joiningDate?.split('-').reverse().join('-')}</span>
+                              <span>
+                                Joining Date :{" "}
+                                {profile?.joiningDate
+                                  ?.split("-")
+                                  .reverse()
+                                  .join("-")}
+                              </span>
                             </h3>
                           </div>
                           <div className="col-md-12">
@@ -97,58 +110,62 @@ const EmployeeDetails = () => {
                             </h3>
                           </div>
                         </div>
-                        <div className="update-area">
-                          <Link
-                            to={`/dashboard/update-profile/${profile?._id}`}
-                          >
-                            <button
-                              title="Update Profile"
-                              className="update-btn"
+                    
+                          <div className="update-area">
+                            <Link
+                              to={`/dashboard/update-profile/${profile?._id}`}
                             >
-                              {" "}
-                              <i className="far fa-edit"></i>
-                            </button>
-                          </Link>
-                        </div>
+                              <button
+                                title="Update Profile"
+                                className="update-btn"
+                              >
+                                {" "}
+                                <i className="far fa-edit"></i>
+                              </button>
+                            </Link>
+                          </div>
+                      
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-5 col-md-12">
-                <div className="employee-vailability">
-                  <div className="row gy-3">
-                    <div className="col-md-6">
-                      <div className="attendence employee-card">
-                        <i class="fa-solid fa-border-all"></i>
-                        <h6>Total Leave</h6>
-                        <span>17 Days</span>
+              <div className="col-lg-6 col-md-12">
+                {profile?.role === "employee" && (
+                  <div className="employee-vailability">
+                    <div className="row gy-3">
+                      <div className="col-md-6">
+                        <div className="attendence employee-card">
+                          <i class="fa-solid fa-border-all"></i>
+                          <h6>Total Leave</h6>
+                          <span>17 Days</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="leave-apply employee-card">
-                        <i class="fa-solid fa-person-walking-arrow-right"></i>
-                        <h6>Pending Leave</h6>
-                        <span>{pendingLeaves?.length} Leave Apply</span>
+                      <div className="col-md-6">
+                        <div className="leave-apply employee-card">
+                          <i class="fa-solid fa-person-walking-arrow-right"></i>
+                          <h6>Pending Leave</h6>
+                          <span>{pendingLeaves?.length} Leave Apply</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="late-coming employee-card">
-                        <i class="fa-solid fa-check"></i>
-                        <h6>Approved Leave</h6>
-                        <span>{totalGetLeaveDays} Days</span>
+                      <div className="col-md-6">
+                        <div className="late-coming employee-card">
+                          <i class="fa-solid fa-check"></i>
+                          <h6>Approved Leave</h6>
+                          <span>{totalGetLeaveDays} Days</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="absent employee-card">
-                        <i class="fa-regular fa-circle-xmark"></i>
-                        <h6>Remaining Leave</h6>
-                        <span>{17 - totalGetLeaveDays} Days</span>
+                      <div className="col-md-6">
+                        <div className="absent employee-card">
+                          <i class="fa-regular fa-circle-xmark"></i>
+                          <h6>Remaining Leave</h6>
+                          <span>{17 - totalGetLeaveDays} Days</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

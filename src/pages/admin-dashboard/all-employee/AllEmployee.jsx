@@ -127,7 +127,7 @@ const AllEmployee = () => {
                   {registerUser?.role === "super admin" && (
                     <>
                       {" "}
-                      <th>Appointment Permission</th>
+                      <th>Appointment</th>
                       <th>Profile Edit</th>
                     </>
                   )}
@@ -146,7 +146,7 @@ const AllEmployee = () => {
                       />
                     </td>
                     <td>{employee?.name}</td>
-                    <td>{employee?.desgination}</td>
+                    <td>{employee?.designation}</td>
                     <td>{employee?.mobile}</td>
                     <td>{employee?.role}</td>
                     <td style={{ textTransform: "lowercase" }}>

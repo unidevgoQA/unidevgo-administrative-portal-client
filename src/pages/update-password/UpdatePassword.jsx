@@ -1,37 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.png';
-import { AuthContext } from "../../providers/AuthProviders";
+
 const UpdatePassword = () => {
-  const { resetPassword } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-
   const [showError, setShowError] = useState("");
-
-  //State
   const navigate = useNavigate();
 
   const { handleSubmit, register, reset } = useForm();
 
-  const onSubmit = ({ email }) => {
-    const updateConfirm = window.confirm("Want to update your password?");
+  const onSubmit = async ({ email, oldPassword, newPassword }) => {
+    const updateConfirm = window.confirm("Do you want to update your password?");
+    
     if (updateConfirm) {
       setLoading(true);
-      resetPassword(email)
-        .then((res) => {
-          toast.success("Link send to your email", { id: "update-password" });
-          setLoading(false);
-          reset();
-          navigate('/')
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-
-          console.log(errorMessage);
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}auth/update-password`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, oldPassword, newPassword }),
         });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          toast.success("Password updated successfully", { id: "update-password" });
+          reset();
+          navigate('/');
+        } else {
+          toast.error(data.message || "Failed to update password", { id: "update-password" });
+        }
+      } catch (error) {
+        console.error("Error updating password:", error);
+        toast.error("Server error. Please try again later.", { id: "update-password" });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -51,10 +59,9 @@ const UpdatePassword = () => {
     <div className="login-register login-wrapper-main">
       <div className="container">
         <div className="row g-0 login-regsiter-content-wrapper">
-        <div className="col-lg-6 col-md-12">
+          <div className="col-lg-6 col-md-12">
             <div className="login-regsiter-left-content">
               <img src={logo} alt="logo" />
-              
             </div>
           </div>
           <div className="col-lg-6 col-md-12">
@@ -65,15 +72,32 @@ const UpdatePassword = () => {
                   <input
                     type="email"
                     required
-                    placeholder="Enter Your Valid Email"
+                    placeholder="Enter Your Email"
                     {...register("email")}
                   />
-                  <i class="fa-solid fa-envelope"></i>
+                  <i className="fa-solid fa-envelope"></i>
                 </div>
-
-                <button className="login-register-btn" type="submit">
-                  <span>Send Email</span>{" "}
-                  <i class="fa-solid fa-arrow-right"></i>
+                <div className="input-wrapper">
+                  <input
+                    type="password"
+                    required
+                    placeholder="Enter Old Password"
+                    {...register("oldPassword")}
+                  />
+                  <i className="fa-solid fa-lock"></i>
+                </div>
+                <div className="input-wrapper">
+                  <input
+                    type="password"
+                    required
+                    placeholder="Enter New Password"
+                    {...register("newPassword")}
+                  />
+                  <i className="fa-solid fa-lock"></i>
+                </div>
+                <button className="login-register-btn" type="submit" disabled={loading}>
+                  <span>Update Password</span>{" "}
+                  <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </form>
             </div>

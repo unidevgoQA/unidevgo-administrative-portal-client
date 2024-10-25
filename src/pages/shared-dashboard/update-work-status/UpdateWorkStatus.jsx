@@ -116,7 +116,7 @@ const UpdateWorkStatus = () => {
   useEffect(() => {
     if (workStatusSuccess) {
       toast.success("Update Successfully", { id: "update-work-task" });
-      navigate("/dashboard/work-status");
+      navigate(-1);
     }
     if (worksStatusLoading) {
       toast.loading("Loading", { id: "update-work-task" });

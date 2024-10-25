@@ -14,9 +14,7 @@ const ContactsContainer = ({ setRecipientId }) => {
   const onlineUsersList = Array.isArray(onlineUsers) ? onlineUsers : [];
   const allProfiles = data?.data;
 
-  const employees = allProfiles?.filter(
-    (profile) => profile?._id !== user?.id && profile?.role === "employee"
-  );
+  const employees = allProfiles?.filter((profile) => profile?._id !== user?.id);
 
   const [selectedUserId, setSelectedUserId] = useState(null);
 
@@ -32,7 +30,6 @@ const ContactsContainer = ({ setRecipientId }) => {
     logoutUser();
   };
 
-
   let navigate = useNavigate();
 
   const goBack = () => {
@@ -44,7 +41,9 @@ const ContactsContainer = ({ setRecipientId }) => {
       <div className="logo-contacts-wrapper">
         <div className="logo">
           <img src={logo} alt="logo" />
-          <button title="Go Back" onClick={goBack}><i class="fa-solid fa-chevron-left"></i></button>
+          <button title="Go Back" onClick={goBack}>
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
         </div>
         <div className="contacts-wrapper">
           {employees?.map((employee) => (

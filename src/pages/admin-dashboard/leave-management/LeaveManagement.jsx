@@ -59,7 +59,6 @@ const LeaveManagement = () => {
 
   console.log(getFilteredItems());
 
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
@@ -112,7 +111,7 @@ const LeaveManagement = () => {
   const allLeaveEmails = leaveEmails?.data;
   const getEmails = allLeaveEmails?.map((email) => email?.email);
 
-  console.log(getEmails)
+  console.log(getEmails);
 
   //Accept leave handler
   const handleAcceptLeave = (
@@ -412,7 +411,7 @@ const LeaveManagement = () => {
               </div>
             </>
           ) : (
-            <h6 className="mt-4">No pending leave found.</h6>
+            <h6 className="mt-4">No Leave Found</h6>
           )}
         </div>
       </div>

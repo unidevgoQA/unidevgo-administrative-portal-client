@@ -100,13 +100,20 @@ const MessageBar = ({ recipientId }) => {
   };
 
   const renderFilePreview = () => {
+    const fileName = fileInputRef.current?.files[0]?.name; // Get the file name
+  
     switch (fileType) {
       case "image":
         return <img src={filePreview} alt="Preview" />;
       case "video":
         return <video controls src={filePreview} />;
       case "audio":
-        return <audio controls src={filePreview} />;
+        return (
+          <div>
+            <audio controls src={filePreview} />
+            <p>{fileName}</p> {/* Display the audio file name */}
+          </div>
+        );
       case "application":
         if (filePreview.endsWith(".pdf")) {
           return (
@@ -121,7 +128,7 @@ const MessageBar = ({ recipientId }) => {
           return (
             <div className="file-preview-document">
               <i className="fa-solid fa-file"></i>
-              <span>{fileInputRef.current.files[0].name}</span>
+              <span>{fileName}</span>
             </div>
           );
         }
@@ -129,7 +136,7 @@ const MessageBar = ({ recipientId }) => {
         return (
           <div className="file-preview-document">
             <i className="fa-solid fa-file"></i>
-            <span>{fileInputRef.current.files[0].name}</span>
+            <span>{fileName}</span>
           </div>
         );
     }
@@ -163,7 +170,7 @@ const MessageBar = ({ recipientId }) => {
 
       {isModalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content text-white">
             <span className="close" onClick={handleRemoveFile}>
               <i class="fa-solid fa-trash-can"></i>
             </span>

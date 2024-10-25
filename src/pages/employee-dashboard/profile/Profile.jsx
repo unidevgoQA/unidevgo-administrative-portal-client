@@ -13,7 +13,6 @@ const Profile = () => {
   //User
   const { user } = useContext(AuthContext);
 
-  console.log(user.email);
   //Get user by email Api
   const { data: userData } = useGetProfileByEmailQuery(user.email);
 

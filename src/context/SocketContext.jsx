@@ -31,53 +31,131 @@ export const SocketProvider = ({ children }) => {
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isCalling, setIsCalling] = useState(false);
-   
 
+  // Xirsys ICE servers configuration
+  const iceServers = [
+    { urls: ["stun:bn-turn2.xirsys.com"] },
+    {
+      username: import.meta.env.VITE_ICE_SERVER_USERNAME,
+      credential: import.meta.env.VITE_ICE_SERVER_CREDENTIAL,
+      urls: [
+        "turn:bn-turn2.xirsys.com:80?transport=udp",
+        "turn:bn-turn2.xirsys.com:3478?transport=udp",
+        "turn:bn-turn2.xirsys.com:80?transport=tcp",
+        "turn:bn-turn2.xirsys.com:3478?transport=tcp",
+        "turns:bn-turn2.xirsys.com:443?transport=tcp",
+        "turns:bn-turn2.xirsys.com:5349?transport=tcp",
+      ],
+    },
+  ];
 
   // Audio files for call and message notifications
-  const callSound = new Audio("/calling-audio.mp3");
-  const messageTone = new Audio("/message-tone.mp3");
+  const callSound = useRef(new Audio("/calling-audio.mp3"));
+  const messageTone = useRef(new Audio("/message-tone.mp3"));
 
-  // Request notification permission on component mount
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Notification permission granted.");
-        }
-      });
+  // Function to initialize a new Peer instance
+  const createPeerInstance = () => {
+    if (peer.current) {
+      peer.current.destroy(); // Ensure any previous peer instance is destroyed
+      peer.current = null;
     }
-  }, []);
+
+    peer.current = new Peer(user.id, {
+      config: { iceServers }, // Add the iceServers config here
+      host: import.meta.env.VITE_PEER_HOST, // Replace with your PeerJS server host
+      port: import.meta.env.VITE_PEER_PORT || 9000, // Replace with your PeerJS server port
+      path: "/", // Replace with your PeerJS server path if different
+      secure: import.meta.env.VITE_PEER_SECURE === "true", // Ensure secure is set based on your server
+    });
+
+    // Handle PeerJS events
+    peer.current.on("open", (id) => {
+      console.log(`PeerJS connection opened with ID: ${id}`);
+      // Optionally, emit an event to notify server of the Peer ID
+      socket.current.emit("peerId", { peerId: id });
+    });
+
+    peer.current.on("call", (call) => {
+      console.log("Incoming call from:", call.peer);
+      setIncomingCall(call);
+    });
+
+    peer.current.on("error", (err) => {
+      console.error("PeerJS error:", err);
+      // Handle specific errors if necessary
+    });
+  };
 
   // Setup socket and peer connections when user is present
   useEffect(() => {
     if (user) {
+      // Initialize Socket.IO client with reconnection settings
       socket.current = io(import.meta.env.VITE_BASE_URL, {
         query: { userId: user?.id, userName: user?.name },
         withCredentials: true,
+        reconnection: true, // Enable automatic reconnections
+        reconnectionAttempts: Infinity, // Retry indefinitely
+        reconnectionDelay: 1000, // Initial reconnection delay
+        reconnectionDelayMax: 2000, // Maximum reconnection delay
+        timeout: 1000, // Set a connection timeout
+        autoConnect: true,
       });
 
-      // Handle socket events
+      // Connection established
       socket.current.on("connect", () => {
-        console.log(`Connected with ID: ${socket.current.id}`);
+        console.log(`Connected to socket server with ID: ${socket.current.id}`);
         socket.current.emit("getConnectedUsers");
+
+        // Initialize PeerJS upon successful socket connection
+        createPeerInstance();
       });
 
+      // Handle disconnection
+      socket.current.on("disconnect", (reason) => {
+        console.error("Disconnected from the server. Reason:", reason);
+        // Destroy PeerJS instance on disconnect
+        if (peer.current) {
+          peer.current.destroy();
+          peer.current = null;
+        }
+        // Socket.IO will attempt to reconnect automatically
+      });
+
+      // Reconnection attempt
+      socket.current.on("reconnect_attempt", (attemptNumber) => {
+        console.log(`Attempting to reconnect... (Attempt: ${attemptNumber})`);
+      });
+
+      // Reconnected successfully
+      socket.current.on("reconnect", (attemptNumber) => {
+        console.log(
+          `Reconnected successfully after ${attemptNumber} attempts.`
+        );
+        // Reinitialize PeerJS upon reconnection
+        createPeerInstance();
+      });
+
+      // Reconnection failed
+      socket.current.on("reconnect_failed", () => {
+        console.error("Reconnection failed. Unable to connect to the server.");
+      });
+
+      // Handle online users
       socket.current.on("onlineUsers", (onlineUsers) =>
         setOnlineUsers(onlineUsers)
       );
 
+      // Handle connected users
       socket.current.on("connectedUsers", (users) => setConnectedUsers(users));
 
+      // Handle incoming messages
       socket.current.on("receiveMessage", (updatedMessages) => {
         setMessages(updatedMessages);
-
-        console.log("update message from socket context",updatedMessages)
 
         const latestMessage = updatedMessages[updatedMessages.length - 1];
 
         if (latestMessage.sender !== user?.id) {
-          messageTone
+          messageTone.current
             .play()
             .catch((error) =>
               console.error("Failed to play message tone:", error)
@@ -96,10 +174,12 @@ export const SocketProvider = ({ children }) => {
         }
       });
 
+      // Handle user status updates
       socket.current.on("userStatus", ({ userId, status }) => {
         setOnlineUsers((prev) => ({ ...prev, [userId]: status }));
       });
 
+      // Handle incoming call notifications
       socket.current.on("caller", ({ from }) => {
         setCallerName(from);
         if (Notification.permission === "granted") {
@@ -109,48 +189,90 @@ export const SocketProvider = ({ children }) => {
         }
       });
 
+      // Handle call ended by the other user
       socket.current.on("callEnded", ({ userId }) => {
         console.log(`Call ended by user with ID: ${userId}`);
         setRemoteStream(null);
         setIsCalling(false);
-        setReloadWindow(true);
       });
 
+      // Handle call accepted by the other user
       socket.current.on("callAccepted", (signal) => {
         if (peer.current) {
           peer.current.signal(signal);
         }
       });
 
-      socket.current.on("disconnect", () =>
-        console.log("Disconnected from the socket server")
-      );
-
-      return () => socket.current.disconnect();
+      // Cleanup on unmount
+      return () => {
+        if (socket.current) {
+          socket.current.disconnect();
+          console.log("Socket disconnected");
+        }
+        if (peer.current) {
+          peer.current.destroy();
+          console.log("PeerJS instance destroyed");
+        }
+      };
     }
   }, [user]);
 
   // Access webcam and set local stream on component mount
-  useEffect(() => {
-    const getWebcam = async () => {
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-          audio: true,
-        });
+  // Request media access only when needed
+  const getMediaDevices = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: true,
+      });
+      setLocalStream(mediaStream);
+      return mediaStream;
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+      throw error; // Optional: Handle error (e.g., show notification)
+    }
+  };
 
-        mediaStream.getVideoTracks().forEach((track) => {
-          track.enabled = false; // Start with video off
-        });
+  // Initiate a call to a user
+  const callUser = async (recipientId) => {
+    try {
+      const mediaStream = await getMediaDevices(); // Get media access before calling
+      
+      if (peer.current) {
+        const call = peer.current.call(recipientId, mediaStream);
+        call.on("stream", (stream) => setRemoteStream(stream));
+        call.on("error", (err) => console.error("Call error:", err));
 
-        setLocalStream(mediaStream);
-        setIsVideoEnabled(false);
-      } catch (error) {
-        console.error("Error accessing media devices:", error);
+        setCallInProgress(true);
+        setIsCalling(true);
+
+        socket.current.emit("callUser", {
+          userToCall: recipientId,
+          from: user?.name,
+        });
       }
-    };
-    getWebcam();
-  }, []);
+    } catch (error) {
+      console.error("Failed to start call:", error);
+    }
+  };
+
+  // Answer an incoming call
+  const answerCall = async () => {
+    try {
+      const mediaStream = await getMediaDevices(); // Get media access before answering
+      if (incomingCall) {
+        incomingCall.answer(mediaStream);
+        incomingCall.on("stream", (remoteStream) =>
+          setRemoteStream(remoteStream)
+        );
+        setIncomingCall(null);
+        setCallInProgress(true);
+        callSound.current.pause();
+      }
+    } catch (error) {
+      console.error("Failed to answer call:", error);
+    }
+  };
 
   // Toggle video stream
   const toggleVideo = () => {
@@ -172,80 +294,22 @@ export const SocketProvider = ({ children }) => {
     }
   };
 
-  // Initialize PeerJS and handle peer events
-  useEffect(() => {
-    if (user && localStream) {
-      peer.current = new Peer(user.id, {
-        host: import.meta.env.VITE_PEER_HOST,
-        port: import.meta.env.VITE_PEER_PORT || 9000,
-        path: "/",
-        secure: false,
-      });
-
-      peer.current.on("open", (id) => {
-        console.log(`PeerJS connection opened with ID: ${id}`);
-      });
-
-      peer.current.on("call", (call) => setIncomingCall(call));
-
-      peer.current.on("error", (err) => console.error("PeerJS error:", err));
-
-      return () => peer.current && peer.current.destroy();
-    }
-  }, [user, localStream]);
-
-  // Initiate a call to a user
-  const callUser = (recipientId) => {
-    if (localStream && peer.current) {
-      console.log("Initializing call...");
-
-      const call = peer.current.call(recipientId, localStream);
-
-      call.on("stream", (stream) => setRemoteStream(stream));
-
-      call.on("error", (err) => console.error("Call error:", err));
-
-      setCallInProgress(true);
-      setIsCalling(true);
-
-      socket.current.emit("callUser", {
-        userToCall: recipientId,
-        from: user?.name,
-      });
-    }
-  };
-
-  // Answer an incoming call
-  const answerCall = () => {
-    if (incomingCall && localStream) {
-      incomingCall.answer(localStream);
-
-      incomingCall.on("stream", (remoteStream) =>
-        setRemoteStream(remoteStream)
-      );
-
-      setIncomingCall(null);
-      setCallInProgress(true);
-      callSound.pause();
-
-      socket.current.emit("answerCall", {
-        to: incomingCall.from,
-        signal: peer.current.signal,
-      });
-    }
-  };
-
   // End an ongoing call
   const endCall = () => {
     if (peer.current) {
       peer.current.destroy();
+      peer.current = null;
       setRemoteStream(null);
       setCallInProgress(false);
-      callSound.pause();
+      setIsCalling(false);
+      callSound.current.pause();
       socket.current.emit("endCall", { userId: user.id });
+      if (socket.current && socket.current.connected) createPeerInstance();
     }
+    
   };
 
+  
   // Send a message or file
   const sendMessage = (message, isFile = false) => {
     if (isFile) {
@@ -255,11 +319,19 @@ export const SocketProvider = ({ children }) => {
       })
         .then((response) => response.json())
         .then((data) => {
+          // Emit the file message to the server
           socket.current.emit("sendMessage", data);
+
+          // Optimistically add the file message to the sender's chat
+          setMessages((prevMessages) => [...prevMessages, data]);
         })
         .catch((error) => console.error("Error uploading file:", error));
     } else {
+      // Emit the message to the server
       socket.current.emit("sendMessage", message);
+
+      // Optimistically add the message to the sender's chat
+      setMessages((prevMessages) => [...prevMessages, message]);
     }
   };
 
@@ -289,8 +361,8 @@ export const SocketProvider = ({ children }) => {
         callInProgress,
         callerName,
         reloadWindow,
-        callSound,
-        messageTone,
+        callSound: callSound.current,
+        messageTone: messageTone.current,
         toggleVideo,
         toggleAudio,
         isVideoEnabled,
